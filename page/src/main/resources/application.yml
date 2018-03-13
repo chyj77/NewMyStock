@@ -1,0 +1,13 @@
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+server:
+  port: 8080
+spring:
+  application:
+    name: service-page
+  thymeleaf:
+    prefix: classpath:/templates/,classpath:/static/

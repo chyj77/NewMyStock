@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/NewMyStock.iml" filepath="$PROJECT_DIR$/.idea/NewMyStock.iml" />
+      <module fileurl="file://$PROJECT_DIR$/menu/menu.iml" filepath="$PROJECT_DIR$/menu/menu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mongo/mongo.iml" filepath="$PROJECT_DIR$/mongo/mongo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mystock/mystock.iml" filepath="$PROJECT_DIR$/mystock/mystock.iml" />
+      <module fileurl="file://$PROJECT_DIR$/page/page.iml" filepath="$PROJECT_DIR$/page/page.iml" />
+      <module fileurl="file://$PROJECT_DIR$/websocket/websocket.iml" filepath="$PROJECT_DIR$/websocket/websocket.iml" />
+    </modules>
+  </component>
+</project>

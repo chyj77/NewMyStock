@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.cyj.mystock.menu.mapper.MenuMapper" >
+
+    <resultMap id="BaseResultMap" type="com.cyj.mystock.menu.bean.Menu" >
+        <id column="menu_Id" property="menuId" jdbcType="INTEGER" />
+        <result column="menu_Code" property="menuCode" jdbcType="VARCHAR" />
+        <result column="menu_Name" property="menuName" jdbcType="VARCHAR" />
+        <result column="menu_Url" property="menuUrl" jdbcType="VARCHAR"/>
+        <result column="p_Menu_Id" property="pMenuId" jdbcType="INTEGER"/>
+        <result column="menu_Type" property="menuType" jdbcType="VARCHAR"/>
+        <result column="menu_level" property="menuLevel" jdbcType="VARCHAR"/>
+        <result column="isexpand" property="isexpand" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        menu_Id, menu_Code, menu_Name,menu_Url,p_Menu_Id,menu_Type,isexpand
+    </sql>
+    <select id="getAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from menu
+        ORDER BY menu_level
+    </select>
+    <!--
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from appuser_message
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        insert into appuser_message (id, message, senddate
+        )
+        values (#{id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        insert into appuser_message
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="message != null" >
+                message,
+            </if>
+            <if test="senddate != null" >
+                senddate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null" >
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="senddate != null" >
+                #{senddate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        update appuser_message
+        <set >
+            <if test="message != null" >
+                message = #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="senddate != null" >
+                senddate = #{senddate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        update appuser_message
+        set message = #{message,jdbcType=VARCHAR},
+        senddate = #{senddate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        id, message, senddate
+        from appuser_message
+        order by senddate asc
+    </select>
+
+    <select id="getMessById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        id, message, senddate
+        from
+        appuser_message
+        where id = #{id,jdbcType=VARCHAR}
+        order by senddate asc
+    </select>
+-->
+</mapper>
