@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="info" />
         <module name="menu" />
         <module name="mongo" />
         <module name="mystock" />
@@ -15,6 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="info" target="1.8" />
       <module name="menu" target="1.8" />
       <module name="mongo" target="1.8" />
       <module name="mystock" target="1.8" />

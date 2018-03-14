@@ -9,6 +9,8 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class LhbController {
 
@@ -18,8 +20,9 @@ public class LhbController {
     private LhbService lhbService;
 
     @RequestMapping("/lhb")
-    public String findAll() {
-        JSONArray jsonArray = lhbService.findAll();
+    public String findAll(HttpServletRequest request) {
+        String day = request.getParameter("day");
+        JSONArray jsonArray = lhbService.findAll(day);
         return  jsonArray.toJSONString();
     }
 }

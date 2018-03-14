@@ -32,11 +32,11 @@ public class LhbService {
      * 查询所有的Student信息
      * @return
      */
-    public JSONArray findAll(){
+    public JSONArray findAll(String day){
 //        String jsonSql="{distinct:'thslhb',key:'rq'}";
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-        String day = pasrserTime(cal.getTime());
+//        Calendar cal = Calendar.getInstance();
+//        cal.add(Calendar.DAY_OF_MONTH, -1);
+//        String day = pasrserTime(cal.getTime());
         MongoCollection<Document> collection = mongoTemplate.getCollection("thslhb");
         FindIterable<Document> findIterable = collection.find(new Bson() {
             @Override

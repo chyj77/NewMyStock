@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/info" />
     <file type="web" url="file://$PROJECT_DIR$/mongo" />
     <file type="web" url="file://$PROJECT_DIR$/mystock" />
     <file type="web" url="file://$PROJECT_DIR$/websocket" />
@@ -14,6 +15,7 @@
         <option value="$PROJECT_DIR$/mongo/pom.xml" />
         <option value="$PROJECT_DIR$/page/pom.xml" />
         <option value="$PROJECT_DIR$/menu/pom.xml" />
+        <option value="$PROJECT_DIR$/info/pom.xml" />
       </list>
     </option>
   </component>

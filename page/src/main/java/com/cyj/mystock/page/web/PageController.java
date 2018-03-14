@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class PageController {
@@ -28,9 +30,12 @@ public class PageController {
     }
     @RequestMapping("/thsLhb")
     @ResponseBody
-    public String thsLhb() {
-        String providerMsg = restTemplate.getForEntity("http://SERVICE-MONGO/lhb",
-                String.class).getBody();
+    public String thsLhb(HttpServletRequest request) {
+        String day = request.getParameter("day");
+        Map map = new HashMap();
+        map.put("day",day);
+        String url = "http://SERVICE-MONGO/lhb?day={day}";
+        String providerMsg = (String) restTemplate.getForEntity(url,String.class,map).getBody();
         return providerMsg;
     }
     @RequestMapping("/")
