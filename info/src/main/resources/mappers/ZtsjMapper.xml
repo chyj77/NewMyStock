@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.cyj.mystock.info.mapper.ZtsjMapper" >
+
+    <resultMap id="BaseResultMap" type="com.cyj.mystock.info.bean.ZtsjBean" >
+        <id column="recid" property="recid" jdbcType="INTEGER" />
+        <result column="rq" property="rq" jdbcType="VARCHAR" />
+        <result column="mrztgs" property="mrztgs" jdbcType="VARCHAR" />
+        <result column="fyzbgs" property="fyzbgs" jdbcType="VARCHAR"/>
+        <result column="10dqztgs" property="dqztgs" jdbcType="VARCHAR"/>
+        <result column="ztzdgn" property="ztzdgn" jdbcType="VARCHAR"/>
+        <result column="ztzdgs" property="ztzdgs" jdbcType="VARCHAR"/>
+        <result column="dbcrgkl" property="dbcrgkl" jdbcType="VARCHAR"/>
+        <result column="spcgl" property="spcgl" jdbcType="VARCHAR"/>
+        <result column="10dqztgkl" property="dqztgkl" jdbcType="VARCHAR"/>
+        <result column="bzsl" property="bzsl" jdbcType="VARCHAR"/>
+        <result column="bzl" property="bzl" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT ztsj.rq AS rq,ztsj.mrztgs AS mrztgs,ztsj.fyzbgs AS fyzbgs,ztsj.10dqztgs AS 10dqztgs,
+							ztsj.ztzdgn AS ztzdgn,ztsj.ztzdgs AS ztzdgs,
+							concat(ROUND(ztsj.dbcrgkl*100,0),'%') AS dbcrgkl,
+							concat(ROUND(ztsj.spcgl*100,0),'%') AS spcgl,ztsj.recid as recid,
+							concat(ROUND(ztsj.10dqztgkl*100,0),'%') AS 10dqztgkl,ztsj.bzsl AS bzsl,
+							concat(ROUND(ztsj.bzl*100,0),'%') AS bzl
+							FROM ztsj
+							order by rq DESC
+    </select>
+    <select id="getZtgn" resultType="java.util.Map">
+        SELECT DISTINCT ztzdgn ,COUNT(ztzdgn) COUNTS FROM ztsj
+        group by ztzdgn
+        ORDER BY COUNTS desc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from ztsj
+        where recid = #{recid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.cyj.mystock.info.bean.ZtsjBean" >
+        insert into ztsj (
+            rq,
+            mrztgs,
+            fyzbgs,
+            10dqztgs,
+            ztzdgn,
+            ztzdgs,
+            dbcrgkl,
+            spcgl,
+            10dqztgkl,
+            bzsl,
+            bzl
+        )
+        values (
+        #{rq},
+        #{mrztgs},
+        #{fyzbgs},
+        #{dqztgs},
+        #{ztzdgn},
+        #{ztzdgs},
+        #{dbcrgkl},
+        #{spcgl},
+        #{dqztgkl},
+        #{bzsl},
+        #{bzl}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.cyj.mystock.info.bean.ZtsjBean" >
+        update ztsj
+        <set >
+            recid = #{recid,jdbcType=INTEGER}
+            <if test="rq != null" >
+                ，rq = #{rq,jdbcType=VARCHAR}
+            </if>
+            <if test="mrztgs != null" >
+                ，mrztgs = #{mrztgs,jdbcType=VARCHAR}
+            </if>
+            <if test="fyzbgs != null" >
+                ，fyzbgs = #{fyzbgs,jdbcType=VARCHAR}
+            </if>
+            <if test="dqztgs != null" >
+                ，10dqztgs = #{dqztgs,jdbcType=VARCHAR}
+            </if>
+            <if test="ztzdgn != null" >
+               ， ztzdgn = #{ztzdgn,jdbcType=VARCHAR}
+            </if>
+            <if test="ztzdgs != null" >
+               ， ztzdgs = #{ztzdgs,jdbcType=VARCHAR}
+            </if>
+            <if test="dbcrgkl != null" >
+                ，dbcrgkl = #{dbcrgkl,jdbcType=VARCHAR}
+            </if>
+            <if test="spcgl != null" >
+               ， spcgl = #{spcgl,jdbcType=VARCHAR}
+            </if>
+            <if test="dqztgkl != null" >
+                ，10dqztgkl = #{dqztgkl,jdbcType=VARCHAR}
+            </if>
+            <if test="bzsl != null" >
+                ，bzsl = #{bzsl,jdbcType=VARCHAR}
+            </if>
+            <if test="bzl != null" >
+                ，bzl = #{bzl,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where recid = #{recid,jdbcType=INTEGER}
+    </update>
+    <!--
+    <insert id="insertSelective" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        insert into appuser_message
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="message != null" >
+                message,
+            </if>
+            <if test="senddate != null" >
+                senddate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null" >
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="senddate != null" >
+                #{senddate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        update appuser_message
+        set message = #{message,jdbcType=VARCHAR},
+        senddate = #{senddate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getMessById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        id, message, senddate
+        from
+        appuser_message
+        where id = #{id,jdbcType=VARCHAR}
+        order by senddate asc
+    </select>
+    -->
+</mapper>

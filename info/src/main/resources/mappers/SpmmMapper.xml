@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.cyj.mystock.info.mapper.SpmmMapper" >
+
+    <resultMap id="BaseResultMap" type="com.cyj.mystock.info.bean.SpmmBean" >
+        <id column="recid" property="recid" jdbcType="INTEGER" />
+        <result column="rq" property="rq" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="caozuo" property="caozuo" jdbcType="VARCHAR"/>
+        <result column="jiage" property="jiage" jdbcType="VARCHAR"/>
+        <result column="sl" property="sl" jdbcType="VARCHAR"/>
+        <result column="luoji" property="luoji" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT shipancaozuo.rq AS rq,shipancaozuo.code AS code,shipancaozuo.name AS name,
+				dictname AS caozuo,shipancaozuo.jiage AS jiage,shipancaozuo.sl AS sl,
+				shipancaozuo.luoji AS luoji,recid
+				FROM shipancaozuo join dict on caozuo = dictcode and dicttype='oper'
+        ORDER BY rq desc, code ASC
+    </select>
+
+    <select id="getLuoji" resultType="java.util.Map">
+        SELECT DISTINCT luoji ,count(luoji) counts
+            FROM shipancaozuo
+            GROUP BY luoji
+            ORDER BY counts desc
+    </select>
+
+    <select id="getStock" resultType="java.util.Map">
+        SELECT stockcode,stockname,hangye
+          FROM dict_stock
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from shipancaozuo
+        where recid = #{recid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.cyj.mystock.info.bean.SpmmBean" >
+        insert into shipancaozuo (
+            rq,
+            code,
+            name,
+            caozuo,
+            jiage,
+            sl,
+            luoji,
+        )
+        values (
+        #{rq},
+        #{code},
+        #{name},
+        #{caozuo},
+        #{jiage},
+        #{sl},
+        #{luoji}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.cyj.mystock.info.bean.SpmmBean" >
+        update ztsj
+        <set >
+            recid = #{recid,jdbcType=INTEGER}
+            <if test="rq != null" >
+               ， rq = #{rq,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null" >
+                ，code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null" >
+                ，name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="caozuo != null" >
+               ， caozuo = #{caozuo,jdbcType=VARCHAR}
+            </if>
+            <if test="jiage != null" >
+                jiage = #{jiage,jdbcType=VARCHAR}
+            </if>
+            <if test="sl != null" >
+               ， sl = #{sl,jdbcType=VARCHAR}
+            </if>
+            <if test="luoji != null" >
+                ，luoji = #{luoji,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where recid = #{recid,jdbcType=INTEGER}
+    </update>
+    <!--
+    <insert id="insertSelective" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        insert into appuser_message
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="message != null" >
+                message,
+            </if>
+            <if test="senddate != null" >
+                senddate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null" >
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="senddate != null" >
+                #{senddate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        update appuser_message
+        set message = #{message,jdbcType=VARCHAR},
+        senddate = #{senddate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getMessById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        id, message, senddate
+        from
+        appuser_message
+        where id = #{id,jdbcType=VARCHAR}
+        order by senddate asc
+    </select>
+    -->
+</mapper>
