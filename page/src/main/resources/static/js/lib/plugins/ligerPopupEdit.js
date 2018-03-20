@@ -524,7 +524,7 @@
             if (p.condition)
             { 
                 var conditionParm = $.extend({
-                    labelWidth: 60,
+                    labelWidth: 100,
                     space: 20
                 }, p.condition);
                 setTimeout(function ()

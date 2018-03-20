@@ -8,7 +8,7 @@ function indexdata() {
             var jsonstr = JSON.parse(data);
 
             for(var i in jsonstr){
-                console.log(jsonstr[i].menuName);
+                // console.log(jsonstr[i].menuName);
                 var menuType = jsonstr[i].menuType;
                 var headerDiv  = $('<div>', {'class': 'l-layout-header'});
                 var toggleDiv  = $('<div>', {'class': 'l-accordion-toggle l-accordion-toggle-open'});
@@ -21,7 +21,7 @@ function indexdata() {
                 var menuData = jsonstr[i].node==undefined?jsonstr[i].children:jsonstr[i].node;
                 rootDiv.append(ul);
                 $("#accordion1").append(rootDiv);
-                console.log(ul);
+                // console.log(ul);
                 ul.ligerTree({
                     data : menuData,
                     checkbox: false,
@@ -31,19 +31,24 @@ function indexdata() {
                     parentIDFieldName :jsonstr[i].pMenuId,
                     // attribute: ['nodename', 'url'],
                     render : function(a){
-                        console.log(a);
+                        // console.log(a);
                         if (!a.isnew) return a.menuName;
                         return  a.menuName ;
                     },
-                    onClick:function(node)
-                    {
-                        var tabid = $(node.target).attr("tabid");
-                        if (!tabid)
-                        {
-                            tabid = jsonstr[i].menuId;
-                        }
-                        showLhb(tabid);
-                    },
+                    // onClick:function(node)
+                    // {
+                    //     var tabid = node.data.menuId;
+                    //     if (!tabid)
+                    //     {
+                    //         tabid = jsonstr[i].menuId;
+                    //     }
+                    //     // console.log(tabid);
+                    //     var menuEvent = node.data.menuUrl;
+                    //     $(node.target).attr("onclick",eval(menuEvent));
+                    //     f_addTab2(tabid, node.data.menuName, eval(menuEvent));
+                    //     // console.log(node);
+                    //     // showLhb(tabid);
+                    // },
                     onSelect: function (node)
                     {
                         // if (!node.data.menuUrl) return;
@@ -52,13 +57,14 @@ function indexdata() {
                             return;
                         }
 
-                        var tabid = $(node.target).attr("tabid");
+                        var tabid = node.data.menuId;
                         if (!tabid)
                         {
                             tabid = jsonstr[i].menuId;
                             $(node.target).attr("tabid", tabid)
                         }
-                        f_addTab(tabid, node.data.menuName, '');
+                        var menuEvent = node.data.menuUrl;
+                        f_addTab2(tabid, node.data.menuName, menuEvent);
                     }
                 });
                 // console.log($("#accordion1"));
@@ -71,7 +77,25 @@ function indexdata() {
     });
 
 }
-
+Date.prototype.format = function(format)
+{
+    var o = {
+        "M+" : this.getMonth()+1, //month
+        "d+" : this.getDate(),    //day
+        "h+" : this.getHours(),   //hour
+        "m+" : this.getMinutes(), //minute
+        "s+" : this.getSeconds(), //second
+        "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+        "S" : this.getMilliseconds() //millisecond
+    }
+    if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+        (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    for(var k in o)if(new RegExp("("+ k +")").test(format))
+        format = format.replace(RegExp.$1,
+            RegExp.$1.length==1 ? o[k] :
+                ("00"+ o[k]).substr((""+ o[k]).length));
+    return format;
+}
 var indexdata1 =
     [
         { text: '基础',isexpand:false, children: [

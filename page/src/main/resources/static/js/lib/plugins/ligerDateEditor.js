@@ -67,7 +67,7 @@
             g.text.append('<div class="l-text-l"></div><div class="l-text-r"></div>');
             g.text.append(g.link);
             //添加个包裹，
-            g.textwrapper = g.text.wrap('<div class="l-text-wrapper"></div>').parent();
+            g.textwrapper = g.text.wrap('<div class="l-text-wrapper" style="float:left;font-size:16px;font-weight:bold;"></div>').parent();
             var dateeditorHTML = "";
             dateeditorHTML += "<div class='l-box-dateeditor' style='display:none'>";
             dateeditorHTML += "    <div class='l-box-dateeditor-header'>";

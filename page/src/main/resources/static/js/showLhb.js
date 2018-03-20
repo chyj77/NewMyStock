@@ -1,33 +1,25 @@
 function showLhb(tabid) {
-    // alert(tabid);
-    var rootDiv  = $('<div>', {'class':'l-tab-content-item'});
-    var rqText =  $('<input>', {'type':'text', 'id':'datepicker1' ,'name':'rq'});
+    // console.log(tabid);
+    var rootDiv  = $('<div>', {'id':'lhb'+tabid,'class':'l-tab-content-item'});
+    var p = $('<p>', {'style':'font-size:18px;font-weight:bold;float:left;display:inline;'});
+    p.text("日期： ");
+    var rqText =  $('<input>', {'type':'text', 'id':'txt1'});
     var lhbDiv  = $('<div>', {'class':'l-tab-content-item','style':'overflow-y:scroll'});
+    rootDiv.append(rqText);
+    rqText.parent().style='float:left';
+    rqText.parent().prepend(p);
     var date = new Date();
     date.setDate(date.getDate()-1);
-    rqText.datepicker({//添加日期选择功能
-        numberOfMonths:1,//显示几个月
-        showButtonPanel:true,//是否显示按钮面板
-        dateFormat: 'yy-mm-dd',//日期格式
-        clearText:"清除",//清除日期的按钮名称
-        closeText:"关闭",//关闭选择框的按钮名称
-        yearSuffix: '年', //年的后缀
-        showMonthAfterYear:true,//是否把月放在年的后面
-        defaultDate:date,//默认日期
-//    minDate:'2011-03-05',//最小日期
-//    maxDate:'2011-03-20',//最大日期
-        //monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-        //dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-        //dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-        //dayNamesMin: ['日','一','二','三','四','五','六'],
-        onSelect: function(datepicker) {//选择日期后执行的操作
-            console.log('datepicker:'+datepicker)
-            lhbDiv.empty();
-            executeShow(datepicker,tabid,lhbDiv)
-        }
+    // console.log(date);
+    rqText.ligerDateEditor({initValue: date.format('yyyy-MM-dd') });
+    rqText.blur(function ()
+    {
+        console.log('日期:',rqText.val());
+        lhbDiv.empty();
+        executeShow(rqText.val(),tabid,lhbDiv);
     });
-    rqText.datepicker('setDate', date);
-    rootDiv.append(rqText);
+    // console.log(rqText);
+    // console.log(rqText.val());
     rootDiv.append(lhbDiv);
     $("div[tabid='"+tabid+"']").append(rootDiv);
     var day = rqText.val();
@@ -46,9 +38,9 @@ function executeShow(day,tabid,lhbDiv) {
             for(var i in jsonstr){
                 console.log(jsonstr[i].rq);
                 var rq = jsonstr[i].rq;
-                var p = $('<p>', {'style':'font-size:18px;font-weight:bold'});
-                p.text("日期： "+rq);
-                lhbDiv.append(p);
+                // var p = $('<p>', {'style':'font-size:18px;font-weight:bold'});
+                // p.text("日期： "+rq);
+                // lhbDiv.append(p);
                 var data = jsonstr[i].data;
                 for(var j in data){
                     var contentDiv  = $('<div>');
