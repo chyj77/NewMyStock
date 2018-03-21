@@ -29,11 +29,11 @@ function indexdata() {
                     nodeWidth: 120,
                     idFieldName :jsonstr[i].menuId,
                     parentIDFieldName :jsonstr[i].pMenuId,
-                    // attribute: ['nodename', 'url'],
+                    attribute: ['nodename', 'menuUrl'],
                     render : function(a){
                         // console.log(a);
                         if (!a.isnew) return a.menuName;
-                        return  a.menuName ;
+                        return  '<a href="' + eval(a.menuUrl) + '" target="_blank">' + a.menuName + '</a>';;
                     },
                     // onClick:function(node)
                     // {
@@ -64,7 +64,8 @@ function indexdata() {
                             $(node.target).attr("tabid", tabid)
                         }
                         var menuEvent = node.data.menuUrl;
-                        f_addTab2(tabid, node.data.menuName, menuEvent);
+                        console.log(menuEvent);
+                        f_addTab(tabid, node.data.menuName, menuEvent);
                     }
                 });
                 // console.log($("#accordion1"));

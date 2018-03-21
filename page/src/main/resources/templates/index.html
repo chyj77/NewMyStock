@@ -7,10 +7,10 @@
     <link rel="stylesheet" type="text/css" id="mylink"/>
     <script src="../js/lib/jquery-3.1.1.js" type="text/javascript"></script>
     <script src="../js/lib/ligerui.all.js" type="text/javascript"></script>
-    <script src="../js/lib/plugins/ligerTab.js"></script>
-    <script src="../js/lib/jquery.cookie.js"></script>
-    <script src="../js/lib/json2.js"></script>
-    <script src="../js/lib/indexdata.js"></script>
+    <script src="../js/lib/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="../js/lib/jquery.cookie.js" type="text/javascript"></script>
+    <script src="../js/lib/json2.js" type="text/javascript"></script>
+    <script src="../js/lib/indexdata.js" type="text/javascript"></script>
     <script src="../js/lib/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="../js/lib/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="../js/lib/plugins/ligerCheckBox.js" type="text/javascript"></script>
@@ -21,9 +21,9 @@
     <script src="../js/lib/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../js/lib/plugins/ligerPopupEdit.js" type="text/javascript"></script>
     <script src="../js/lib/plugins/ligerResizable.js" type="text/javascript"></script>
-    <script src="../js/showLhb.js"></script>
-    <script src="../js/showZtsj.js"></script>
-    <script src="../js/spmm.js"></script>
+    <script src="../js/showLhb.js" type="text/javascript"></script>
+    <script src="../js/showZtsj.js" type="text/javascript"></script>
+    <script src="../js/spmm.js" type="text/javascript"></script>
 </head>
 <script type="text/javascript">
     /*<![CDATA[*/
@@ -49,6 +49,9 @@
                 console.log("onAfterAddTabItem:",tabdata)
                 tabItems.push(tabdata);
                 saveTabStatus();
+                console.log(tabdata.url);
+                var tabid = tabdata.tabid;
+                eval(tabdata.url);
             },
             onAfterRemoveTabItem: function (tabid)
             {
@@ -147,9 +150,10 @@
         tab.addTabItem({
             tabid: tabid,
             text: text,
-            url: url,
+             url: url,
             callback: function ()
             {
+
                 // addShowCodeBtn(tabid);
                 addFrameSkinLink(tabid);
             }
@@ -182,11 +186,11 @@
     }
     function addFrameSkinLink(tabid)
     {
-        var prevHref = getLinkPrevHref(tabid) || "";
+        // var prevHref = getLinkPrevHref(tabid) || "";
         var skin = getQueryString("skin");
         if (!skin) return;
         skin = skin.toLowerCase();
-        attachLinkToFrame(tabid, prevHref );
+        // attachLinkToFrame(tabid, prevHref );
     }
     function pages_init()
     {
@@ -197,7 +201,7 @@
             var tabitems = JSON2.parse(tabJson);
             for (var i = 0; tabitems && tabitems[i];i++)
             {
-                f_addTab2(tabitems[i].tabid, tabitems[i].text, tabitems[i].url);
+                f_addTab(tabitems[i].tabid, tabitems[i].text, tabitems[i].url);
             }
         }
     }

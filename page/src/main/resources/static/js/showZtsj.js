@@ -1,7 +1,7 @@
 var $grid;
 
 function showZtsj(tabid) {
-    // console.log(tabid);
+    console.log(tabid);
     var rootDiv = $('<div>', {'id': 'ztsj' + tabid, 'class': 'l-tab-content-item'});
     var lhbDiv = $('<div>', {'class': 'l-tab-content-item'});
     var clearDiv = $('<div>', {'class': 'l-clear'});
@@ -9,8 +9,8 @@ function showZtsj(tabid) {
     lhbDiv.prepend(clearDiv);
     lhbDiv.append(maingridDiv);
     rootDiv.append(lhbDiv);
-
-    $("div[tabid='" + tabid + "']").append(rootDiv);
+    $("div[tabid='"+tabid+"']").append(rootDiv);
+    console.log($("div[tabid='"+tabid+"']"));
     var gnData;
     $.ajax({
         type: 'GET',
@@ -18,7 +18,7 @@ function showZtsj(tabid) {
         url: '/ztgn',
         success: function (data) {
             gnData = JSON.parse(data);
-            console.log(gnData);
+            // console.log(gnData);
         }
     });
 
@@ -28,7 +28,7 @@ function showZtsj(tabid) {
         url: '/ztsj',
         success: function (data) {
             var resultData = JSON.parse(data);
-            // console.log(resultData);
+            console.log(resultData);
             $grid = $("#maingrid").ligerGrid({
                 height: '95%',
                 columns: [

@@ -673,12 +673,12 @@
             var g = this, p = this.options;
             var contentitem = $(".l-tab-content-item[tabid=" + tabid + "]", g.tab.content);
             var iframeloading = $(".l-tab-loading:first", contentitem);
-            var iframe = $(".l-tab-content-item[tabid=" + tabid + "] iframe", g.tab.content); 
+            var iframe = $(".l-tab-content-item[tabid=" + tabid + "] iframe", g.tab.content);
             iframeloading.show();
             iframe.attr("src", url).unbind('load.tab').bind('load.tab', function ()
             {
                 iframeloading.hide();
-            }); 
+            });
         },
 
        
@@ -705,7 +705,7 @@
                 return;
             }
             var tabitem = $("<li><a></a><div class='l-tab-links-item-left'></div><div class='l-tab-links-item-right'></div><div class='l-tab-links-item-close'></div></li>");
-            var contentitem = $("<div class='l-tab-content-item'><div class='l-tab-loading' style='display:block;'></div><iframe frameborder='0'></iframe></div>");
+            var contentitem = $("<div class='l-tab-content-item'><div class='l-tab-loading' style='display:block;'></div></div>");
             var iframeloading = $("div:first", contentitem);
             var iframe = $("iframe:first", contentitem);
             if (g.makeFullHeight)
@@ -715,28 +715,30 @@
             }
             tabitem.attr("tabid", tabid);
             contentitem.attr("tabid", tabid); 
-            if (url)
-            {
-                iframe[0].tab = g;//增加iframe对tab对象的引用  
-                if (options.data)
-                {
-                    iframe[0].openerData = options.data;
-                }
-                iframe.attr("name", tabid)
-                 .attr("id", tabid)
-                 .attr("src", url)
-                 .bind('load.tab', function ()
-                 {
-                     iframeloading.hide();
-                     if (options.callback)
-                         options.callback();
-                 });
-            }
-            else
-            {
-                iframe.remove(); 
-                iframeloading.remove();
-            }
+            // if (url)
+            // {
+            //     iframe[0].tab = g;//增加iframe对tab对象的引用
+            //     if (options.data)
+            //     {
+            //         iframe[0].openerData = options.data;
+            //     }
+            //     iframe.attr("name", tabid)
+            //      .attr("id", tabid)
+            //      // .attr("src", url)
+            //      .bind('load.tab', function ()
+            //      {
+            //          iframeloading.hide();
+            //          if (options.callback)
+            //              options.callback();
+            //      });
+            //
+            // }
+            // else
+            // {
+            //     iframe.remove();
+            //     iframeloading.remove();
+            // }
+            console.log(options);
             if (content)
             {
                 contentitem.html(content);
@@ -748,7 +750,11 @@
                 contentitem.append(options.target);
                 if (options.callback)
                     options.callback();
+            }else{
+                if (options.callback)
+                    options.callback();
             }
+            iframeloading.remove();
             if (showClose == undefined) showClose = true;
             if (showClose == false) $(".l-tab-links-item-close", tabitem).remove();
             if (text == undefined) text = tabid;
@@ -761,7 +767,8 @@
             {
                 g.tab.links.ul.append(tabitem);
             }
-            g.tab.content.append(contentitem);
+            console.log(contentitem[0]);
+            g.tab.content.append(contentitem[0]);
             g.selectTabItem(tabid); 
             if (g.setTabButton())
             { 
