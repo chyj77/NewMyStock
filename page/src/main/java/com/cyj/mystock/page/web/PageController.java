@@ -1,5 +1,6 @@
 package com.cyj.mystock.page.web;
 
+import com.cyj.mystock.page.bean.SpmmBean;
 import com.cyj.mystock.page.bean.ZtsjBean;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -72,7 +73,22 @@ public class PageController {
 //        String providerMsg =restTemplate.postForEntity("http://SERVICE-INFO/ztsj/save",beanToJSON(ztsj).toJSONString(),String.class).getBody();
         return providerMsg;
     }
+    @RequestMapping(value = "/spmm/save", method = RequestMethod.POST)
+    @ResponseBody
+    public String spmmSave(@RequestBody SpmmBean bean) {
+        LOGGER.info("{}",bean);
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        headers.setContentType(type);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
 
+        JSONObject jsonObj = beanToJSON(bean);
+
+        HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
+        String providerMsg = restTemplate.postForObject("http://SERVICE-INFO/spmm/save", formEntity, String.class);
+//        String providerMsg =restTemplate.postForEntity("http://SERVICE-INFO/ztsj/save",beanToJSON(ztsj).toJSONString(),String.class).getBody();
+        return providerMsg;
+    }
     @RequestMapping("/ztsj/delete")
     @ResponseBody
     public String delete(HttpServletRequest request) {
@@ -80,6 +96,16 @@ public class PageController {
         Map map = new HashMap();
         map.put("recId",recId);
         String providerMsg = (String) restTemplate.getForEntity("http://SERVICE-INFO/ztsj/delete?recId={recId}",
+                String.class,map).getBody();
+        return providerMsg;
+    }
+    @RequestMapping("/spmm/delete")
+    @ResponseBody
+    public String spmmDelete(HttpServletRequest request) {
+        String recId = request.getParameter("recId");
+        Map map = new HashMap();
+        map.put("recId",recId);
+        String providerMsg = (String) restTemplate.getForEntity("http://SERVICE-INFO/spmm/delete?recId={recId}",
                 String.class,map).getBody();
         return providerMsg;
     }

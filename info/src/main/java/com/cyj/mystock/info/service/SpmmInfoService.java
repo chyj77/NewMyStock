@@ -76,6 +76,7 @@ public class SpmmInfoService {
         Set<String> set = redisUtil.range(stockKey);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("Rows", set);
+        jsonObject.put("Total",set.size());
         return jsonObject.toJSONString();
     }
 

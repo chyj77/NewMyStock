@@ -46,7 +46,7 @@
             caozuo,
             jiage,
             sl,
-            luoji,
+            luoji
         )
         values (
         #{rq},
@@ -60,29 +60,29 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.cyj.mystock.info.bean.SpmmBean" >
-        update ztsj
+        update shipancaozuo
         <set >
             recid = #{recid,jdbcType=INTEGER}
             <if test="rq != null" >
-               ， rq = #{rq,jdbcType=VARCHAR}
+               , rq = #{rq,jdbcType=VARCHAR}
             </if>
             <if test="code != null" >
-                ，code = #{code,jdbcType=VARCHAR}
+                ,code = #{code,jdbcType=VARCHAR}
             </if>
             <if test="name != null" >
-                ，name = #{name,jdbcType=VARCHAR}
+                ,name = #{name,jdbcType=VARCHAR}
             </if>
             <if test="caozuo != null" >
-               ， caozuo = #{caozuo,jdbcType=VARCHAR}
+                , caozuo = #{caozuo,jdbcType=VARCHAR}
             </if>
             <if test="jiage != null" >
-                jiage = #{jiage,jdbcType=VARCHAR}
+                ,jiage = #{jiage,jdbcType=VARCHAR}
             </if>
             <if test="sl != null" >
-               ， sl = #{sl,jdbcType=VARCHAR}
+                , sl = #{sl,jdbcType=VARCHAR}
             </if>
             <if test="luoji != null" >
-                ，luoji = #{luoji,jdbcType=VARCHAR}
+                ,luoji = #{luoji,jdbcType=VARCHAR}
             </if>
         </set>
         where recid = #{recid,jdbcType=INTEGER}

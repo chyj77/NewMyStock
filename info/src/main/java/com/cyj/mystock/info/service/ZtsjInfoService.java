@@ -79,7 +79,8 @@ public class ZtsjInfoService {
         } else {
             ztsjMapper.updateByPrimaryKeySelective(ztsj);
         }
-        setAll();
+//        setAll();
+        redisUtil.add(ztsjKey, beanToJSON(ztsj).toJSONString(), 0);
         LOGGER.info("保存涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
     public void delete(Long recId) throws Exception {
