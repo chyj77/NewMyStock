@@ -1,7 +1,7 @@
 var $grid;
 
 function showZtsj(tabid) {
-    console.log(tabid);
+    // console.log(tabid);
     var rootDiv = $('<div>', {'id': 'ztsj' + tabid, 'class': 'l-tab-content-item'});
     var lhbDiv = $('<div>', {'class': 'l-tab-content-item'});
     var clearDiv = $('<div>', {'class': 'l-clear'});
@@ -10,17 +10,17 @@ function showZtsj(tabid) {
     lhbDiv.append(maingridDiv);
     rootDiv.append(lhbDiv);
     $("div[tabid='"+tabid+"']").append(rootDiv);
-    console.log($("div[tabid='"+tabid+"']"));
-    var gnData;
-    $.ajax({
-        type: 'GET',
-        contentType: 'application/json',
-        url: '/ztgn',
-        success: function (data) {
-            gnData = JSON.parse(data);
-            // console.log(gnData);
-        }
-    });
+    // console.log($("div[tabid='"+tabid+"']"));
+    // var gnData;
+    // $.ajax({
+    //     type: 'GET',
+    //     contentType: 'application/json',
+    //     url: '/ztgn',
+    //     success: function (data) {
+    //         gnData = JSON.parse(data);
+    //         // console.log(gnData);
+    //     }
+    // });
 
     $.ajax({
         type: 'GET',
@@ -28,7 +28,7 @@ function showZtsj(tabid) {
         url: '/ztsj',
         success: function (data) {
             var resultData = JSON.parse(data);
-            console.log(resultData);
+            // console.log(resultData);
             $grid = $("#maingrid").ligerGrid({
                 height: '95%',
                 columns: [
@@ -58,7 +58,7 @@ function showZtsj(tabid) {
                                     {display: '涨停最多概念', name: 'ztzdgn', width: 200},
                                     {display: '累计', name: 'COUNTS', width: 200}
                                 ], usePager: true, isScroll: true, checkbox: false,
-                                data: gnData,
+                                url: "/ztgn",
                                 width: '95%'
                             },
                             condition: {
@@ -117,7 +117,7 @@ function showZtsj(tabid) {
 }
 
 function fresh() {
-    console.log("刷新");
+    // console.log("刷新");
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
@@ -125,12 +125,13 @@ function fresh() {
         success: function (data) {
             var resultData = JSON.parse(data);
             $grid.loadData(resultData);
-            console.log("刷新完成");
+            // console.log("刷新完成");
         }
     });
 }
 
 function itemclick(item) {
+
     if (item.text == '增加') {
         addNewRow();
     } else if (item.text == '删除') {
@@ -138,6 +139,7 @@ function itemclick(item) {
     } else if (item.text == '保存') {
         save();
     }
+
 }
 
 function deleteRow() {
@@ -158,6 +160,7 @@ function deleteRow() {
 }
 
 function addNewRow() {
+
     var manager = $("#maingrid").ligerGetGridManager();
     var row = manager.getRow(0);
     var rq = new Date().format("yyyy-MM-dd");
@@ -198,6 +201,7 @@ function getData() {
 }
 
 function save() {
+    $("#pageloading").show();
     var manager = $("#maingrid").ligerGetGridManager();
     var row = manager.getSelectedRow();
     // alert(JSON.stringify(row));
@@ -216,6 +220,7 @@ function save() {
             alert(data);
         }
     });
+    $("#pageloading").hide();
 }
 
 // e.value  e.text  e.data

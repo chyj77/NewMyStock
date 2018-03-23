@@ -98,7 +98,7 @@ function spmm(tabid) {
 }
 
 function spmmFresh() {
-    console.log("刷新");
+    // console.log("刷新");
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
@@ -377,7 +377,7 @@ function editSpmmRow() {
         }
     }
 }
-
+/*
 // e.value  e.text  e.data
 function f_onSelected(e) {
     if (!e.data || !e.data.length) return;
@@ -392,4 +392,5 @@ function f_onSelected(e) {
     var out = JSON.stringify(selected);
     $("#message").html('最后选择:' + out);
 }
+*/
 

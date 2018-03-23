@@ -738,7 +738,7 @@
             //     iframe.remove();
             //     iframeloading.remove();
             // }
-            console.log(options);
+            // console.log(options);
             if (content)
             {
                 contentitem.html(content);
@@ -767,7 +767,7 @@
             {
                 g.tab.links.ul.append(tabitem);
             }
-            console.log(contentitem[0]);
+            // console.log(contentitem[0]);
             g.tab.content.append(contentitem[0]);
             g.selectTabItem(tabid); 
             if (g.setTabButton())

@@ -31,6 +31,7 @@
     var accordion = null;
     var tree = null;
     var tabItems = [];
+
     $(function ()
     {
 
@@ -39,6 +40,8 @@
 
         var height = $(".l-layout-center").height();
 
+
+
         //Tab
         $("#framecenter").ligerTab({
             height: height,
@@ -46,10 +49,10 @@
             showSwitch: true,
             onAfterAddTabItem: function (tabdata)
             {
-                console.log("onAfterAddTabItem:",tabdata)
+                // console.log("onAfterAddTabItem:",tabdata)
                 tabItems.push(tabdata);
                 saveTabStatus();
-                console.log(tabdata.url);
+                // console.log(tabdata.url);
                 var tabid = tabdata.tabid;
                 eval(tabdata.url);
             },
@@ -195,7 +198,7 @@
     function pages_init()
     {
         var tabJson = $.cookie('liger-home-tab');
-        console.log("tabJson:",tabJson);
+        // console.log("tabJson:",tabJson);
         if (tabJson)
         {
             var tabitems = JSON2.parse(tabJson);
@@ -207,7 +210,7 @@
     }
     function saveTabStatus()
     {
-        console.log(tabItems);
+        // console.log(tabItems);
         $.cookie('liger-home-tab', JSON2.stringify(tabItems));
     }
     function getQueryString(name)
