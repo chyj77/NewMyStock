@@ -1,16 +1,21 @@
 package com.cyj.mystock.info.service;
 
+import com.cyj.mystock.info.bean.ZtsjBean;
+import com.cyj.mystock.info.utils.MyStringUtils;
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unchecked")
 @Component
 public class RedisUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisUtil.class);
+
     @SuppressWarnings("rawtypes")
     @Autowired
     private RedisTemplate redisTemplate;
@@ -178,6 +186,7 @@ public class RedisUtil {
         return result;
     }
     public boolean add(Object key , Object value,double d){
+//        Date date1 = new Date();
         boolean result = false;
         try {
             redisTemplate.opsForZSet().add(key,value,d);
@@ -185,6 +194,7 @@ public class RedisUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+//        LOGGER.info("保存redis数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
         return result;
     }
     public Set range(Object key){
@@ -196,4 +206,50 @@ public class RedisUtil {
         }
         return result;
     }
+
+    public Object pipelineSet(String key,List<Object> list){
+        RedisCallback<List<Object>> pipelineCallback = new RedisCallback<List<Object>>() {
+            @Override
+            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.openPipeline();
+                byte[] rawKey = redisTemplate.getKeySerializer().serialize(key);
+                if (list != null && list.size() > 0) {
+                    double d = 0;
+                    for (Object bean : list) {
+                        JSONObject jsonObject = MyStringUtils.beanToJSON(bean);
+                        byte[] v = redisTemplate.getValueSerializer().serialize(jsonObject.toJSONString());
+                        connection.zAdd(rawKey,d,v);
+                        d++;
+                    }
+                }
+                return connection.closePipeline();
+            }
+        };
+        return redisTemplate.execute(pipelineCallback);
+    }
+
+    public Object pipelineSet(String key1,String key2,List<Map> list){
+        //pipeline
+        RedisCallback<List<Object>> pipelineCallback = new RedisCallback<List<Object>>() {
+            @Override
+            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.openPipeline();
+                byte[] rawKey = redisTemplate.getKeySerializer().serialize(key1);
+                if (list != null && list.size() > 0) {
+                    double d = 0;
+                    for (Map map : list) {
+                        Object o = map.get(key2);
+                        if(o!=null) {
+                            byte[] v = redisTemplate.getValueSerializer().serialize(JSONObject.toJSONString(map));
+                            connection.zAdd(rawKey,d,v);
+                            d++;
+                        }
+                    }
+                }
+                return connection.closePipeline();
+            }
+        };
+        return redisTemplate.execute(pipelineCallback);
+    }
+
 }

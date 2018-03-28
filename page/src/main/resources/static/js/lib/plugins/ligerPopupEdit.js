@@ -38,6 +38,7 @@
         valueField: 'id', //值字段
         textField: 'text',   //显示字段
         parms: null,
+        readOnly:true,
         onSelect: null,    //选择事件,可阻止
         onSelected: null,  //选择后事件
         valueFieldCssClass: null,
@@ -72,7 +73,7 @@
             //文本框初始化
             if (this.element.tagName.toLowerCase() == "input")
             {
-                this.element.readOnly = true;
+                this.element.readOnly = p.readOnly;
                 g.inputText = $(this.element);
                 g.textFieldID = this.element.id;
             }

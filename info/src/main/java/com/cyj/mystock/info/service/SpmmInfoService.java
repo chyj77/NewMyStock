@@ -1,15 +1,20 @@
 package com.cyj.mystock.info.service;
 
+import com.cyj.mystock.info.bean.FollowStockBean;
 import com.cyj.mystock.info.bean.SpmmBean;
 import com.cyj.mystock.info.bean.ZtsjBean;
 import com.cyj.mystock.info.mapper.SpmmMapper;
 import com.cyj.mystock.info.mapper.ZtsjMapper;
+import com.cyj.mystock.info.utils.MyStringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -22,6 +27,8 @@ public class SpmmInfoService {
     @Autowired
     private SpmmMapper spmmMapper;
     @Autowired
+    private FollowStockService followStockService;
+    @Autowired
     private RedisUtil redisUtil;
 
     final String ljkey = "luoji";
@@ -29,18 +36,15 @@ public class SpmmInfoService {
     final String stockKey = "stock";
 
     public void setLuoji() {
-        List<Map> list = spmmMapper.getLuoji();
+        Date date1 = new Date();
         redisUtil.remove(ljkey);
-        if (list != null && list.size() > 0) {
-            double d = 0;
-            for (Map map : list) {
-                Object o = map.get("luoji");
-                if(o!=null) {
-                    redisUtil.add(ljkey, JSONObject.toJSONString(map), d);
-                    d++;
-                }
-            }
-        }
+        LOGGER.info("删除买卖逻辑耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        date1 = new Date();
+        List<Map> list = spmmMapper.getLuoji();
+        String key2= "luoji";
+        redisUtil.pipelineSet(ljkey,key2,list);
+        LOGGER.info("保存买卖逻辑概念耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+
     }
 
     public String getLuoji() {
@@ -58,18 +62,15 @@ public class SpmmInfoService {
         return jsonArray.toJSONString();
     }
     public void setStock() {
-        List<Map> list = spmmMapper.getStock();
+        Date date1 = new Date();
         redisUtil.remove(stockKey);
-        if (list != null && list.size() > 0) {
-            double d = 0;
-            for (Map map : list) {
-                Object o = map.get("stockcode");
-                if(o!=null) {
-                    redisUtil.add(stockKey, JSONObject.toJSONString(map), d);
-                    d++;
-                }
-            }
-        }
+        LOGGER.info("删除股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        date1 = new Date();
+        List<Map> list = spmmMapper.getStock();
+        String key2= "stockcode";
+        redisUtil.pipelineSet(stockKey,key2,list);
+        LOGGER.info("保存股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+
     }
 
     public String getStock() {
@@ -86,7 +87,7 @@ public class SpmmInfoService {
         JSONArray jsonArray = new JSONArray();
         if(list!=null && list.size()>0){
             for(SpmmBean bean:list){
-                JSONObject jsonObject = beanToJSON(bean);
+                JSONObject jsonObject = MyStringUtils.beanToJSON(bean);
                 jsonArray.add(jsonObject);
             }
         }
@@ -100,6 +101,13 @@ public class SpmmInfoService {
         Date date1 = new Date();
         if (bean.getRecid() == null) {
             spmmMapper.insert(bean);
+            if(!followStockService.isExist(bean.getCode())){
+                FollowStockBean followStockBean = new FollowStockBean();
+                followStockBean.setFollowPrice(bean.getJiage());
+                followStockBean.setStockcode(bean.getCode());
+                followStockBean.setFollowDate(bean.getRq());
+                followStockService.save(followStockBean);
+            }
         } else {
             spmmMapper.updateByPrimaryKeySelective(bean);
         }
@@ -111,19 +119,5 @@ public class SpmmInfoService {
         LOGGER.info("删除实盘买卖数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
 
-    private JSONObject beanToJSON(Object obj) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            Field[] declaredFields = obj.getClass().getDeclaredFields();
-            for (Field field : declaredFields) {
-                field.setAccessible(true);
-                Object o = field.get(obj) == null ? "" : field.get(obj);
-                jsonObject.put(field.getName(), o);
-            }
-        } catch (Exception e) {
-            LOGGER.error("", e);
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
+
 }

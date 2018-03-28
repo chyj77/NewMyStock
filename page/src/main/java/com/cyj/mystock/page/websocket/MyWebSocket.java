@@ -78,8 +78,11 @@ public class MyWebSocket {
 
 
      public void sendMessage(String message) throws IOException {
-     this.session.getBasicRemote().sendText(message);
-     //this.session.getAsyncRemote().sendText(message);
+         if(this.session!=null) {
+             LOGGER.info("websocket推送消息 {}" , message);
+             this.session.getBasicRemote().sendText(message);
+             //this.session.getAsyncRemote().sendText(message);
+         }
      }
 
 

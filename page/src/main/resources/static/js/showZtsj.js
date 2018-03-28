@@ -52,7 +52,7 @@ function showZtsj(tabid) {
                         display: '涨停最多概念',
                         name: 'ztzdgn', minWidth: 90, textField: 'ztzdgn',
                         editor: {
-                            type: 'popup', valueField: 'ztzdgn', textField: 'ztzdgn',
+                            type: 'popup', valueField: 'ztzdgn', textField: 'ztzdgn',readOnly:false,
                             grid: {
                                 columns: [
                                     {display: '涨停最多概念', name: 'ztzdgn', width: 200},

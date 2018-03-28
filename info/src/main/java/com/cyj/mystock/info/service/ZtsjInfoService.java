@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonSimpleJsonParser;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -29,19 +32,16 @@ public class ZtsjInfoService {
     final String ztsjKey = "ztsj";
 
     public void setZtgn() {
-
-        List<Map> list = ztsjMapper.getZtgn();
+        Date date1 = new Date();
         redisUtil.remove(gnkey);
-        if (list != null && list.size() > 0) {
-            double d = 0;
-            for (Map map : list) {
-                Object o = map.get("ztzdgn");
-                if(o!=null) {
-                    redisUtil.add(gnkey, JSONObject.toJSONString(map), d);
-                    d++;
-                }
-            }
-        }
+        LOGGER.info("删除redis涨停概念耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        date1 = new Date();
+        List<Map> list = ztsjMapper.getZtgn();
+        String key2= "ztzdgn";
+        redisUtil.pipelineSet(gnkey,key2,list);
+
+        LOGGER.info("保存redis涨停概念耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+
     }
 
     public String getZtgn() {
@@ -52,16 +52,24 @@ public class ZtsjInfoService {
     }
 
     public void setAll() {
+        Date date1 = new Date();
         redisUtil.remove(ztsjKey);
-        List<ZtsjBean> list = ztsjMapper.getAll();
-        if (list != null && list.size() > 0) {
-            double d = 0;
-            for (ZtsjBean bean : list) {
-                JSONObject jsonObject = beanToJSON(bean);
-                redisUtil.add(ztsjKey, jsonObject.toJSONString(), d);
-                d++;
-            }
-        }
+        LOGGER.info("删除redis涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        date1 = new Date();
+        final List list = ztsjMapper.getAll();
+        //pipeline
+        redisUtil.pipelineSet(ztsjKey,list);
+
+        LOGGER.info("保存redis涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+//        if (list != null && list.size() > 0) {
+//            double d = 0;
+//            for (ZtsjBean bean : list) {
+//                JSONObject jsonObject = beanToJSON(bean);
+//                redisUtil.add(ztsjKey, jsonObject.toJSONString(), d);
+//                d++;
+//            }
+//            LOGGER.info("保存redis涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+//        }
     }
 
     public String getAll() {
@@ -86,23 +94,10 @@ public class ZtsjInfoService {
     public void delete(Long recId) throws Exception {
         Date date1 = new Date();
         ztsjMapper.deleteByPrimaryKey(recId);
-        setAll();
         LOGGER.info("删除涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        date1 = new Date();
+        setAll();
+        LOGGER.info("重置涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
 
-    private JSONObject beanToJSON(Object obj) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            Field[] declaredFields = obj.getClass().getDeclaredFields();
-            for (Field field : declaredFields) {
-                field.setAccessible(true);
-                Object o = field.get(obj) == null ? "" : field.get(obj);
-                jsonObject.put(field.getName(), o);
-            }
-        } catch (Exception e) {
-            LOGGER.error("", e);
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
 }

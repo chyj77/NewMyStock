@@ -30,7 +30,7 @@
     </select>
 
     <select id="getStock" resultType="java.util.Map">
-        SELECT stockcode,stockname,hangye
+        SELECT stockcode,stockname,hangye,ifnull(tag,'') tag
           FROM dict_stock
     </select>
 

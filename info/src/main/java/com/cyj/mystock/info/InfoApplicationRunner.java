@@ -1,6 +1,7 @@
 package com.cyj.mystock.info;
 
 
+import com.cyj.mystock.info.service.FollowStockService;
 import com.cyj.mystock.info.service.SpmmInfoService;
 import com.cyj.mystock.info.service.ZtsjInfoService;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class InfoApplicationRunner implements ApplicationRunner {
     private ZtsjInfoService ztsjInfoService;
     @Autowired
     private SpmmInfoService spmmInfoService;
+    @Autowired
+    private FollowStockService followStockService;
 
     @Override
     public void run(ApplicationArguments var1) throws Exception{
@@ -33,5 +36,6 @@ public class InfoApplicationRunner implements ApplicationRunner {
         ztsjInfoService.setAll();
         spmmInfoService.setLuoji();
         spmmInfoService.setStock();
+        followStockService.setRedisData();
     }
 }

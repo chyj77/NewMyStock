@@ -1,7 +1,15 @@
 package com.cyj.mystock.page.web;
 
+import com.cyj.mystock.page.bean.FollowStockBean;
 import com.cyj.mystock.page.bean.SpmmBean;
 import com.cyj.mystock.page.bean.ZtsjBean;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +18,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -130,6 +141,75 @@ public class PageController {
                 String.class).getBody();
         return providerMsg;
     }
+    @RequestMapping("/ccgp")
+    @ResponseBody
+    public String ccgp() {
+        String providerMsg = restTemplate.getForEntity("http://SERVICE-INFO/followStock",
+                String.class).getBody();
+        return providerMsg;
+    }
+    @RequestMapping("/ccgp/delete")
+    @ResponseBody
+    public String ccgpDelete(HttpServletRequest request) {
+        String recId = request.getParameter("recId");
+        Map map = new HashMap();
+        map.put("recId",recId);
+        String providerMsg = (String) restTemplate.getForEntity("http://SERVICE-INFO/followStock/delete?recId={recId}",
+                String.class,map).getBody();
+        return providerMsg;
+    }
+    @RequestMapping(value = "/ccgp/save", method = RequestMethod.POST)
+    @ResponseBody
+    public String ccgpSave(@RequestBody FollowStockBean bean) {
+        LOGGER.info("{}",bean);
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        headers.setContentType(type);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
+
+        JSONObject jsonObj = beanToJSON(bean);
+
+        HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
+        String providerMsg = restTemplate.postForObject("http://SERVICE-INFO/followStock/save", formEntity, String.class);
+//        String providerMsg =restTemplate.postForEntity("http://SERVICE-INFO/ztsj/save",beanToJSON(ztsj).toJSONString(),String.class).getBody();
+        return providerMsg;
+    }
+
+    @RequestMapping("/ccgp/getStock")
+    @ResponseBody
+    public String ccgpGetStock(HttpServletRequest request) {
+        String stockcode = request.getParameter("stockcode");
+        String URL = "http://hq.sinajs.cn/list=";
+        StringBuffer sb = new StringBuffer();
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        if (stockcode.startsWith("00") || stockcode.startsWith("30")) {
+            sb.append("sz");
+        } else {
+            sb.append("sh");
+        }
+        sb.append(stockcode);
+        String getUrl = URL + sb.toString();
+        HttpGet httpGet = new HttpGet(getUrl);
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(30000).setConnectTimeout(15000)
+                .setConnectionRequestTimeout(30000).build();
+        httpGet.setConfig(requestConfig);
+        CloseableHttpResponse response = null;
+        String providerMsg="";
+        try {
+            response = httpclient.execute(httpGet);
+        org.apache.http.Header[] headers = response.getHeaders("Content-Type");
+        String content = EntityUtils.toString(response.getEntity());
+
+        if (StringUtils.isNotBlank(content)) {
+            String[] stockhqstrs = content.split(",");
+            providerMsg = stockhqstrs[3].trim();
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return providerMsg;
+    }
+
     @RequestMapping("/")
     public String index(HashMap<String, Object> map) {
         map.put("hello", "欢迎进入HTML页面");

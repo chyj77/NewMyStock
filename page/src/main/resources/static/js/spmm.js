@@ -1,7 +1,7 @@
 var $grid;
 var win1;
 // var ljData;
-var  stockData;
+// var  stockData;
 function spmm(tabid) {
     // console.log(tabid);
     win1 = $.ligerDialog.open({ title:"实盘买卖",url:"", width: 600,height:400,modal:true });
@@ -25,15 +25,15 @@ function spmm(tabid) {
     //         console.log(ljData);
     //     }
     // });
-    $.ajax({
-        type: 'GET',
-        contentType: 'application/json',
-        url: '/spmm/stocks',
-        success: function (data) {
-            stockData = JSON.parse(data);
-            console.log(stockData);
-        }
-    });
+    // $.ajax({
+    //     type: 'GET',
+    //     contentType: 'application/json',
+    //     url: '/spmm/stocks',
+    //     success: function (data) {
+    //         stockData = JSON.parse(data);
+    //         console.log(stockData);
+    //     }
+    // });
 
     $.ajax({
         type: 'GET',
@@ -277,7 +277,8 @@ function getGridOptions(checkbox) {
         columns: [
             { display: '股票代码', name: 'stockcode', align: 'right', width: 150, minWidth: 120 },
             { display: '股票名称', name: 'stockname',align: 'center', minWidth: 120, width: 150 },
-            { display: '行业', name: 'hangye',align: 'center', minWidth: 120, width: 150 }
+            { display: '行业', name: 'hangye',align: 'center', minWidth: 120, width: 150 },
+            { display: '标签', name: 'tag',align: 'center', minWidth: 120, width: 150 }
         ],
         switchPageSizeApplyComboBox: false,
         data:stockData,

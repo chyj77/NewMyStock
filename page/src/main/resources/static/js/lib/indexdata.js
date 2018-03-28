@@ -56,8 +56,12 @@ function indexdata() {
                         {
                             return;
                         }
-
-                        var tabid = node.data.menuId;
+                        var tabid ="";
+                        if(node.data.menuId==4){
+                            var tabid ="home";
+                        }else {
+                            tabid = node.data.menuId;
+                        }
                         if (!tabid)
                         {
                             tabid = jsonstr[i].menuId;
@@ -91,7 +95,8 @@ websocket.onopen = function(event){
 
 //接收到消息的回调方法
 websocket.onmessage = function(event){
-    console.log(event.data);
+    // console.log(event.data);
+    editCcgp(event.data);
 }
 
 //连接关闭的回调方法

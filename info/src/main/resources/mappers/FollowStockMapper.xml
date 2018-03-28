@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.cyj.mystock.info.mapper.FollowStockMapper" >
+
+    <resultMap id="BaseResultMap" type="com.cyj.mystock.info.bean.FollowStockBean" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="stockcode" property="stockcode" jdbcType="VARCHAR" />
+        <result column="stockname" property="stockname" jdbcType="VARCHAR" />
+        <result column="follow_price" property="followPrice" jdbcType="VARCHAR" />
+        <result column="follow_date" property="followDate" jdbcType="VARCHAR"/>
+        <result column="now_price" property="nowPrice" jdbcType="VARCHAR"/>
+        <result column="date_diff" property="dateDiff" jdbcType="VARCHAR"/>
+        <result column="ramarks" property="ramarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT a.id AS id,a.stockcode AS stockcode,b.stockname AS stockname,
+				a.follow_price AS follow_price,a.follow_date AS follow_date,a.now_price AS now_price,
+				concat(b.hangye,';',b.tag) as ramarks
+				FROM followstock a join dict_stock b on a.stockcode = b.stockcode
+        ORDER BY follow_date desc, stockcode ASC
+    </select>
+
+    <select id="getByStockCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+          a.*
+        FROM followstock a where a.stockcode= #{0} limit 1
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from followstock
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.cyj.mystock.info.bean.FollowStockBean" >
+        insert into followstock (
+            stockcode,
+            follow_price,
+            follow_date
+        )
+        values (
+        #{stockcode},
+        #{followPrice},
+        #{followDate}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.cyj.mystock.info.bean.FollowStockBean" >
+        update followstock
+        <set >
+            now_price = #{nowPrice,jdbcType=VARCHAR}
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!--
+    <insert id="insertSelective" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        insert into appuser_message
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="message != null" >
+                message,
+            </if>
+            <if test="senddate != null" >
+                senddate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null" >
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="senddate != null" >
+                #{senddate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
+        update appuser_message
+        set message = #{message,jdbcType=VARCHAR},
+        senddate = #{senddate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getMessById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        id, message, senddate
+        from
+        appuser_message
+        where id = #{id,jdbcType=VARCHAR}
+        order by senddate asc
+    </select>
+    -->
+</mapper>

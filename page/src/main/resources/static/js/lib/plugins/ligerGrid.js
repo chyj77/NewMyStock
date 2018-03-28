@@ -1536,6 +1536,7 @@
             if (rowdata[p.statusName] != 'add')
                 rowdata[p.statusName] = 'update';
             g.reRender.ligerDefer(g, 10, [{ rowdata: rowdata }]);
+            // console.log(rowdata);
             return rowdata;
         },
         setCellEditing: function (rowdata, column, editing)
