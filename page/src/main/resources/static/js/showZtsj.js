@@ -79,15 +79,69 @@ function showZtsj(tabid) {
                     },
                     {
                         display: '打板次日高开率',
-                        name: 'dbcrgkl', minWidth: 90, editor: {type: 'float'}
+                        name: 'dbcrgkl', minWidth: 90, editor: {type: 'float'},render:function (item) {
+                            try {
+                                var indexOf = item.dbcrgkl.indexOf("%");
+                            } catch (e) {
+                                // console.log(e);
+                                indexOf = -1;
+                            }
+                            if (indexOf == -1) {
+                                // console.log(item.spcgl);
+                                if (parseFloat(item.dbcrgkl) > 1) {
+                                    var bzl = parseFloat(item.dbcrgkl) / 100;
+                                    item.dbcrgkl = bzl;
+                                    return item.dbcrgkl;
+                                }
+                            } else {
+                                return item.dbcrgkl;
+                            }
+
+                        }
                     },
                     {
                         display: '收盘成功率',
-                        name: 'spcgl', minWidth: 90, editor: {type: 'float'}
+                        name: 'spcgl', minWidth: 90, editor: {type: 'float'},render:function (item) {
+                            try {
+                                var indexOf = item.spcgl.indexOf("%");
+                            } catch (e) {
+                                // console.log(e);
+                                indexOf = -1;
+                            }
+                            if (indexOf == -1) {
+                                // console.log(item.spcgl);
+                                if (parseFloat(item.spcgl) > 1) {
+                                    var bzl = parseFloat(item.spcgl) / 100;
+                                    item.spcgl = bzl;
+                                    return item.spcgl;
+                                }
+                            } else {
+                                return item.spcgl;
+                            }
+
+                        }
                     },
                     {
                         display: '10点前涨停高开率',
-                        name: 'dqztgkl', minWidth: 90, editor: {type: 'float'}
+                        name: 'dqztgkl', minWidth: 90, editor: {type: 'float'},render:function (item) {
+                            try {
+                                var indexOf = item.dqztgkl.indexOf("%");
+                            } catch (e) {
+                                // console.log(e);
+                                indexOf = -1;
+                            }
+                            if (indexOf == -1) {
+                                // console.log(item.dqztgkl);
+                                if (parseFloat(item.dqztgkl) > 1) {
+                                    var bzl = parseFloat(item.dqztgkl) / 100;
+                                    item.dqztgkl = bzl;
+                                    return item.dqztgkl;
+                                }
+                            } else {
+                                return item.dqztgkl;
+                            }
+
+                        }
                     },
                     {
                         display: '被砸数量',
@@ -95,13 +149,60 @@ function showZtsj(tabid) {
                     },
                     {
                         display: '被砸率',
-                        name: 'bzl', editor: {type: 'float'}
+                        name: 'bzl', editor: {type: 'float'},render:function (item) {
+                            try {
+                                var indexOf = item.bzl.indexOf("%");
+                            } catch (e) {
+                                // console.log(e);
+                                indexOf = -1;
+                            }
+                                if (indexOf == -1) {
+                                    // console.log(item.bzl);
+                                    if (parseFloat(item.bzl) > 1) {
+                                        var bzl = parseFloat(item.bzl) / 100;
+                                        item.bzl = bzl;
+                                        return item.bzl;
+                                    }
+                                } else {
+                                    return item.bzl;
+                                }
+
+                        }
                     },
                     {
                         display: '',
                         name: 'recid', width: 10, hide: true
                     }
                 ], data: resultData, pageSize: 25, rownumbers: true, enabledEdit: true, onReload: fresh,
+                onEndEdit:function (item) {
+                    console.log(item);
+                    if(item.column.name=='ztzdgn')
+                        item.record.ztzdgn = item.text;
+                    if(item.column.name=='bzl') {
+                        item.record.bzl = item.value;
+                        item.record.dqztgkl = item.record.dqztgkl ;
+                        item.record.spcgl = item.record.spcgl;
+                        item.record.dbcrgkl = item.record.dbcrgkl;
+                    }
+                    if(item.column.name=='dqztgkl') {
+                        item.record.bzl = item.record.bzl;
+                        item.record.dqztgkl = item.value;
+                        item.record.spcgl = item.record.spcgl;
+                        item.record.dbcrgkl = item.record.dbcrgkl;
+                    }
+                    if(item.column.name=='spcgl') {
+                        item.record.bzl = item.record.bzl;
+                        item.record.dqztgkl = item.record.dqztgkl;
+                        item.record.spcgl = item.value;
+                        item.record.dbcrgkl = item.record.dbcrgkl;
+                    }
+                    if(item.column.name=='dbcrgkl') {
+                        item.record.bzl = item.record.bzl;
+                        item.record.dqztgkl = item.record.dqztgkl;
+                        item.record.spcgl = item.record.spcgl;
+                        item.record.dbcrgkl =item.value;
+                    }
+                },
                 toolbar: {
                     items: [
                         {text: '增加', click: itemclick, icon: 'add'},
@@ -154,6 +255,7 @@ function deleteRow() {
         data: {'recId': recId},
         success: function (data) {
             alert(data);
+            fresh();
         }
     });
     manager.deleteSelectedRow();
@@ -218,6 +320,7 @@ function save() {
         data: JSON.stringify(row),
         success: function (data) {
             alert(data);
+            fresh();
         }
     });
     $("#pageloading").hide();

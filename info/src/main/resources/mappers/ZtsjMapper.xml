@@ -86,37 +86,37 @@
         <set >
             recid = #{recid,jdbcType=INTEGER}
             <if test="rq != null" >
-                ，rq = #{rq,jdbcType=VARCHAR}
+                ,rq = #{rq,jdbcType=VARCHAR}
             </if>
             <if test="mrztgs != null" >
-                ，mrztgs = #{mrztgs,jdbcType=VARCHAR}
+                ,mrztgs = #{mrztgs,jdbcType=VARCHAR}
             </if>
             <if test="fyzbgs != null" >
-                ，fyzbgs = #{fyzbgs,jdbcType=VARCHAR}
+               ,fyzbgs = #{fyzbgs,jdbcType=VARCHAR}
             </if>
             <if test="dqztgs != null" >
-                ，10dqztgs = #{dqztgs,jdbcType=VARCHAR}
+                ,10dqztgs = #{dqztgs,jdbcType=VARCHAR}
             </if>
             <if test="ztzdgn != null" >
-               ， ztzdgn = #{ztzdgn,jdbcType=VARCHAR}
+               ,ztzdgn = #{ztzdgn,jdbcType=VARCHAR}
             </if>
             <if test="ztzdgs != null" >
-               ， ztzdgs = #{ztzdgs,jdbcType=VARCHAR}
+               ,ztzdgs = #{ztzdgs,jdbcType=VARCHAR}
             </if>
             <if test="dbcrgkl != null" >
-                ，dbcrgkl = #{dbcrgkl,jdbcType=VARCHAR}
+                ,dbcrgkl = #{dbcrgkl,jdbcType=VARCHAR}
             </if>
             <if test="spcgl != null" >
-               ， spcgl = #{spcgl,jdbcType=VARCHAR}
+               ,spcgl = #{spcgl,jdbcType=VARCHAR}
             </if>
             <if test="dqztgkl != null" >
-                ，10dqztgkl = #{dqztgkl,jdbcType=VARCHAR}
+                ,10dqztgkl = #{dqztgkl,jdbcType=VARCHAR}
             </if>
             <if test="bzsl != null" >
-                ，bzsl = #{bzsl,jdbcType=VARCHAR}
+                ,bzsl = #{bzsl,jdbcType=VARCHAR}
             </if>
             <if test="bzl != null" >
-                ，bzl = #{bzl,jdbcType=VARCHAR}
+                ,bzl = #{bzl,jdbcType=VARCHAR}
             </if>
         </set>
         where recid = #{recid,jdbcType=INTEGER}
