@@ -38,8 +38,6 @@ public class GetStockStartJob {
     @Autowired
     private QueueSender queueSender;
 
-
-
     private Timer timer = new Timer(true);
 
     private boolean flag = true;
