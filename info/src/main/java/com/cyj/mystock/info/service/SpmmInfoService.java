@@ -8,6 +8,7 @@ import com.cyj.mystock.info.mapper.ZtsjMapper;
 import com.cyj.mystock.info.utils.MyStringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,5 +120,22 @@ public class SpmmInfoService {
         LOGGER.info("删除实盘买卖数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
 
+    public String querySpmmFx() throws Exception{
+        Date date1 = new Date();
+        List<Map> list = spmmMapper.querySpmmFx();
+        LOGGER.info("查找实盘分析数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        JSONArray jsonArray = new JSONArray();
+        if(list!=null && list.size()>0){
+            for(Map map:list){
+                JSONObject jsonObject1 = ((JSONObject) (new JSONParser().parse(JSONObject.toJSONString(map))));
+                jsonArray.add(jsonObject1);
+            }
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Rows", jsonArray);
+        jsonObject.put("Total",list.size());
+        LOGGER.info("转换实盘分析数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        return jsonObject.toJSONString();
+    }
 
 }

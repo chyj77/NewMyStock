@@ -30,8 +30,18 @@
     </select>
 
     <select id="getStock" resultType="java.util.Map">
-        SELECT stockcode,stockname,hangye,ifnull(tag,'') tag
+        SELECT stockcode,stockname,ifnull(hangye,'') hangye,ifnull(tag,'') tag,ifnull(marketTime,'') marketTime,
+        ifnull(totalNum,'') totalNum, ifnull(floatNum,'') floatNum
           FROM dict_stock
+    </select>
+
+    <select id="querySpmmFx"  resultType="java.util.Map">
+        SELECT shipancaozuo.code AS code,shipancaozuo.name AS name,sum(shipancaozuo.sl)*-1 AS sl,
+        sum(shipancaozuo.jiage*abs(shipancaozuo.sl)) AS ykje,
+        datediff((case sum(shipancaozuo.sl)  when 0 then max(rq) else now()  end) ,min(rq)) ccts
+        FROM shipancaozuo
+        group by code,name
+        ORDER BY sl desc,ykje desc
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >

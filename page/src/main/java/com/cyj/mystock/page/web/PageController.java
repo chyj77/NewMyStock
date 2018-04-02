@@ -209,6 +209,35 @@ public class PageController {
         }
         return providerMsg;
     }
+    @RequestMapping("/gfjgd")
+    @ResponseBody
+    public String gfjgd() {
+        String providerMsg = restTemplate.getForEntity("http://SERVICE-INFO/gfjgd",
+                String.class).getBody();
+        return providerMsg;
+    }
+    @RequestMapping("/gfjgd/fx")
+    @ResponseBody
+    public String gfjgdFx() {
+        String providerMsg = restTemplate.getForEntity("http://SERVICE-INFO/gfjgd/fx",
+                String.class).getBody();
+        return providerMsg;
+    }
+    @RequestMapping("/spmm/fx")
+    @ResponseBody
+    public String spmmFx() {
+        String providerMsg = restTemplate.getForEntity("http://SERVICE-INFO/spmm/fx",
+                String.class).getBody();
+        return providerMsg;
+    }
+
+    @RequestMapping("/ztsj/fx")
+    @ResponseBody
+    public String ztsjFx() {
+        String providerMsg = restTemplate.getForEntity("http://SERVICE-INFO/ztsj/fx",
+                String.class).getBody();
+        return providerMsg;
+    }
 
     @RequestMapping("/")
     public String index(HashMap<String, Object> map) {

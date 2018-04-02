@@ -17,4 +17,6 @@ public interface FollowStockMapper {
     void insert(FollowStockBean bean);
 
     void updateByPrimaryKeySelective(FollowStockBean bean);
+
+
 }

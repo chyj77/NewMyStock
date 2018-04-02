@@ -9,6 +9,8 @@ public interface ZtsjMapper {
 
     List<ZtsjBean> getAll();
 
+    ZtsjBean getZtsjfx();
+
     List<Map> getZtgn();
 
     void deleteByPrimaryKey(Long recId);

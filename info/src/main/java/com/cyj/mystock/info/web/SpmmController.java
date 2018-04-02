@@ -83,6 +83,15 @@ public class SpmmController {
         }
         return  providerMsg;
     }
+
+    @RequestMapping("/spmm/fx")
+    public String querySpmmFx() throws Exception {
+        ServiceInstance instance = serviceInstance();
+        LOGGER.info("provider service, host = " + instance.getHost()
+                + ", service_id = " + instance.getServiceId());
+        return  service.querySpmmFx();
+    }
+
     /**
      * 获取当前服务的服务实例
      *

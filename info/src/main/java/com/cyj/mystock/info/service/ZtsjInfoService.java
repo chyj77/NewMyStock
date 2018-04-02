@@ -2,20 +2,13 @@ package com.cyj.mystock.info.service;
 
 import com.cyj.mystock.info.bean.ZtsjBean;
 import com.cyj.mystock.info.mapper.ZtsjMapper;
-import org.json.simple.JSONArray;
+import com.cyj.mystock.info.utils.MyStringUtils;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JsonSimpleJsonParser;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 @Service
@@ -99,5 +92,20 @@ public class ZtsjInfoService {
         setAll();
         LOGGER.info("重置涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
+    public String getZtsjFx() {
+        Date date1 = new Date();
+        Set<String> set = redisUtil.range(ztsjKey);
+        LOGGER.info("获取redis涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        ZtsjBean bean = ztsjMapper.getZtsjfx();
+        LOGGER.info("获取mysql涨停统计数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 
+        JSONObject beanJson = MyStringUtils.beanToJSON(bean);
+        Set<String> set1 = new LinkedHashSet<String>();
+        set1.add(beanJson.toJSONString());
+        set1.addAll(set);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Rows", set1);
+        jsonObject.put("Total", set.size());
+        return jsonObject.toJSONString();
+    }
 }

@@ -89,14 +89,14 @@ public class GetStockJob {
                                     String[] stockhqstrs = content.split(",");
                                     String nowprice = stockhqstrs[3].trim();
                                     String rq = (String) rowsJson.get("followDate");
-                                    Date ccrq = sdf.parse(rq);
-                                    int ccday = daysBetween(ccrq, now);
-                                    rowsJson.replace("dateDiff",String.valueOf(ccday));
+//                                    Date ccrq = sdf.parse(rq);
+//                                    int ccday = daysBetween(ccrq, now);
+                                    rowsJson.replace("dateDiff","");
                                     rowsJson.replace("nowPrice",nowprice);
+                                    /*
                                     BigDecimal d_nowprice = new BigDecimal(0);
                                     BigDecimal d_buyprice = new BigDecimal(0);
                                     BigDecimal d_zdl = new BigDecimal(0);
-
                                     if (StringUtils.isNotBlank(nowprice)) {
                                         d_nowprice = new BigDecimal(nowprice);
                                     }
@@ -105,7 +105,8 @@ public class GetStockJob {
                                         d_buyprice = new BigDecimal(buyprice);
                                     }
                                     d_zdl = (d_nowprice.subtract(d_buyprice)).divide(d_buyprice, 3, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(3);
-                                    rowsJson.put("zdl",d_zdl);
+                                    */
+                                    rowsJson.put("zdl","");
                                     LOGGER.info("[CronJob Execute RealTime Data]:{}", rowsJson.toJSONString());
                                     if(flag){
                                         HttpHeaders headers = new HttpHeaders();

@@ -19,4 +19,6 @@ public interface SpmmMapper {
     void insert(SpmmBean bean);
 
     void updateByPrimaryKeySelective(SpmmBean bean);
+
+    List<Map> querySpmmFx();
 }

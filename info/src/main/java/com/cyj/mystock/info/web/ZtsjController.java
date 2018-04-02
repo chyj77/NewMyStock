@@ -40,6 +40,13 @@ public class ZtsjController {
                 + ", service_id = " + instance.getServiceId());
         return  service.getAll();
     }
+    @RequestMapping("/ztsj/fx")
+    public String ztsjFx() {
+        ServiceInstance instance = serviceInstance();
+        LOGGER.info("provider service, host = " + instance.getHost()
+                + ", service_id = " + instance.getServiceId());
+        return  service.getZtsjFx();
+    }
     @RequestMapping(value = "/ztsj/save", method = RequestMethod.POST)
     public String ztsjSave(@RequestBody ZtsjBean ztsj) {
         LOGGER.info("{}",ztsj);

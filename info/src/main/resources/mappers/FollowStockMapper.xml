@@ -28,6 +28,7 @@
         FROM followstock a where a.stockcode= #{0} limit 1
     </select>
 
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from followstock
         where id = #{id,jdbcType=INTEGER}
@@ -49,6 +50,9 @@
         update followstock
         <set >
             now_price = #{nowPrice,jdbcType=VARCHAR}
+            <if test="followPrice!=null">
+              ,follow_Price = #{followPrice,jdbcType=VARCHAR}
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>

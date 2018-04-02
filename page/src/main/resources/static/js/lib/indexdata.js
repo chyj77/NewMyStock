@@ -68,7 +68,7 @@ function indexdata() {
                             $(node.target).attr("tabid", tabid)
                         }
                         var menuEvent = node.data.menuUrl;
-                        console.log(menuEvent);
+                        // console.log(menuEvent);
                         f_addTab(tabid, node.data.menuName, menuEvent);
                     }
                 });

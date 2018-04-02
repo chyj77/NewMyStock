@@ -28,6 +28,20 @@
 							FROM ztsj
 							order by rq DESC
     </select>
+
+    <select id="getZtsjfx" resultMap="BaseResultMap">
+        SELECT count(ztsj.rq) AS rq,ROUND(sum(ztsj.mrztgs)/count(*),2) AS mrztgs,
+				ROUND(sum(ztsj.fyzbgs)/count(*),2) AS fyzbgs,
+				ROUND(sum(ztsj.10dqztgs)/count(*),2) AS 10dqztgs,
+				'' AS ztzdgn,ROUND(sum(ztsj.ztzdgs)/count(*),2) AS ztzdgs,
+				ROUND(sum(ztsj.dbcrgkl)/count(*)*100,2) AS dbcrgkl,
+				ROUND(sum(ztsj.spcgl)/count(*)*100,2) AS spcgl,'' as recid,
+				ROUND(sum(ztsj.10dqztgkl)/count(*)*100,2) AS 10dqztgkl,
+				ROUND(sum(ztsj.bzsl)/count(*),2) AS bzsl,
+				ROUND(sum(ztsj.bzl)/count(*)*100,2) AS bzl
+				FROM ztsj
+    </select>
+
     <select id="getZtgn" resultType="java.util.Map">
         SELECT DISTINCT ztzdgn ,COUNT(ztzdgn) COUNTS FROM ztsj
         group by ztzdgn

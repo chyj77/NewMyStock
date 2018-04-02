@@ -1,25 +1,34 @@
 var stockData;
-
-
+var win2;
+var resultData;
+$.ajax({
+    type: 'GET',
+    async:false,
+    contentType: 'application/json',
+    url: '/spmm/stocks',
+    success: function (data) {
+        stockData = JSON.parse(data);
+        // console.log(stockData);
+    }
+});
 function showCcgp(tabid) {
     // console.log(tabid);
+    win2 = $.ligerDialog.open({ title:"走势图",url:"", width: 1700,height:950,modal:true });
+    win2.hide();
     var rootDiv = $('<div>', {'id': 'ccgp' + tabid, 'class': 'l-tab-content-item'});
+    var secondSpan = $('<span>',{'id':'now1','style':'color: #0066ff;'});
+    rootDiv.append(secondSpan);
+    secondSpan.html(new Date().format("yyyy年MM月dd日 hh:mm:ss"));
     var lhbDiv = $('<div>', {'class': 'l-tab-content-item'});
     var clearDiv = $('<div>', {'class': 'l-clear'});
     var maingridDiv = $('<div>', {'id': 'maingridCcgp'});
     lhbDiv.prepend(clearDiv);
     lhbDiv.append(maingridDiv);
     rootDiv.append(lhbDiv);
-    $.ajax({
-        type: 'GET',
-        async:false,
-        contentType: 'application/json',
-        url: '/spmm/stocks',
-        success: function (data) {
-            stockData = JSON.parse(data);
-            // console.log(stockData);
-        }
-    });
+
+
+
+
     // console.log(stockData);
     $("div[tabid='" + tabid + "']").append(rootDiv);
 
@@ -29,7 +38,7 @@ function showCcgp(tabid) {
         url: '/ccgp',
         success: function (data) {
             // console.log(data);
-            var resultData = JSON.parse(data);
+            resultData = JSON.parse(data);
             // console.log(resultData);
             $("#maingridCcgp").ligerGrid({
                 height: '95%',
@@ -99,7 +108,12 @@ function showCcgp(tabid) {
                         name: 'nowPrice', minWidth: 90, editor: {type: 'float'},
                         render:function (item) {
                             // console.log(item.jiage);
-                            return Math.abs(parseFloat(item.nowPrice));
+                            var diffPrice = parseFloat(item.nowPrice) - parseFloat(item.followPrice);
+                            if (diffPrice>0){
+                                return '<span style="color:red">'+parseFloat(item.nowPrice).toFixed(2) + '</span>';
+                            }else{
+                                return '<span style="color:green">'+parseFloat(item.nowPrice).toFixed(2) + '</span>';
+                            }
                         }
                     },
                     {
@@ -107,10 +121,16 @@ function showCcgp(tabid) {
                         name: 'zdl', minWidth: 90, editor: {type: 'text'},
                         render:function (item) {
                             // console.log(item.jiage);
-                            if(item.zdl==undefined){
-                                return "";
-                            }else
-                                return item.zdl+"%";
+                                var followPrice = parseFloat(item.followPrice);
+                                var nowPrice = parseFloat(item.nowPrice);
+                                var diff = nowPrice-followPrice;
+                                var zdz  = (diff/followPrice)*100;
+                                // console.log(zdz);
+                                if(diff>0) {
+                                    return '<span style="color:red">'+zdz.toFixed(2) + '%</span>';
+                                }else {
+                                    return '<span style="color:green">'+zdz.toFixed(2) + '%</span>';
+                                }
                         }
                     },
                     {
@@ -119,7 +139,14 @@ function showCcgp(tabid) {
                     },
                     {
                         display: '已关注天数',
-                        name: 'dateDiff', minWidth: 90, editor: {type: 'text'}
+                        name: 'dateDiff', minWidth: 90, editor: {type: 'text'},
+                        render:function (item) {
+                            var date1 = new Date();
+                            var fDate=item.followDate.split(" ");
+                            var dateDiff =DateDiff(date1.format("yyyy-MM-dd"),fDate[0]);
+                            // console.log(dateDiff)
+                            return dateDiff;
+                        }
                     },
                     {
                         display: '',
@@ -133,14 +160,36 @@ function showCcgp(tabid) {
                         {line: true},
                         {text: '删除', click: delCcgpRow, icon: 'delete'},
                         {line: true},
-                        {text: '保存', click: saveCcgp, icon: 'save'}
+                        {text: '保存', click: saveCcgp, icon: 'save'},
+                        {line: true},
+                        {text: '走势图', click: showChart, icon: 'save'},
+                        {line: true}
                     ]
                 }
             });
         }
     });
 }
+function DateDiff(d1,d2){
+    var day = 24 * 60 * 60 *1000;
+    try{
+        var dateArr = d1.split("-");
+        var checkDate = new Date();
+        checkDate.setFullYear(dateArr[0], dateArr[1]-1, dateArr[2]);
+        var checkTime = checkDate.getTime();
 
+        var dateArr2 = d2.split("-");
+        var checkDate2 = new Date();
+        checkDate2.setFullYear(dateArr2[0], dateArr2[1]-1, dateArr2[2]);
+        // console.log(checkDate2);
+        var checkTime2 = checkDate2.getTime();
+
+        var cha = (checkTime - checkTime2)/day;
+        return cha;
+    }catch(e){
+        return false;
+    }
+}//end fun
 function ccgpFresh() {
     // console.log("刷新");
     $.ajax({
@@ -148,7 +197,7 @@ function ccgpFresh() {
         contentType: 'application/json',
         url: '/ccgp',
         success: function (data) {
-            var resultData = JSON.parse(data);
+            resultData = JSON.parse(data);
             var manager = $("#maingridCcgp").ligerGetGridManager();
             manager.loadData(resultData);
             // console.log("刷新完成");
@@ -221,9 +270,14 @@ function saveCcgp() {
     $("#pageloading").hide();
 }
 function editCcgp(params) {
+
     var manager = $("#maingridCcgp").ligerGetGridManager();
     try {
         var data = manager.getData();
+        $("#now1").html(new Date().format("yyyy年MM月dd日 hh:mm:ss"));
+        if($("#now").length > 0) {
+            $("#now").html(new Date().format("yyyy年MM月dd日 hh:mm:ss"));
+        }
         var param = JSON.parse(params);
         var stockcode = param["stockcode"];
         for (var rowData in data) {
@@ -245,5 +299,70 @@ function editCcgp(params) {
         }
     }catch (e){
         console.log(e);
+    }
+}
+function showChart() {
+    if(win2) {
+        win2.show();
+        var rootDiv = $(".l-dialog-content.l-dialog-content-noimage");
+        if($("#now").length== 0) {
+        var firstSpan = $('<span>',{'id':'now','style':'color: #0066ff;'});
+
+            rootDiv.append(firstSpan);
+            firstSpan.html(new Date().format("yyyy年MM月dd日 hh:mm:ss"));
+
+            var jqGridChart = $('<div>', {
+                'id': 'jqGridChart',
+                'style': 'float:left;padding-top:15px;padding-left:0px;margin: 0px; width: auto;position: relative; overflow: hidden;'
+            });
+            rootDiv.append(jqGridChart);
+            var shDiv = $('<div>', {'id': 'div_000001', 'style': 'float:left;padding: 0px;margin: 0px; width: auto'});
+            var shImage = $("<image id='chart_000001' class='imgMinChart' src=http://image.sinajs.cn/newchart/min/n/sh000001.gif/>");
+            shDiv.addClass('divChart');
+            shDiv.html(shImage);
+            jqGridChart.append(shDiv);
+            var szDiv = $('<div>', {'id': 'div_399001', 'style': 'float:left;padding: 0px;margin: 0px; width: auto'});
+            var szImage = $("<image id='chart_399001' class='imgMinChart' src=http://image.sinajs.cn/newchart/min/n/sz399001.gif/>");
+            szDiv.addClass('divChart');
+            szDiv.html(szImage);
+            jqGridChart.append(szDiv);
+            var cyDiv = $('<div>', {'id': 'div_399006', 'style': 'float:left;padding: 0px;margin: 0px; width: auto'});
+            var cyImage = $("<image id='chart_399006' class='imgMinChart' src=http://image.sinajs.cn/newchart/min/n/sz399006.gif/>");
+            cyDiv.addClass('divChart');
+            cyDiv.html(cyImage);
+            jqGridChart.append(cyDiv);
+            //
+            var manager = $("#maingridCcgp").ligerGetGridManager();
+            var data = manager.getData();
+            for (var rowData in data) {
+                var rowStockcode = data[rowData]["stockcode"];
+                var chartUrl = "http://image.sinajs.cn/newchart/min/n/$code$.gif";
+                if (rowStockcode.startsWith("00") || rowStockcode.startsWith("30")) {
+                    code = "sz" + rowStockcode;
+                } else {
+                    code = "sh" + rowStockcode;
+                }
+                chartUrl = chartUrl.replace("$code$", code);
+                var objNewDiv = $('<div>', {
+                    'id': 'div_' + code,
+                    'style': 'float:left;padding: 0px;margin: 0px; width: auto'
+                });
+                objNewDiv.addClass('divChart');
+                var image = $("<image id='chart_" + code + "' class='imgMinChart' src=" + chartUrl + "/>");
+                objNewDiv.html(image);
+                //console.log(objNewDiv);
+                jqGridChart.append(objNewDiv);
+            }
+        }
+    }
+}
+window.setInterval(updateChart,1000*60*2);
+function  updateChart() {
+    var imgMinCharts = $(".imgMinChart");
+    // console.log(imgMinCharts.length);
+    for(var i=0;i<imgMinCharts.length;i++){
+        var imgMinChart = imgMinCharts[i];
+        var path = imgMinChart.src+"?p="+Math.random();
+        $(imgMinChart).attr('src',path);
     }
 }
