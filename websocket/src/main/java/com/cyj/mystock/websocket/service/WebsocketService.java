@@ -22,7 +22,6 @@ public class WebsocketService {
     @Autowired
     private QueueSender queueSender;
 
-    private Timer timer = new Timer(true);
 
     private boolean flag = true;
 
@@ -36,7 +35,7 @@ public class WebsocketService {
             int hour = Integer.parseInt(dateStrs[0]);
             int minute = Integer.parseInt(dateStrs[1]);
             if(hour>=9 && minute>=15 && hour<=15) {
-                GetStock getStock = GetStock.getInstance(restTemplate, queueSender, timer);
+                GetStock getStock = GetStock.getInstance(restTemplate, queueSender);
                 getStock.setFlag(flag);
                 LOGGER.info("[WebsocketService Execute flag]:{}", flag);
                 flag = getStock.start();

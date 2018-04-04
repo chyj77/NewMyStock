@@ -92,6 +92,8 @@ function showZtsj(tabid) {
                                     var bzl = parseFloat(item.dbcrgkl) / 100;
                                     item.dbcrgkl = bzl;
                                     return item.dbcrgkl;
+                                }else{
+                                    return item.dbcrgkl;
                                 }
                             } else {
                                 return item.dbcrgkl;
@@ -114,6 +116,8 @@ function showZtsj(tabid) {
                                     var bzl = parseFloat(item.spcgl) / 100;
                                     item.spcgl = bzl;
                                     return item.spcgl;
+                                }else{
+                                    return item.spcgl;
                                 }
                             } else {
                                 return item.spcgl;
@@ -135,6 +139,8 @@ function showZtsj(tabid) {
                                 if (parseFloat(item.dqztgkl) > 1) {
                                     var bzl = parseFloat(item.dqztgkl) / 100;
                                     item.dqztgkl = bzl;
+                                    return item.dqztgkl;
+                                }else{
                                     return item.dqztgkl;
                                 }
                             } else {
@@ -162,6 +168,8 @@ function showZtsj(tabid) {
                                         var bzl = parseFloat(item.bzl) / 100;
                                         item.bzl = bzl;
                                         return item.bzl;
+                                    }else{
+                                        return item.bzl;
                                     }
                                 } else {
                                     return item.bzl;
@@ -175,28 +183,37 @@ function showZtsj(tabid) {
                     }
                 ], data: resultData, pageSize: 25, rownumbers: true, enabledEdit: true, onReload: fresh,
                 onEndEdit:function (item) {
-                    console.log(item);
-                    if(item.column.name=='ztzdgn')
+                    // console.log(item);
+                    if(item.column.name=='ztzdgn') {
                         item.record.ztzdgn = item.text;
+                        item.record.bzl = item.record.bzl;
+                        item.record.dqztgkl = item.record.dqztgkl;
+                        item.record.spcgl = item.record.spcgl;
+                        item.record.dbcrgkl = item.record.dbcrgkl;
+                    }
                     if(item.column.name=='bzl') {
                         item.record.bzl = item.value;
+                        item.record.ztzdgn = item.record.ztzdgn;
                         item.record.dqztgkl = item.record.dqztgkl ;
                         item.record.spcgl = item.record.spcgl;
                         item.record.dbcrgkl = item.record.dbcrgkl;
                     }
                     if(item.column.name=='dqztgkl') {
+                        item.record.ztzdgn = item.record.ztzdgn;
                         item.record.bzl = item.record.bzl;
                         item.record.dqztgkl = item.value;
                         item.record.spcgl = item.record.spcgl;
                         item.record.dbcrgkl = item.record.dbcrgkl;
                     }
                     if(item.column.name=='spcgl') {
+                        item.record.ztzdgn = item.record.ztzdgn;
                         item.record.bzl = item.record.bzl;
                         item.record.dqztgkl = item.record.dqztgkl;
                         item.record.spcgl = item.value;
                         item.record.dbcrgkl = item.record.dbcrgkl;
                     }
                     if(item.column.name=='dbcrgkl') {
+                        item.record.ztzdgn = item.record.ztzdgn;
                         item.record.bzl = item.record.bzl;
                         item.record.dqztgkl = item.record.dqztgkl;
                         item.record.spcgl = item.record.spcgl;

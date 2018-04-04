@@ -1,5 +1,6 @@
 package com.cyj.mystock.info.mapper;
 
+import com.cyj.mystock.info.bean.MaretStockBean;
 import com.cyj.mystock.info.bean.SpmmBean;
 import com.cyj.mystock.info.bean.ZtsjBean;
 
@@ -12,7 +13,7 @@ public interface SpmmMapper {
 
     List<Map> getLuoji();
 
-    List<Map> getStock();
+    List<MaretStockBean> getStock();
 
     void deleteByPrimaryKey(Long recId);
 

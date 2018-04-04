@@ -11,18 +11,19 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Date;
 import java.util.Timer;
 
-@Component(value="getStockStopJob")
-public class GetStockStopJob {
+@Component(value="getStockStop11Job")
+public class GetStockStop11Job {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetStockStopJob.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetStockStop11Job.class);
 
     @Autowired
     private RestTemplate restTemplate; // HTTP 访问操作类
     @Autowired
     private QueueSender queueSender;
+
     private boolean flag = false;
 
-    @Scheduled(cron = "0 00 15 * * MON-FRI")
+    @Scheduled(cron = "0 30 11 * * MON-FRI")
     public void cronJob() {
         LOGGER.info("[GetStockStopJob Execute]:{}", new Date());
         flag = !flag;

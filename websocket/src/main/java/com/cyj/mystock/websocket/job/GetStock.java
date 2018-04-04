@@ -31,7 +31,7 @@ public class GetStock {
 
     private QueueSender queueSender;
 
-    private Timer timer;
+    private Timer timer = new Timer(true);
 
     private boolean flag;
 
@@ -41,17 +41,16 @@ public class GetStock {
 
     private static GetStock instance = null;
 
-    public static GetStock getInstance(RestTemplate restTemplate, QueueSender queueSender, Timer timer){
+    public static GetStock getInstance(RestTemplate restTemplate, QueueSender queueSender){
         if(instance==null){
-            instance = new GetStock(restTemplate, queueSender, timer);
+            instance = new GetStock(restTemplate, queueSender);
         }
         return instance;
     }
 
-    private GetStock(RestTemplate restTemplate, QueueSender queueSender, Timer timer) {
+    private GetStock(RestTemplate restTemplate, QueueSender queueSender) {
         this.queueSender = queueSender;
         this.restTemplate = restTemplate;
-        this.timer = timer;
     }
 
     public boolean start() throws Exception {
@@ -124,6 +123,8 @@ public class GetStock {
                     }
                     if(flag){
                         timer.cancel();
+                        timer =null;
+                        timer = new Timer(true);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

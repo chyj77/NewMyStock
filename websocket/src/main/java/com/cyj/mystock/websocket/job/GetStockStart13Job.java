@@ -1,22 +1,9 @@
 package com.cyj.mystock.websocket.job;
 
 import com.cyj.mystock.websocket.queue.QueueSender;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -26,12 +13,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
 
-@Component(value = "getStockStartJob")
-public class GetStockStartJob {
+@Component(value = "getStockStart13Job")
+public class GetStockStart13Job {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetStockStartJob.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetStockStart13Job.class);
 
     @Autowired
     private RestTemplate restTemplate; // HTTP 访问操作类
@@ -42,7 +28,7 @@ public class GetStockStartJob {
 
     private boolean flag = true;
 
-    @Scheduled(cron = "0 15 09 * * MON-FRI")
+    @Scheduled(cron = "0 00 13 * * MON-FRI")
     public void cronJob() {
         LOGGER.info("[GetStockStartJob Execute]:{}", new Date());
         flag = !flag;

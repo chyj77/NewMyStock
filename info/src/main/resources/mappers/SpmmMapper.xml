@@ -29,7 +29,7 @@
             ORDER BY counts desc
     </select>
 
-    <select id="getStock" resultType="java.util.Map">
+    <select id="getStock" resultType="com.cyj.mystock.info.bean.MaretStockBean">
         SELECT stockcode,stockname,ifnull(hangye,'') hangye,ifnull(tag,'') tag,ifnull(marketTime,'') marketTime,
         ifnull(totalNum,'') totalNum, ifnull(floatNum,'') floatNum
           FROM dict_stock

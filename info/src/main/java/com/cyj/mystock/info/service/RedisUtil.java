@@ -207,7 +207,7 @@ public class RedisUtil {
         return result;
     }
 
-    public Object pipelineSet(String key,List<Object> list){
+    public Object pipelineSet(String key,List<?> list){
         RedisCallback<List<Object>> pipelineCallback = new RedisCallback<List<Object>>() {
             @Override
             public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {

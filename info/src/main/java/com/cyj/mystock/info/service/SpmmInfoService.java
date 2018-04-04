@@ -1,6 +1,7 @@
 package com.cyj.mystock.info.service;
 
 import com.cyj.mystock.info.bean.FollowStockBean;
+import com.cyj.mystock.info.bean.MaretStockBean;
 import com.cyj.mystock.info.bean.SpmmBean;
 import com.cyj.mystock.info.bean.ZtsjBean;
 import com.cyj.mystock.info.mapper.SpmmMapper;
@@ -13,6 +14,7 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -67,13 +69,13 @@ public class SpmmInfoService {
         redisUtil.remove(stockKey);
         LOGGER.info("删除股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
         date1 = new Date();
-        List<Map> list = spmmMapper.getStock();
-        String key2= "stockcode";
-        redisUtil.pipelineSet(stockKey,key2,list);
+        List<MaretStockBean> list = spmmMapper.getStock();
+//        String key2= "stockcode";
+        redisUtil.pipelineSet(stockKey,list);
         LOGGER.info("保存股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 
     }
-
+    @Cacheable
     public String getStock() {
         Set<String> set = redisUtil.range(stockKey);
         JSONObject jsonObject = new JSONObject();
