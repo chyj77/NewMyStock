@@ -55,7 +55,7 @@
             showSwitch: true,
             onAfterAddTabItem: function (tabdata)
             {
-                // console.log("onAfterAddTabItem:",tabdata)
+                console.log("onAfterAddTabItem:",tabdata)
                 tabItems.push(tabdata);
                 saveTabStatus();
                 // console.log(tabdata.url);
@@ -77,6 +77,7 @@
             },
             onReload: function (tabdata)
             {
+                console.log("onReload:",tabdata)
                 var tabid = tabdata.tabid;
                 addFrameSkinLink(tabid);
             }
@@ -203,6 +204,7 @@
     }
     function pages_init()
     {
+
         var tabJson = $.cookie('liger-home-tab');
         // console.log("tabJson:",tabJson);
         if (tabJson)
@@ -214,6 +216,8 @@
             }
         }
         showCcgp("home");
+        console.log("home");
+        tab.selectTabItem("home");
     }
     function saveTabStatus()
     {

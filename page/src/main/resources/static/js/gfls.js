@@ -7,13 +7,14 @@ function gfls(tabid) {
     lhbDiv.append(maingridDiv);
     rootDiv.append(lhbDiv);
     $("div[tabid='"+tabid+"']").append(rootDiv);
+    var date1 = new Date();
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
         url: '/gfjgd',
         success: function (data) {
             var resultData2 = JSON.parse(data);
-            console.log(resultData2);
+            // console.log(resultData2);
             $("#maingridGfjgd").ligerGrid({
                 height: '95%',
                 columns: [
@@ -93,4 +94,5 @@ function gfls(tabid) {
             });
         }
     });
+    // console.log("查询广发交割单耗时",new Date().getTime()-date1.getTime());
 }

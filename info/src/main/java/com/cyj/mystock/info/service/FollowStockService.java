@@ -10,6 +10,7 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -51,7 +52,7 @@ public class FollowStockService {
         }
         return flag;
     }
-
+    @Cacheable(value = "followstock")
     public String getAll() {
         Set<String> set = redisUtil.range(FOLLOWSTOCKKEY);
         JSONObject jsonObject = new JSONObject();

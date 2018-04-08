@@ -49,7 +49,7 @@ public class SpmmInfoService {
         LOGGER.info("保存买卖逻辑概念耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 
     }
-
+    @Cacheable(value = "luoji")
     public String getLuoji() {
         Set<String> set = redisUtil.range(ljkey);
         JSONArray jsonArray= new JSONArray();
@@ -75,7 +75,7 @@ public class SpmmInfoService {
         LOGGER.info("保存股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 
     }
-    @Cacheable
+    @Cacheable(value = "marketStock")
     public String getStock() {
         Set<String> set = redisUtil.range(stockKey);
         JSONObject jsonObject = new JSONObject();
@@ -84,7 +84,7 @@ public class SpmmInfoService {
         return jsonObject.toJSONString();
     }
 
-
+    @Cacheable(value = "spmm")
     public String getAll() {
         List<SpmmBean> list = spmmMapper.getAll();
         JSONArray jsonArray = new JSONArray();
@@ -121,7 +121,7 @@ public class SpmmInfoService {
         spmmMapper.deleteByPrimaryKey(recId);
         LOGGER.info("删除实盘买卖数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
-
+    @Cacheable(value = "spmmfx")
     public String querySpmmFx() throws Exception{
         Date date1 = new Date();
         List<Map> list = spmmMapper.querySpmmFx();

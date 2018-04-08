@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -30,12 +31,15 @@ public class GfjgdController {
     @Autowired
     private GfjgdService gfjgdService;
 
-    @RequestMapping("/gfjgd")
+    @RequestMapping(value = "/gfjgd")
     public String getAll() {
+        Date date1 = new Date();
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
                 + ", service_id = " + instance.getServiceId());
-        return  gfjgdService.getAll();
+        String result =  gfjgdService.getAll();
+        LOGGER.info("查找股票交割单耗时={}毫秒",(System.currentTimeMillis()-date1.getTime()));
+        return result;
     }
 
     @RequestMapping(value = "/gfjgd/fx", method = RequestMethod.GET)

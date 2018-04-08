@@ -7,6 +7,9 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -36,7 +39,7 @@ public class ZtsjInfoService {
         LOGGER.info("保存redis涨停概念耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 
     }
-
+    @Cacheable(value = "ztgn")
     public String getZtgn() {
         Set<String> set = redisUtil.range(gnkey);
         JSONObject jsonObject = new JSONObject();
@@ -64,7 +67,7 @@ public class ZtsjInfoService {
 //            LOGGER.info("保存redis涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 //        }
     }
-
+    @Cacheable(value = "ztsj")
     public String getAll() {
         Set<String> set = redisUtil.range(ztsjKey);
         JSONObject jsonObject = new JSONObject();
@@ -84,6 +87,7 @@ public class ZtsjInfoService {
 //        redisUtil.add(ztsjKey, beanToJSON(ztsj).toJSONString(), 0);
         LOGGER.info("保存涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
+
     public void delete(Long recId) throws Exception {
         Date date1 = new Date();
         ztsjMapper.deleteByPrimaryKey(recId);
@@ -92,6 +96,7 @@ public class ZtsjInfoService {
         setAll();
         LOGGER.info("重置涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
+    @Cacheable(value = "ztsjfx")
     public String getZtsjFx() {
         Date date1 = new Date();
         Set<String> set = redisUtil.range(ztsjKey);

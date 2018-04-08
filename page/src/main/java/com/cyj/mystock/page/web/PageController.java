@@ -27,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -212,8 +213,10 @@ public class PageController {
     @RequestMapping("/gfjgd")
     @ResponseBody
     public String gfjgd() {
+        Date date1 = new Date();
         String providerMsg = restTemplate.getForEntity("http://SERVICE-INFO/gfjgd",
                 String.class).getBody();
+        LOGGER.info("查询股票交割单耗时={}毫秒",System.currentTimeMillis()-date1.getTime());
         return providerMsg;
     }
     @RequestMapping("/gfjgd/fx")
