@@ -2,7 +2,7 @@ server:
   port: 8888 # 注册中心占用8080端口
 eureka:
   instance:
-    hostname: localhost
+    hostname: 114.115.208.105
   client:
     registerWithEureka: false
     fetchRegistry: false
