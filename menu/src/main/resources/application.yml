@@ -9,3 +9,4 @@ server:
 spring:
   application:
     name: service-menu
+    host: 114.115.208.105
