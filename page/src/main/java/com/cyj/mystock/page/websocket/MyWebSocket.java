@@ -72,8 +72,9 @@ public class MyWebSocket {
      */
      @OnError
      public void onError(Session session, Throwable error) {
-     LOGGER.info("发生错误");
-     error.printStackTrace();
+         LOGGER.info("发生错误");
+         this.onClose();
+         error.printStackTrace();
      }
 
 

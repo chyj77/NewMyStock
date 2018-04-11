@@ -6,7 +6,7 @@
 	<groupId>com.cyj.mystock</groupId>
 	<artifactId>info</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>info</name>
 	<description>Mystock DataInfo project for Spring Boot</description>
