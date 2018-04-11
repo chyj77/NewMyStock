@@ -39,7 +39,6 @@ public class ZtsjInfoService {
         LOGGER.info("保存redis涨停概念耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 
     }
-    @Cacheable(value = "ztgn")
     public String getZtgn() {
         Set<String> set = redisUtil.range(gnkey);
         JSONObject jsonObject = new JSONObject();
@@ -67,7 +66,6 @@ public class ZtsjInfoService {
 //            LOGGER.info("保存redis涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 //        }
     }
-    @Cacheable(value = "ztsj")
     public String getAll() {
         Set<String> set = redisUtil.range(ztsjKey);
         JSONObject jsonObject = new JSONObject();
@@ -96,7 +94,6 @@ public class ZtsjInfoService {
         setAll();
         LOGGER.info("重置涨停数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
-    @Cacheable(value = "ztsjfx")
     public String getZtsjFx() {
         Date date1 = new Date();
         Set<String> set = redisUtil.range(ztsjKey);

@@ -52,7 +52,6 @@ public class FollowStockService {
         }
         return flag;
     }
-    @Cacheable(value = "followstock")
     public String getAll() {
         Set<String> set = redisUtil.range(FOLLOWSTOCKKEY);
         JSONObject jsonObject = new JSONObject();

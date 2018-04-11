@@ -247,6 +247,11 @@ public class PageController {
         map.put("hello", "欢迎进入HTML页面");
         return "/index";
     }
+    @RequestMapping("/index")
+    public String index1(HashMap<String, Object> map) {
+        map.put("hello", "欢迎进入HTML页面");
+        return "/index";
+    }
 
     private JSONObject beanToJSON(Object obj) {
         JSONObject jsonObject = new JSONObject();

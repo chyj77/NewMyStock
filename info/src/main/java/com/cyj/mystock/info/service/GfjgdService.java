@@ -45,7 +45,6 @@ public class GfjgdService {
         return jsonObject1.toJSONString();
     }
 
-    @Cacheable(value = "gfjgdfx")
     public String queryGfStock() throws Exception {
         Date date1 = new Date();
         List<Map> list = mapper.queryGfStock();
