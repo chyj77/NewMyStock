@@ -5,10 +5,13 @@ eureka:
     serviceUrl:
       defaultZone: http://114.115.208.105:8888/eureka/
   instance:
-      hostname: 114.115.208.105
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}}
       prefer-ip-address: true
+   healthcheck:
+       enabled: true
 server:
   port: 8084
 spring:
   application:
     name: service-menu
+    instance_id: menu
