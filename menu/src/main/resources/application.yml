@@ -7,8 +7,6 @@ eureka:
   instance:
       instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}}
       prefer-ip-address: true
-   healthcheck:
-       enabled: true
 server:
   port: 8084
 spring:
