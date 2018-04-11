@@ -5,6 +5,7 @@ eureka:
     serviceUrl:
       defaultZone: http://114.115.208.105:8888/eureka/
   instance:
+        hostname: 114.115.208.105
         prefer-ip-address: true
 server:
   port: 8080
