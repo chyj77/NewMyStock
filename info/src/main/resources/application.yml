@@ -5,9 +5,14 @@ eureka:
     serviceUrl:
       defaultZone: http://114.115.208.105:8888/eureka/
   instance:
-        ip-address: 114.115.208.105
+      ip-address: 114.115.208.105
 server:
   port: 8085
 spring:
   application:
     name: service-info
+spring:
+  cloud:
+    inetutils:
+      preferredNetworks:
+        - 172.17
