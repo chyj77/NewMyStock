@@ -11,8 +11,3 @@ server:
 spring:
   application:
     name: service-menu
-spring:
-  cloud:
-    inetutils:
-      preferredNetworks:
-        - 172.17

@@ -13,11 +13,7 @@ spring:
     name: service-page
   thymeleaf:
     prefix: classpath:/templates/,classpath:/static/
-spring:
-  cloud:
-    inetutils:
-      preferredNetworks:
-        - 172.17
+
 #
 #zuul:
 #  routes:
