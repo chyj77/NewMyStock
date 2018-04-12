@@ -4,8 +4,6 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://114.115.208.105:8888/eureka/
-    healthcheck:
-      enabled: true
   instance:
       ip-address: 114.115.208.105
       lease-expiration-duration-in-seconds: 30
