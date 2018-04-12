@@ -18,10 +18,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin
 @Controller
 public class PageController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PageController.class);
@@ -65,7 +63,7 @@ public class PageController {
         String day = request.getParameter("day");
         Map map = new HashMap();
         map.put("day",day);
-        String url = "http://SERVICE-MONGO/lhb?day={day}";
+        String url = "http://SERVICE-MENU/lhb?day={day}";
         String providerMsg = (String) restTemplate.getForEntity(url,String.class,map).getBody();
         return providerMsg;
     }
@@ -244,11 +242,6 @@ public class PageController {
 
     @RequestMapping("/")
     public String index(HashMap<String, Object> map) {
-        map.put("hello", "欢迎进入HTML页面");
-        return "/index";
-    }
-    @RequestMapping("/index")
-    public String index1(HashMap<String, Object> map) {
         map.put("hello", "欢迎进入HTML页面");
         return "/index";
     }
