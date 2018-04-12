@@ -1,4 +1,4 @@
-package com.cyj.mystock.mongo.service;
+package com.cyj.mystock.menu.service;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;

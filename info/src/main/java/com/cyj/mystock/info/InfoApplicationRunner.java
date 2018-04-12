@@ -3,6 +3,7 @@ package com.cyj.mystock.info;
 
 import com.cyj.mystock.info.service.FollowStockService;
 import com.cyj.mystock.info.service.SpmmInfoService;
+import com.cyj.mystock.info.service.WebsocketService;
 import com.cyj.mystock.info.service.ZtsjInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +29,13 @@ public class InfoApplicationRunner implements ApplicationRunner {
     private SpmmInfoService spmmInfoService;
     @Autowired
     private FollowStockService followStockService;
+    @Autowired
+    private WebsocketService websocketService;
 
     @Override
     public void run(ApplicationArguments var1) throws Exception{
         LOGGER.info("MyApplicationRunner2!");
+        websocketService.initGetStock();
         ztsjInfoService.setZtgn();
         ztsjInfoService.setAll();
         spmmInfoService.setLuoji();
