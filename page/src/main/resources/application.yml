@@ -21,25 +21,10 @@ spring:
 zuul:
   routes:
     menu0:
-      path: /menu
-      serviceId: SERVICE-MENU
-    menu2:
-      path: /lhb
+      path: /**
       serviceId: SERVICE-MENU
     info0:
-      path: /ztsj
-      serviceId: SERVICE-INFO
-    info2:
-      path: /ztgn
-      serviceId: SERVICE-INFO
-    info6:
-      path: /spmm
-      serviceId: SERVICE-INFO
-    info7:
-      path: /ccgp
-      serviceId: SERVICE-INFO
-    info5:
-      path: /gfjgd
+      path: /**
       serviceId: SERVICE-INFO
 
 ribbon:
