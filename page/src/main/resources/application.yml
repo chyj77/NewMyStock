@@ -42,7 +42,7 @@ zuul:
       path: /spmm
       serviceId: SERVICE-INFO
     info3:
-      path: /spmm/**
+      path: /spmm/stocks
       serviceId: SERVICE-INFO
     info7:
       path: /ccgp
