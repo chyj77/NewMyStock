@@ -20,7 +20,7 @@
     <select id="getAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from menu
+        from menu where isshow=0
         ORDER BY menu_level
     </select>
     <!--
