@@ -38,6 +38,9 @@ zuul:
     info2:
       path: /ztgn/**
       serviceId: SERVICE-INFO
+    info6:
+      path: /spmm
+      serviceId: SERVICE-INFO
     info3:
       path: /spmm/**
       serviceId: SERVICE-INFO
@@ -49,9 +52,6 @@ zuul:
       serviceId: SERVICE-INFO
     info5:
       path: /gfjgd/**
-      serviceId: SERVICE-INFO
-    info6:
-      path: /spmm
       serviceId: SERVICE-INFO
 
 ribbon:
