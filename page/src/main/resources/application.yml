@@ -21,22 +21,61 @@ spring:
 zuul:
   routes:
     menu0:
-      path: /menu/**
+      path: /menu/index
       serviceId: SERVICE-MENU
     menu2:
-      path: /lhb/**
+      path: /lhb/index
       serviceId: SERVICE-MENU
     info0:
-      path: /ztsj/**
+      path: /ztsj/index
+      serviceId: SERVICE-INFO
+    info1:
+      path: /ztsj/ztgn
+      serviceId: SERVICE-INFO
+    info2:
+      path: /ztsj/fx
+      serviceId: SERVICE-INFO
+    info3:
+      path: /ztsj/save
+      serviceId: SERVICE-INFO
+    info4:
+      path: /ztsj/delete
       serviceId: SERVICE-INFO
     info5:
-      path: /spmm/**
+      path: /spmm/index
+      serviceId: SERVICE-INFO
+    info6:
+      path: /spmm/luoji
+      serviceId: SERVICE-INFO
+    info7:
+      path: /spmm/stocks
+      serviceId: SERVICE-INFO
+    info8:
+      path: /spmm/save
+      serviceId: SERVICE-INFO
+    info9:
+      path: /spmm/delete
+      serviceId: SERVICE-INFO
+    info10:
+      path: /spmm/fx
+      serviceId: SERVICE-INFO
+    info11:
+      path: /spmm/delete
       serviceId: SERVICE-INFO
     info12:
-      path: /gfjgd/**
+      path: /gfjgd/index
+      serviceId: SERVICE-INFO
+    info13:
+      path: /gfjgd/fx
       serviceId: SERVICE-INFO
     info14:
-      path: /ccgp/**
+      path: /ccgp/index
+      serviceId: SERVICE-INFO
+    info15:
+      path: /ccgp/save
+      serviceId: SERVICE-INFO
+    info16:
+      path: /ccgp/delete
       serviceId: SERVICE-INFO
 
 ribbon:
