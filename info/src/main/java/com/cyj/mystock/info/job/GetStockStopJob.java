@@ -21,7 +21,7 @@ public class GetStockStopJob {
     private QueueSender queueSender;
     private boolean flag = false;
 
-    @Scheduled(cron = "0 00 15 * * MON-FRI")
+    @Scheduled(cron = "0 00 07 * * MON-FRI")
     public void cronJob() {
         LOGGER.info("[GetStockStopJob Execute]:{}", new Date());
         flag = !flag;

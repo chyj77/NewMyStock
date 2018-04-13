@@ -27,7 +27,7 @@ public class GetStockStartJob {
 
     private boolean flag = true;
 
-    @Scheduled(cron = "0 15 09 * * MON-FRI")
+    @Scheduled(cron = "0 15 01 * * MON-FRI")
     public void cronJob() {
         LOGGER.info("[GetStockStartJob Execute]:{}", new Date());
         flag = !flag;
