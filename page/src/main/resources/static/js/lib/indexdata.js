@@ -5,75 +5,79 @@ function indexdata() {
         url : '/menu',
         success : function(data) {
             // console.log(data);
-            var jsonstr = JSON.parse(data);
+            if(data!='') {
+                var jsonstr = JSON.parse(data);
 
-            for(var i in jsonstr){
-                // console.log(jsonstr[i].menuName);
-                var menuType = jsonstr[i].menuType;
-                var headerDiv  = $('<div>', {'class': 'l-layout-header'});
-                var toggleDiv  = $('<div>', {'class': 'l-accordion-toggle l-accordion-toggle-open'});
-                var innerDiv  = $('<div>', {'text': jsonstr[i].menuName,'class': 'l-accordion-header-inner'});
-                headerDiv.append(toggleDiv);
-                headerDiv.append(innerDiv);
-                $("#accordion1").append(headerDiv);
-                var rootDiv  = $('<div>', {'id':jsonstr[i].menuCode,'title': jsonstr[i].menuName, 'class': 'l-scroll'});
-                var ul  = $('<ul>', {'id':'tree_'+jsonstr[i].menuCode,'style':'margin-top:3px;'});
-                var menuData = jsonstr[i].node==undefined?jsonstr[i].children:jsonstr[i].node;
-                rootDiv.append(ul);
-                $("#accordion1").append(rootDiv);
-                // console.log(ul);
-                ul.ligerTree({
-                    data : menuData,
-                    checkbox: false,
-                    slide: false,
-                    nodeWidth: 120,
-                    idFieldName :jsonstr[i].menuId,
-                    parentIDFieldName :jsonstr[i].pMenuId,
-                    attribute: ['nodename', 'menuUrl'],
-                    render : function(a){
-                        // console.log(a);
-                        if (!a.isnew) return a.menuName;
-                        return  '<a href="' + eval(a.menuUrl) + '" target="_blank">' + a.menuName + '</a>';;
-                    },
-                    // onClick:function(node)
-                    // {
-                    //     var tabid = node.data.menuId;
-                    //     if (!tabid)
-                    //     {
-                    //         tabid = jsonstr[i].menuId;
-                    //     }
-                    //     // console.log(tabid);
-                    //     var menuEvent = node.data.menuUrl;
-                    //     $(node.target).attr("onclick",eval(menuEvent));
-                    //     f_addTab2(tabid, node.data.menuName, eval(menuEvent));
-                    //     // console.log(node);
-                    //     // showLhb(tabid);
-                    // },
-                    onSelect: function (node)
-                    {
-                        // if (!node.data.menuUrl) return;
-                        if (node.data.isnew)
-                        {
-                            return;
+                for (var i in jsonstr) {
+                    // console.log(jsonstr[i].menuName);
+                    var menuType = jsonstr[i].menuType;
+                    var headerDiv = $('<div>', {'class': 'l-layout-header'});
+                    var toggleDiv = $('<div>', {'class': 'l-accordion-toggle l-accordion-toggle-open'});
+                    var innerDiv = $('<div>', {'text': jsonstr[i].menuName, 'class': 'l-accordion-header-inner'});
+                    headerDiv.append(toggleDiv);
+                    headerDiv.append(innerDiv);
+                    $("#accordion1").append(headerDiv);
+                    var rootDiv = $('<div>', {
+                        'id': jsonstr[i].menuCode,
+                        'title': jsonstr[i].menuName,
+                        'class': 'l-scroll'
+                    });
+                    var ul = $('<ul>', {'id': 'tree_' + jsonstr[i].menuCode, 'style': 'margin-top:3px;'});
+                    var menuData = jsonstr[i].node == undefined ? jsonstr[i].children : jsonstr[i].node;
+                    rootDiv.append(ul);
+                    $("#accordion1").append(rootDiv);
+                    // console.log(ul);
+                    ul.ligerTree({
+                        data: menuData,
+                        checkbox: false,
+                        slide: false,
+                        nodeWidth: 120,
+                        idFieldName: jsonstr[i].menuId,
+                        parentIDFieldName: jsonstr[i].pMenuId,
+                        attribute: ['nodename', 'menuUrl'],
+                        render: function (a) {
+                            // console.log(a);
+                            if (!a.isnew) return a.menuName;
+                            return '<a href="' + eval(a.menuUrl) + '" target="_blank">' + a.menuName + '</a>';
+                            ;
+                        },
+                        // onClick:function(node)
+                        // {
+                        //     var tabid = node.data.menuId;
+                        //     if (!tabid)
+                        //     {
+                        //         tabid = jsonstr[i].menuId;
+                        //     }
+                        //     // console.log(tabid);
+                        //     var menuEvent = node.data.menuUrl;
+                        //     $(node.target).attr("onclick",eval(menuEvent));
+                        //     f_addTab2(tabid, node.data.menuName, eval(menuEvent));
+                        //     // console.log(node);
+                        //     // showLhb(tabid);
+                        // },
+                        onSelect: function (node) {
+                            // if (!node.data.menuUrl) return;
+                            if (node.data.isnew) {
+                                return;
+                            }
+                            var tabid = "";
+                            if (node.data.menuId == 4) {
+                                var tabid = "home";
+                            } else {
+                                tabid = node.data.menuId;
+                            }
+                            if (!tabid) {
+                                tabid = jsonstr[i].menuId;
+                                $(node.target).attr("tabid", tabid)
+                            }
+                            var menuEvent = node.data.menuUrl;
+                            // console.log(menuEvent);
+                            f_addTab(tabid, node.data.menuName, menuEvent);
                         }
-                        var tabid ="";
-                        if(node.data.menuId==4){
-                            var tabid ="home";
-                        }else {
-                            tabid = node.data.menuId;
-                        }
-                        if (!tabid)
-                        {
-                            tabid = jsonstr[i].menuId;
-                            $(node.target).attr("tabid", tabid)
-                        }
-                        var menuEvent = node.data.menuUrl;
-                        // console.log(menuEvent);
-                        f_addTab(tabid, node.data.menuName, menuEvent);
-                    }
-                });
-                // console.log($("#accordion1"));
-                tree = liger.get('tree_'+jsonstr[i].menuCode);
+                    });
+                    // console.log($("#accordion1"));
+                    tree = liger.get('tree_' + jsonstr[i].menuCode);
+                }
             }
         },
         error : function() {
@@ -82,8 +86,8 @@ function indexdata() {
     });
 
 }
-var websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
-// var websocket = new WebSocket("ws://localhost:8080/websocket");
+// var websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
+var websocket = new WebSocket("ws://localhost:8080/websocket");
 //连接发生错误的回调方法
 websocket.onerror = function(){
     console.log("error");
@@ -104,8 +108,8 @@ websocket.onmessage = function(event){
 websocket.onclose = function(){
     console.log("close");
     webSocket = null;
-    // websocket = new WebSocket("ws://localhost:8080/websocket");
-    websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
+    websocket = new WebSocket("ws://localhost:8080/websocket");
+    // websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
 }
 
 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。

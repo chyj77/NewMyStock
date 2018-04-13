@@ -29,7 +29,7 @@ public class FollowStockController {
     @Autowired
     private FollowStockService followStockService;
 
-    @RequestMapping("/followStock")
+    @RequestMapping("/ccgp")
     public String getAll() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
@@ -37,7 +37,7 @@ public class FollowStockController {
         return  followStockService.getAll();
     }
 
-    @RequestMapping(value = "/followStock/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/ccgp/save", method = RequestMethod.POST)
     public String doSave(@RequestBody FollowStockBean bean) {
         LOGGER.info("{}",bean);
         String providerMsg ="保存成功";
@@ -51,7 +51,7 @@ public class FollowStockController {
         return providerMsg;
     }
     //删除
-    @RequestMapping("/followStock/delete")
+    @RequestMapping("/ccgp/delete")
     public String delete(HttpServletRequest request) {
         String recId = request.getParameter("recId");
         ServiceInstance instance = serviceInstance();

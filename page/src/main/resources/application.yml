@@ -5,11 +5,11 @@ eureka:
     serviceUrl:
       defaultZone: http://114.115.208.105:8888/eureka/
   instance:
-      ip-address: 114.115.208.105
+      ip-address: 192.168.1.196
       lease-expiration-duration-in-seconds: 30
       lease-renewal-interval-in-seconds: 10
       preferIpAddress: true
-      instance-id: http://114.115.208.105:${server.port}
+#      instance-id: http://192.168.1.196:${server.port}
 server:
   port: 8080
 spring:
@@ -18,30 +18,42 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/,classpath:/static/
 
-#
-#zuul:
-#  routes:
-#    menu1:
-#      path: /menu/**
-#      serviceId: SERVICE-MENU
-#    menu2:
-#      path: /thsLhb/**
-#      serviceId: SERVICE-MENU
-#    info1:
-#      path: /ztsj/**
-#      serviceId: SERVICE-INFO
-#    info2:
-#      path: /ztgn/**
-#      serviceId: SERVICE-INFO
-#    info3:
-#      path: /spmm/**
-#      serviceId: SERVICE-INFO
-#    info4:
-#      path: /ccgp/**
-#      serviceId: SERVICE-INFO
-#    info5:
-#      path: /gfjgd/**
-#      serviceId: SERVICE-INFO
-#ribbon:
-#  ReadTimeout: 60000
-#  ConnectTimeout: 60000
+zuul:
+  routes:
+    menu0:
+      path: /menu
+      serviceId: SERVICE-MENU
+    menu1:
+      path: /menu/**
+      serviceId: SERVICE-MENU
+    menu2:
+      path: /thsLhb/**
+      serviceId: SERVICE-MENU
+    info0:
+      path: /ztsj
+      serviceId: SERVICE-INFO
+    info1:
+      path: /ztsj/**
+      serviceId: SERVICE-INFO
+    info2:
+      path: /ztgn/**
+      serviceId: SERVICE-INFO
+    info3:
+      path: /spmm/**
+      serviceId: SERVICE-INFO
+    info7:
+      path: /ccgp
+      serviceId: SERVICE-INFO
+    info4:
+      path: /ccgp/**
+      serviceId: SERVICE-INFO
+    info5:
+      path: /gfjgd/**
+      serviceId: SERVICE-INFO
+    info6:
+      path: /spmm
+      serviceId: SERVICE-INFO
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000

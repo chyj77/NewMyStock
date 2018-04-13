@@ -35,7 +35,7 @@ public class PageController {
 
     @Autowired
     private RestTemplate restTemplate; // HTTP 访问操作类
-
+/*
     @RequestMapping("/menu")
     @ResponseBody
     public String menu() {
@@ -239,7 +239,7 @@ public class PageController {
                 String.class).getBody();
         return providerMsg;
     }
-
+*/
     @RequestMapping("/")
     public String index(HashMap<String, Object> map) {
         map.put("hello", "欢迎进入HTML页面");

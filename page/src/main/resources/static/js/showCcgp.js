@@ -7,8 +7,10 @@ $.ajax({
     contentType: 'application/json',
     url: '/spmm/stocks',
     success: function (data) {
-        stockData = JSON.parse(data);
-        // console.log(stockData);
+        if(data !='') {
+            stockData = JSON.parse(data);
+            // console.log(stockData);
+        }
     }
 });
 function showCcgp(tabid) {
@@ -38,135 +40,143 @@ function showCcgp(tabid) {
         url: '/ccgp',
         success: function (data) {
             // console.log(data);
-            resultData = JSON.parse(data);
-            // console.log(resultData);
-            $("#maingridCcgp").ligerGrid({
-                height: '95%',
-                columns: [
-                    {
-                        display: '股票代码',
-                        name: 'stockcode', minWidth: 90, editor: {
-                            type: 'popup', valueField: 'stockcode', textField: 'stockcode',readOnly:false,
-                            grid: {
-                                data: stockData,
-                                columns: [
-                                    { display: '股票代码', name: 'stockcode', align: 'right', width: 150, minWidth: 120 },
-                                    { display: '股票名称', name: 'stockname',align: 'center', minWidth: 120, width: 150 },
-                                    { display: '行业', name: 'hangye',align: 'center', minWidth: 120, width: 150 },
-                                    { display: '标签', name: 'tag',align: 'center', minWidth: 120, width: 150 }
-                                ], usePager: true, isScroll: true, checkbox: false,
+            if (data != '') {
+                resultData = JSON.parse(data);
+                // console.log(resultData);
+                $("#maingridCcgp").ligerGrid({
+                    height: '95%',
+                    columns: [
+                        {
+                            display: '股票代码',
+                            name: 'stockcode', minWidth: 90, editor: {
+                                type: 'popup', valueField: 'stockcode', textField: 'stockcode', readOnly: false,
+                                grid: {
+                                    data: stockData,
+                                    columns: [
+                                        {display: '股票代码', name: 'stockcode', align: 'right', width: 150, minWidth: 120},
+                                        {
+                                            display: '股票名称',
+                                            name: 'stockname',
+                                            align: 'center',
+                                            minWidth: 120,
+                                            width: 150
+                                        },
+                                        {display: '行业', name: 'hangye', align: 'center', minWidth: 120, width: 150},
+                                        {display: '标签', name: 'tag', align: 'center', minWidth: 120, width: 150}
+                                    ], usePager: true, isScroll: true, checkbox: false,
 
-                                width: '95%'
-                            },
-                            condition: {
-                                prefixID: 'condtion_',
-                                fields: [
-                                    {name: 'stockcode', type: 'text', label: '股票代码', width: 200}
-                                ]
-                            }, onSelected: function (e) {
-                                // console.log(e);
-                                var manager = $("#maingridCcgp").ligerGetGridManager();
-                                var row = manager.getSelected();
-                                $.ajax({
-                                    type: 'GET',
-                                    contentType: 'application/json',
-                                    url: '/ccgp/getStock?stockcode='+e.data[0].stockcode,
-                                    success: function (data) {
-                                        console.log(data);
-                                        manager.updateCell('stockcode', e.data[0].stockcode, row);
-                                        manager.updateCell('stockname', e.data[0].stockname, row);
-                                        manager.updateCell('followPrice', data, row);
-                                        manager.updateCell('ramarks', e.data[0].ramarks, row);
-                                    }
-                                });
+                                    width: '95%'
+                                },
+                                condition: {
+                                    prefixID: 'condtion_',
+                                    fields: [
+                                        {name: 'stockcode', type: 'text', label: '股票代码', width: 200}
+                                    ]
+                                }, onSelected: function (e) {
+                                    // console.log(e);
+                                    var manager = $("#maingridCcgp").ligerGetGridManager();
+                                    var row = manager.getSelected();
+                                    $.ajax({
+                                        type: 'GET',
+                                        contentType: 'application/json',
+                                        url: '/ccgp/getStock?stockcode=' + e.data[0].stockcode,
+                                        success: function (data) {
+                                            console.log(data);
+                                            manager.updateCell('stockcode', e.data[0].stockcode, row);
+                                            manager.updateCell('stockname', e.data[0].stockname, row);
+                                            manager.updateCell('followPrice', data, row);
+                                            manager.updateCell('ramarks', e.data[0].ramarks, row);
+                                        }
+                                    });
 
-                            },
-                            searchClick: function (e) {
-                                // alert("这里可以根据搜索规则来搜索（下面的代码已经本地搜索),搜索规则:" + liger.toJSON(e.rules));
-                                e.grid.loadData($.ligerFilter.getFilterFunction(e.rules));
+                                },
+                                searchClick: function (e) {
+                                    // alert("这里可以根据搜索规则来搜索（下面的代码已经本地搜索),搜索规则:" + liger.toJSON(e.rules));
+                                    e.grid.loadData($.ligerFilter.getFilterFunction(e.rules));
+                                }
                             }
-                        }
-                    },
-                    {
-                        display: '股票名称',
-                        name: 'stockname', minWidth: 90, editor: {type: 'text'}
-                    },
-                    {
-                        display: '关注日期',
-                        name: 'followDate', minWidth: 90, type: 'date', editor: {type: 'date'}
-                    },
-                    {
-                        display: '关注点价格',
-                        name: 'followPrice', minWidth: 90, editor: {type: 'float'},
-                        render:function (item) {
-                            // console.log(item.jiage);
-                            return Math.abs(parseFloat(item.followPrice));
-                        }
-                    },
-                    {
-                        display: '现价',
-                        name: 'nowPrice', minWidth: 90, editor: {type: 'float'},
-                        render:function (item) {
-                            // console.log(item.jiage);
-                            var diffPrice = parseFloat(item.nowPrice) - parseFloat(item.followPrice);
-                            if (diffPrice>0){
-                                return '<span style="color:red">'+parseFloat(item.nowPrice).toFixed(2) + '</span>';
-                            }else{
-                                return '<span style="color:green">'+parseFloat(item.nowPrice).toFixed(2) + '</span>';
+                        },
+                        {
+                            display: '股票名称',
+                            name: 'stockname', minWidth: 90, editor: {type: 'text'}
+                        },
+                        {
+                            display: '关注日期',
+                            name: 'followDate', minWidth: 90, type: 'date', editor: {type: 'date'}
+                        },
+                        {
+                            display: '关注点价格',
+                            name: 'followPrice', minWidth: 90, editor: {type: 'float'},
+                            render: function (item) {
+                                // console.log(item.jiage);
+                                return Math.abs(parseFloat(item.followPrice));
                             }
-                        }
-                    },
-                    {
-                        display: '涨跌幅度',
-                        name: 'zdl', minWidth: 90, editor: {type: 'text'},
-                        render:function (item) {
-                            // console.log(item.jiage);
+                        },
+                        {
+                            display: '现价',
+                            name: 'nowPrice', minWidth: 90, editor: {type: 'float'},
+                            render: function (item) {
+                                // console.log(item.jiage);
+                                var diffPrice = parseFloat(item.nowPrice) - parseFloat(item.followPrice);
+                                if (diffPrice > 0) {
+                                    return '<span style="color:red">' + parseFloat(item.nowPrice).toFixed(2) + '</span>';
+                                } else {
+                                    return '<span style="color:green">' + parseFloat(item.nowPrice).toFixed(2) + '</span>';
+                                }
+                            }
+                        },
+                        {
+                            display: '涨跌幅度',
+                            name: 'zdl', minWidth: 90, editor: {type: 'text'},
+                            render: function (item) {
+                                // console.log(item.jiage);
                                 var followPrice = parseFloat(item.followPrice);
                                 var nowPrice = parseFloat(item.nowPrice);
-                                var diff = nowPrice-followPrice;
-                                var zdz  = (diff/followPrice)*100;
+                                var diff = nowPrice - followPrice;
+                                var zdz = (diff / followPrice) * 100;
                                 // console.log(zdz);
-                                if(diff>0) {
-                                    return '<span style="color:red">'+zdz.toFixed(2) + '%</span>';
-                                }else {
-                                    return '<span style="color:green">'+zdz.toFixed(2) + '%</span>';
+                                if (diff > 0) {
+                                    return '<span style="color:red">' + zdz.toFixed(2) + '%</span>';
+                                } else {
+                                    return '<span style="color:green">' + zdz.toFixed(2) + '%</span>';
                                 }
+                            }
+                        },
+                        {
+                            display: '概念',
+                            name: 'ramarks', minWidth: 90, editor: {type: 'text'}
+                        },
+                        {
+                            display: '已关注天数',
+                            name: 'dateDiff', minWidth: 90, editor: {type: 'text'},
+                            render: function (item) {
+                                var date1 = new Date();
+                                var fDate = item.followDate.split(" ");
+                                var dateDiff = DateDiff(date1.format("yyyy-MM-dd"), fDate[0]);
+                                // console.log(dateDiff)
+                                return dateDiff;
+                            }
+                        },
+                        {
+                            display: '',
+                            name: 'id', width: 10, hide: true
                         }
-                    },
-                    {
-                        display: '概念',
-                        name: 'ramarks', minWidth: 90, editor: {type: 'text'}
-                    },
-                    {
-                        display: '已关注天数',
-                        name: 'dateDiff', minWidth: 90, editor: {type: 'text'},
-                        render:function (item) {
-                            var date1 = new Date();
-                            var fDate=item.followDate.split(" ");
-                            var dateDiff =DateDiff(date1.format("yyyy-MM-dd"),fDate[0]);
-                            // console.log(dateDiff)
-                            return dateDiff;
-                        }
-                    },
-                    {
-                        display: '',
-                        name: 'id', width: 10, hide: true
+                    ], data: resultData, pageSize: 25, rownumbers: true, enabledEdit: true,
+                    usePager: false, isScroll: true,
+                    toolbar: {
+                        items: [
+                            {text: '增加', click: addCcgpRow, icon: 'add'},
+                            {line: true},
+                            {text: '删除', click: delCcgpRow, icon: 'delete'},
+                            {line: true},
+                            {text: '保存', click: saveCcgp, icon: 'save'},
+                            {line: true},
+                            {text: '走势图', click: showChart, icon: 'save'},
+                            {line: true}
+                        ]
                     }
-                ], data: resultData, pageSize: 25, rownumbers: true, enabledEdit: true,
-                usePager:false,isScroll: true,
-                toolbar: {
-                    items: [
-                        {text: '增加', click: addCcgpRow, icon: 'add'},
-                        {line: true},
-                        {text: '删除', click: delCcgpRow, icon: 'delete'},
-                        {line: true},
-                        {text: '保存', click: saveCcgp, icon: 'save'},
-                        {line: true},
-                        {text: '走势图', click: showChart, icon: 'save'},
-                        {line: true}
-                    ]
-                }
-            });
+                });
+            }
         }
     });
 }
