@@ -20,6 +20,8 @@ public class WebsocketService {
     private RestTemplate restTemplate; // HTTP 访问操作类
     @Autowired
     private QueueSender queueSender;
+    @Autowired
+    private FollowStockService followStockService;
 
 
     private boolean flag = true;
@@ -34,7 +36,7 @@ public class WebsocketService {
             int hour = Integer.parseInt(dateStrs[0]);
             int minute = Integer.parseInt(dateStrs[1]);
             if(hour>=1 && minute>=15 && hour<=7) {
-                GetStock getStock = GetStock.getInstance(restTemplate, queueSender);
+                GetStock getStock = GetStock.getInstance(restTemplate, queueSender,followStockService);
                 getStock.setFlag(flag);
                 LOGGER.info("[WebsocketService Execute flag]:{}", flag);
                 flag = getStock.start();
