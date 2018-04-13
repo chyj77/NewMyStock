@@ -37,7 +37,7 @@ function showCcgp(tabid) {
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
-        url: '/ccgp/idnex',
+        url: '/ccgp/index',
         success: function (data) {
             // console.log(data);
             if (data != '') {
