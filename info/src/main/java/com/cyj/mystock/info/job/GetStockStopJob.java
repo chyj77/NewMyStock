@@ -1,6 +1,7 @@
 package com.cyj.mystock.info.job;
 
 import com.cyj.mystock.info.queue.QueueSender;
+import com.cyj.mystock.info.service.FollowStockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class GetStockStopJob {
     private RestTemplate restTemplate; // HTTP 访问操作类
     @Autowired
     private QueueSender queueSender;
+    @Autowired
+    private FollowStockService followStockService;
     private boolean flag = false;
 
     @Scheduled(cron = "0 00 07 * * MON-FRI")
@@ -26,7 +29,7 @@ public class GetStockStopJob {
         LOGGER.info("[GetStockStopJob Execute]:{}", new Date());
         flag = !flag;
         try {
-            GetStock getStock = GetStock.getInstance(restTemplate, queueSender);
+            GetStock getStock = GetStock.getInstance(restTemplate, queueSender,followStockService);
             getStock.setFlag(flag);
             LOGGER.info("[GetStockStopJob Execute flag]:{}", flag);
             flag = getStock.start();

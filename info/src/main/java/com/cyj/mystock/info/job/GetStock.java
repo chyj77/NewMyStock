@@ -1,6 +1,7 @@
 package com.cyj.mystock.info.job;
 
 import com.cyj.mystock.info.queue.QueueSender;
+import com.cyj.mystock.info.service.FollowStockService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -13,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -31,6 +33,9 @@ public class GetStock {
 
     private QueueSender queueSender;
 
+
+    private FollowStockService followStockService;
+
     private Timer timer = new Timer(true);
 
     private boolean flag;
@@ -41,24 +46,24 @@ public class GetStock {
 
     private static GetStock instance = null;
 
-    public static GetStock getInstance(RestTemplate restTemplate, QueueSender queueSender){
+    public static GetStock getInstance(RestTemplate restTemplate, QueueSender queueSender,FollowStockService followStockService){
         if(instance==null){
-            instance = new GetStock(restTemplate, queueSender);
+            instance = new GetStock(restTemplate, queueSender,followStockService);
         }
         return instance;
     }
 
-    private GetStock(RestTemplate restTemplate, QueueSender queueSender) {
+    private GetStock(RestTemplate restTemplate, QueueSender queueSender,FollowStockService followStockService) {
         this.queueSender = queueSender;
         this.restTemplate = restTemplate;
+        this.followStockService = followStockService;
     }
 
     public boolean start() throws Exception {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                String providerMsg = restTemplate.getForEntity("http://service-info/followStock",
-                        String.class).getBody();
+                String providerMsg = followStockService.getAll();
                 CloseableHttpClient httpclient = HttpClients.createDefault();
                 try {
 //                        LOGGER.info("[CronJob Execute RealTime Data]:{}", providerMsg);
