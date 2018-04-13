@@ -23,35 +23,23 @@ zuul:
     menu0:
       path: /menu
       serviceId: SERVICE-MENU
-    menu1:
-      path: /menu/*
-      serviceId: SERVICE-MENU
     menu2:
       path: /lhb
       serviceId: SERVICE-MENU
     info0:
       path: /ztsj
       serviceId: SERVICE-INFO
-    info1:
-      path: /ztsj/*
-      serviceId: SERVICE-INFO
     info2:
-      path: /ztgn/*
+      path: /ztgn
       serviceId: SERVICE-INFO
     info6:
       path: /spmm
       serviceId: SERVICE-INFO
-    info3:
-      path: /spmm/*
-      serviceId: SERVICE-INFO
     info7:
       path: /ccgp
       serviceId: SERVICE-INFO
-    info4:
-      path: /ccgp/*
-      serviceId: SERVICE-INFO
     info5:
-      path: /gfjgd/*
+      path: /gfjgd
       serviceId: SERVICE-INFO
 
 ribbon:
