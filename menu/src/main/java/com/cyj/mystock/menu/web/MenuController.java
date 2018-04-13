@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController(value = "/menu")
+@RestController
 public class MenuController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MenuController.class);
@@ -25,7 +25,7 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @RequestMapping("/index")
+    @RequestMapping("/menu/index")
     public String menu() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()

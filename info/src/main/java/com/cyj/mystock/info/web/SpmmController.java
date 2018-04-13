@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@RestController(value = "/spmm")
+@RestController
 public class SpmmController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpmmController.class);
 
@@ -31,7 +31,7 @@ public class SpmmController {
     @Autowired
     private SpmmInfoService service;
 
-    @RequestMapping("/luoji")
+    @RequestMapping("/spmm/luoji")
     public String luoji() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
@@ -39,21 +39,21 @@ public class SpmmController {
 
         return  service.getLuoji();
     }
-    @RequestMapping("/stocks")
+    @RequestMapping("/spmm/stocks")
     public String stocks() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
                 + ", service_id = " + instance.getServiceId());
         return  service.getStock();
     }
-    @RequestMapping("/index")
+    @RequestMapping("/spmm/index")
     public String spmm() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
                 + ", service_id = " + instance.getServiceId());
         return  service.getAll();
     }
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/spmm/save", method = RequestMethod.POST)
     public String spmmSave(@RequestBody SpmmBean bean) {
         LOGGER.info("{}",bean);
         String providerMsg ="保存成功";
@@ -67,7 +67,7 @@ public class SpmmController {
         return providerMsg;
     }
     //删除
-    @RequestMapping("/delete")
+    @RequestMapping("/spmm/delete")
     public String delete(HttpServletRequest request) {
         String recId = request.getParameter("recId");
         ServiceInstance instance = serviceInstance();
@@ -84,7 +84,7 @@ public class SpmmController {
         return  providerMsg;
     }
 
-    @RequestMapping("/fx")
+    @RequestMapping("/spmm/fx")
     public String querySpmmFx() throws Exception {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()

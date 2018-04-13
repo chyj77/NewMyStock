@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@RestController(value = "/ccgp")
+@RestController
 public class FollowStockController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FollowStockController.class);
@@ -29,7 +29,7 @@ public class FollowStockController {
     @Autowired
     private FollowStockService followStockService;
 
-    @RequestMapping("/index")
+    @RequestMapping("/ccgp/index")
     public String getAll() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
@@ -37,7 +37,7 @@ public class FollowStockController {
         return  followStockService.getAll();
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/ccgp/save", method = RequestMethod.POST)
     public String doSave(@RequestBody FollowStockBean bean) {
         LOGGER.info("{}",bean);
         String providerMsg ="保存成功";
@@ -51,7 +51,7 @@ public class FollowStockController {
         return providerMsg;
     }
     //删除
-    @RequestMapping("/delete")
+    @RequestMapping("/ccgp/delete")
     public String delete(HttpServletRequest request) {
         String recId = request.getParameter("recId");
         ServiceInstance instance = serviceInstance();

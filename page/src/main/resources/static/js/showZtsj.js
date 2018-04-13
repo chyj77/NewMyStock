@@ -58,7 +58,7 @@ function showZtsj(tabid) {
                                     {display: '涨停最多概念', name: 'ztzdgn', width: 200},
                                     {display: '累计', name: 'COUNTS', width: 200}
                                 ], usePager: true, isScroll: true, checkbox: false,
-                                url: "/ztgn",
+                                url: "/ztsj/ztgn",
                                 width: '95%'
                             },
                             condition: {

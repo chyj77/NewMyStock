@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 
-@RestController(value = "/ztsj")
+@RestController
 public class ZtsjController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZtsjController.class);
 
@@ -26,28 +26,28 @@ public class ZtsjController {
     @Autowired
     private ZtsjInfoService service;
 
-    @RequestMapping("/ztgn")
+    @RequestMapping("/ztsj/ztgn")
     public String ztgn() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
                 + ", service_id = " + instance.getServiceId());
         return  service.getZtgn();
     }
-    @RequestMapping("/index")
+    @RequestMapping("/ztsj/index")
     public String ztsj() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
                 + ", service_id = " + instance.getServiceId());
         return  service.getAll();
     }
-    @RequestMapping("/fx")
+    @RequestMapping("/ztsj/fx")
     public String ztsjFx() {
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
                 + ", service_id = " + instance.getServiceId());
         return  service.getZtsjFx();
     }
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/ztsj/save", method = RequestMethod.POST)
     public String ztsjSave(@RequestBody ZtsjBean ztsj) {
         LOGGER.info("{}",ztsj);
         String providerMsg ="保存成功";
@@ -61,7 +61,7 @@ public class ZtsjController {
         return providerMsg;
     }
     //删除
-    @RequestMapping("/delete")
+    @RequestMapping("/ztsj/delete")
     public String delete(HttpServletRequest request) {
         String recId = request.getParameter("recId");
         ServiceInstance instance = serviceInstance();
