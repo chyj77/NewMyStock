@@ -38,7 +38,7 @@ function spmm(tabid) {
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
-        url: '/spmm',
+        url: '/spmm/index',
         success: function (data) {
             // console.log(data);
             var resultData = JSON.parse(data);
@@ -102,7 +102,7 @@ function spmmFresh() {
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
-        url: '/spmm',
+        url: '/spmm/index',
         success: function (data) {
             var resultData = JSON.parse(data);
             $grid.loadData(resultData);

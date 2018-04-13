@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RestController
+@RestController(value = "/lhb")
 public class LhbController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LhbController.class);
@@ -18,7 +18,7 @@ public class LhbController {
     @Autowired
     private LhbService lhbService;
 
-    @RequestMapping("/lhb")
+    @RequestMapping("/index")
     public String findAll(HttpServletRequest request) {
         String day = request.getParameter("day");
         JSONArray jsonArray = lhbService.findAll(day);

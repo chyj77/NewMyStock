@@ -37,7 +37,7 @@ function showCcgp(tabid) {
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
-        url: '/ccgp',
+        url: '/ccgp/idnex',
         success: function (data) {
             // console.log(data);
             if (data != '') {
@@ -205,7 +205,7 @@ function ccgpFresh() {
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
-        url: '/ccgp',
+        url: '/ccgp/index',
         success: function (data) {
             resultData = JSON.parse(data);
             var manager = $("#maingridCcgp").ligerGetGridManager();

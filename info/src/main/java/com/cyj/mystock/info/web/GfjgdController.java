@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
-@RestController
+@RestController(value = "/gfjgd")
 public class GfjgdController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GfjgdController.class);
@@ -31,7 +31,7 @@ public class GfjgdController {
     @Autowired
     private GfjgdService gfjgdService;
 
-    @RequestMapping(value = "/gfjgd")
+    @RequestMapping(value = "/index")
     public String getAll() {
         Date date1 = new Date();
         ServiceInstance instance = serviceInstance();
@@ -42,7 +42,7 @@ public class GfjgdController {
         return result;
     }
 
-    @RequestMapping(value = "/gfjgd/fx", method = RequestMethod.GET)
+    @RequestMapping(value = "/fx", method = RequestMethod.GET)
     public String queryGfStock() throws Exception{
         return gfjgdService.queryGfStock();
     }

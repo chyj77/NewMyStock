@@ -29,7 +29,7 @@ function executeShow(day,tabid,lhbDiv) {
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
-        url: '/thsLhb',
+        url: '/lhb/index',
         data:{'day':day},
         success: function (data) {
             // console.log(data);

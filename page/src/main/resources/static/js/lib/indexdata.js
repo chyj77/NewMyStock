@@ -2,7 +2,7 @@ function indexdata() {
     $.ajax({
         type : 'GET',
         contentType : 'application/json',
-        url : '/menu',
+        url : '/menu/index',
         success : function(data) {
             // console.log(data);
             if(data!='') {

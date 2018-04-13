@@ -11,7 +11,7 @@ function gfls(tabid) {
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
-        url: '/gfjgd',
+        url: '/gfjgd/index',
         success: function (data) {
             var resultData2 = JSON.parse(data);
             // console.log(resultData2);
