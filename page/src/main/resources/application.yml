@@ -5,7 +5,7 @@ eureka:
     serviceUrl:
       defaultZone: http://114.115.208.105:8888/eureka/
   instance:
-      ip-address: 114.115.208.105
+#      ip-address: 114.115.208.105
       lease-expiration-duration-in-seconds: 30
       lease-renewal-interval-in-seconds: 10
       preferIpAddress: true
@@ -76,6 +76,9 @@ zuul:
       serviceId: SERVICE-INFO
     info16:
       path: /ccgp/delete
+      serviceId: SERVICE-INFO
+    info17:
+      path: /ccgp/getStock
       serviceId: SERVICE-INFO
 
 ribbon:

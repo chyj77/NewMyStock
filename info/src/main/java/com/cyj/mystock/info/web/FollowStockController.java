@@ -2,18 +2,23 @@ package com.cyj.mystock.info.web;
 
 import com.cyj.mystock.info.bean.FollowStockBean;
 import com.cyj.mystock.info.service.FollowStockService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -66,6 +71,40 @@ public class FollowStockController {
             providerMsg ="删除失败";
         }
         return  providerMsg;
+    }
+    @RequestMapping("/ccgp/getStock")
+    @ResponseBody
+    public String ccgpGetStock(HttpServletRequest request) {
+        String stockcode = request.getParameter("stockcode");
+        String URL = "http://hq.sinajs.cn/list=";
+        StringBuffer sb = new StringBuffer();
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        if (stockcode.startsWith("00") || stockcode.startsWith("30")) {
+            sb.append("sz");
+        } else {
+            sb.append("sh");
+        }
+        sb.append(stockcode);
+        String getUrl = URL + sb.toString();
+        HttpGet httpGet = new HttpGet(getUrl);
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(30000).setConnectTimeout(15000)
+                .setConnectionRequestTimeout(30000).build();
+        httpGet.setConfig(requestConfig);
+        CloseableHttpResponse response = null;
+        String providerMsg="";
+        try {
+            response = httpclient.execute(httpGet);
+            org.apache.http.Header[] headers = response.getHeaders("Content-Type");
+            String content = EntityUtils.toString(response.getEntity());
+
+            if (StringUtils.isNotBlank(content)) {
+                String[] stockhqstrs = content.split(",");
+                providerMsg = stockhqstrs[3].trim();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return providerMsg;
     }
     /**
      * 获取当前服务的服务实例
