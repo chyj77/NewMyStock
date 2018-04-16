@@ -144,11 +144,11 @@ function showCcgp(tabid) {
                         },
                         {
                             display: '概念',
-                            name: 'ramarks', minWidth: 90, editor: {type: 'text'}
+                            name: 'ramarks', minWidth: 200, editor: {type: 'text'}
                         },
                         {
                             display: '已关注天数',
-                            name: 'dateDiff', minWidth: 90, editor: {type: 'text'},
+                            name: 'dateDiff',  editor: {type: 'text'},
                             render: function (item) {
                                 var date1 = new Date();
                                 var fDate = item.followDate.split(" ");
