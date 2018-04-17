@@ -118,7 +118,9 @@ public class GetStock {
                                 rowsJson.put("zdl","");
                                 LOGGER.info("[CronJob Execute RealTime Data]:{}", rowsJson.toJSONString());
                                 if(flag){
-                                    FollowStockBean bean = MyStringUtils.toBean(rowsJson.toJSONString(),FollowStockBean.class);
+                                    FollowStockBean bean = new FollowStockBean();
+                                    bean.setNowPrice((String) rowsJson.get("nowPrice"));
+                                    bean.setId((Long) rowsJson.get("id"));
                                     followStockService.save(bean);
                                 }
                                 rowsJson.put(Const.KEY,Const.FOLLOWSTOCK);

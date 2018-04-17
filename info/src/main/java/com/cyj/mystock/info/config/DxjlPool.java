@@ -1,5 +1,6 @@
 package com.cyj.mystock.info.config;
 
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public class DxjlPool {
@@ -18,5 +19,39 @@ public class DxjlPool {
             set.clear();
             set.add(content);
         }
+    }
+    public static String duplicateRemove(String content){
+        if(set.size()==0) return content;
+        ArrayList<String> oldList = new ArrayList<String>();
+        ArrayList<String> newList = new ArrayList<String>();
+        if(content.indexOf("</tr>")>-1){
+            String[] newContets = content.split("</tr>");
+            for(String newContent:newContets){
+                newContent = newContent +"</tr>";
+                newList.add(newContent);
+            }
+        }
+        String poolContent = set.iterator().next();
+        if(poolContent.indexOf("</tr>")>-1){
+            String[] oldContets = poolContent.split("</tr>");
+            for(String oldContent:oldContets){
+                oldContent = oldContent +"</tr>";
+                oldList.add(oldContent);
+            }
+        }
+        for(int i=0;i<newList.size();i++){
+            for(int j=0;j<oldList.size();j++){
+                String oldStr = oldList.get(j);
+                String newStr = newList.get(i);
+                if(oldStr.equals(newStr)){
+                    newList.remove(newStr);
+                }
+            }
+        }
+        StringBuffer sb = new StringBuffer();
+        for(int i=0;i<newList.size();i++){
+            sb.append(newList.get(i));
+        }
+        return sb.toString();
     }
 }

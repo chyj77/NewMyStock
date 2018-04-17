@@ -5,6 +5,7 @@ import com.cyj.mystock.info.config.DxjlPool;
 import com.cyj.mystock.info.queue.QueueSender;
 import com.cyj.mystock.info.service.SpmmInfoService;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.ParseException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -67,7 +68,8 @@ public class GetDxjl {
                     request.setConfig(requestConfig);
                     CloseableHttpResponse response = httpclient.execute(request);
                     String content = EntityUtils.toString(response.getEntity());
-                    if(DxjlPool.contains(content)){
+                    String newContent = DxjlPool.duplicateRemove(content);
+                    if(StringUtils.isBlank(newContent)){
                         return;
                     }
                     DxjlPool.setValue(content);

@@ -4,7 +4,7 @@ function getDxjl(tabid) {
     var lhbDiv = $('<div>', {'class': 'l-tab-content-item'});
     var clearDiv = $('<div>', {'class': 'l-clear'});
     var maingridDiv = $('<div>', {'id': 'maingridDxjlStock'});
-    dxjlTable=$('<table>', {'id': 'tableDxjlStock','style':'border-spacing:2px;border-color:grey'});
+    dxjlTable=$('<table>', {'id': 'tableDxjlStock','width':'100%','border':'1px','cellspacing':'0'});
     maingridDiv.append(dxjlTable);
     lhbDiv.prepend(clearDiv);
     lhbDiv.append(maingridDiv);
