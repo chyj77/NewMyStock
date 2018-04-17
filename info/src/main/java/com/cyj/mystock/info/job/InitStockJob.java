@@ -21,7 +21,7 @@ public class InitStockJob {
     @Autowired
     private FollowStockService followStockService;
 
-    @Scheduled(cron = "0 00 00 * * MON-FRI")
+    @Scheduled(cron = "0 00 16 * * MON-FRI")
     public void cronJob() {
         LOGGER.info("InitStockJob 重新初始化redis的数据!");
         ztsjInfoService.setZtgn();

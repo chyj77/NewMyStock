@@ -38,7 +38,7 @@ public class WebsocketService {
             String[] dateStrs = dateStr.split(":");
             int hour = Integer.parseInt(dateStrs[0]);
             int minute = Integer.parseInt(dateStrs[1]);
-            if(hour>=9 && hour<=15) {
+            if(hour>=1 && hour<=7) {
                 GetStock getStock = GetStock.getInstance(restTemplate, queueSender,followStockService);
                 getStock.setFlag(flag);
                 GetDxjl getDxjl = GetDxjl.getInstance(queueSender,spmmInfoService);
