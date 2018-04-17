@@ -14,6 +14,6 @@ function getDxjl(tabid) {
 function appendDxjl(dxjlData) {
     if(dxjlTable != undefined && dxjlTable !=null) {
         // console.log(dxjlTable);
-        dxjlTable.append(dxjlData);
+        dxjlTable.prepend(dxjlData);
     }
 }
