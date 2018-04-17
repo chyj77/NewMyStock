@@ -5,11 +5,11 @@ eureka:
     serviceUrl:
       defaultZone: http://114.115.208.105:8888/eureka/
   instance:
-      ip-address: 114.115.208.105
+#      ip-address: 114.115.208.105
       lease-expiration-duration-in-seconds: 30
       lease-renewal-interval-in-seconds: 10
       preferIpAddress: true
-      instance-id: http://114.115.208.105:${server.port}
+#      instance-id: http://114.115.208.105:${server.port}
 server:
   port: 8085
 spring:

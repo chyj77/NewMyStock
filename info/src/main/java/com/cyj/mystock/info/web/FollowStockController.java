@@ -76,34 +76,7 @@ public class FollowStockController {
     @ResponseBody
     public String ccgpGetStock(HttpServletRequest request) {
         String stockcode = request.getParameter("stockcode");
-        String URL = "http://hq.sinajs.cn/list=";
-        StringBuffer sb = new StringBuffer();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        if (stockcode.startsWith("00") || stockcode.startsWith("30")) {
-            sb.append("sz");
-        } else {
-            sb.append("sh");
-        }
-        sb.append(stockcode);
-        String getUrl = URL + sb.toString();
-        HttpGet httpGet = new HttpGet(getUrl);
-        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(30000).setConnectTimeout(15000)
-                .setConnectionRequestTimeout(30000).build();
-        httpGet.setConfig(requestConfig);
-        CloseableHttpResponse response = null;
-        String providerMsg="";
-        try {
-            response = httpclient.execute(httpGet);
-            org.apache.http.Header[] headers = response.getHeaders("Content-Type");
-            String content = EntityUtils.toString(response.getEntity());
-
-            if (StringUtils.isNotBlank(content)) {
-                String[] stockhqstrs = content.split(",");
-                providerMsg = stockhqstrs[3].trim();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String providerMsg = followStockService.getStock(stockcode);
         return providerMsg;
     }
     /**

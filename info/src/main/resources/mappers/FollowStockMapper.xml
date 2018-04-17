@@ -17,7 +17,7 @@
     <select id="getAll" resultMap="BaseResultMap">
         SELECT a.id AS id,a.stockcode AS stockcode,b.stockname AS stockname,
 				a.follow_price AS follow_price,a.follow_date AS follow_date,a.now_price AS now_price,
-				concat(b.hangye,';',b.tag) as ramarks
+				concat(b.hangye,',',b.tag) as ramarks
 				FROM followstock a join dict_stock b on a.stockcode = b.stockcode
         ORDER BY follow_date desc, stockcode ASC
     </select>

@@ -1,5 +1,6 @@
 package com.cyj.mystock.page.websocket;
 
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -11,9 +12,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(value = "/websocket")
 @Component
+@Log4j2
 public class MyWebSocket {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyWebSocket.class);
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
 
@@ -30,11 +31,11 @@ public class MyWebSocket {
         this.session = session;
         webSocketSet.add(this);     //加入set中
         addOnlineCount();           //在线数加1
-        LOGGER.info("有新连接加入！当前在线人数为" + getOnlineCount());
+        log.info("有新连接加入！当前在线人数为" + getOnlineCount());
         try {
             sendMessage("成功连接在线人数为"+getOnlineCount());
         } catch (IOException e) {
-            LOGGER.info("IO异常");
+            log.info("IO异常");
         }
     }
 
@@ -45,7 +46,7 @@ public class MyWebSocket {
     public void onClose() {
         webSocketSet.remove(this);  //从set中删除
         subOnlineCount();           //在线数减1
-        LOGGER.info("有一连接关闭！当前在线人数为" + getOnlineCount());
+        log.info("有一连接关闭！当前在线人数为" + getOnlineCount());
     }
 
     /**
@@ -54,7 +55,7 @@ public class MyWebSocket {
      * @param message 客户端发送过来的消息*/
     @OnMessage
     public void onMessage(String message, Session session) {
-        LOGGER.info("来自客户端的消息:" + message);
+        log.info("来自客户端的消息:" + message);
 
         //群发消息
         for (MyWebSocket item : webSocketSet) {
@@ -72,7 +73,7 @@ public class MyWebSocket {
      */
      @OnError
      public void onError(Session session, Throwable error) {
-         LOGGER.info("发生错误");
+         log.info("发生错误");
          this.onClose();
          error.printStackTrace();
      }
@@ -80,9 +81,15 @@ public class MyWebSocket {
 
      public void sendMessage(String message) throws IOException {
          if(this.session!=null) {
-             LOGGER.info("websocket推送消息 {}" , message);
-             this.session.getBasicRemote().sendText(message);
-             //this.session.getAsyncRemote().sendText(message);
+//             LOGGER.info("websocket推送消息 {}" , message);
+//             this.session.getBasicRemote().sendText(message,true);
+             this.session.getAsyncRemote().sendText(message, new SendHandler() {
+                 @Override
+                 public void onResult(SendResult sendResult) {
+                     sendResult.isOK();
+//                     log.info(sendResult.isOK());
+                 }
+             });
          }
      }
 

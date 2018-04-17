@@ -1,5 +1,6 @@
 package com.cyj.mystock.info.service;
 
+import com.cyj.mystock.info.job.GetDxjl;
 import com.cyj.mystock.info.job.GetStock;
 import com.cyj.mystock.info.queue.QueueSender;
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ public class WebsocketService {
     private QueueSender queueSender;
     @Autowired
     private FollowStockService followStockService;
+    @Autowired
+    private SpmmInfoService spmmInfoService;
 
 
     private boolean flag = true;
@@ -35,11 +38,14 @@ public class WebsocketService {
             String[] dateStrs = dateStr.split(":");
             int hour = Integer.parseInt(dateStrs[0]);
             int minute = Integer.parseInt(dateStrs[1]);
-            if(hour>=1 && hour<=7) {
+            if(hour>=9 && hour<=15) {
                 GetStock getStock = GetStock.getInstance(restTemplate, queueSender,followStockService);
                 getStock.setFlag(flag);
+                GetDxjl getDxjl = GetDxjl.getInstance(queueSender,spmmInfoService);
+                getDxjl.setFlag(flag);
                 LOGGER.info("[WebsocketService Execute flag]:{}", flag);
                 flag = getStock.start();
+                getDxjl.start();
             }
         } catch (Exception e) {
             e.printStackTrace();

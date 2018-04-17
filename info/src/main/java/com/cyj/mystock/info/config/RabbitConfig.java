@@ -7,7 +7,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
     @Bean
-    public Queue Queue() {
+    public Queue Stock() {
         return new Queue("stock");
+    }
+    @Bean
+    public Queue Dxjl() {
+        return new Queue("dxjl");
     }
 }

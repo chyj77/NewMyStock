@@ -239,7 +239,7 @@ function fresh() {
     $.ajax({
         type: 'GET',
         contentType: 'application/json',
-        url: '/ztsj',
+        url: '/ztsj/index',
         success: function (data) {
             var resultData = JSON.parse(data);
             $grid.loadData(resultData);

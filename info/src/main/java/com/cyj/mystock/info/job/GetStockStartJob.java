@@ -2,6 +2,7 @@ package com.cyj.mystock.info.job;
 
 import com.cyj.mystock.info.queue.QueueSender;
 import com.cyj.mystock.info.service.FollowStockService;
+import com.cyj.mystock.info.service.SpmmInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,13 @@ public class GetStockStartJob {
     private QueueSender queueSender;
     @Autowired
     private FollowStockService followStockService;
+    @Autowired
+    private SpmmInfoService spmmInfoService;
 
 
     private boolean flag = true;
 
-    @Scheduled(cron = "0 15 01 * * MON-FRI")
+    @Scheduled(cron = "0 15 1 * * MON-FRI")
     public void cronJob() {
         LOGGER.info("[GetStockStartJob Execute]:{}", new Date());
         flag = !flag;
@@ -37,7 +40,10 @@ public class GetStockStartJob {
             GetStock getStock = GetStock.getInstance(restTemplate, queueSender,followStockService);
             getStock.setFlag(flag);
             LOGGER.info("[GetStockStartJob Execute flag]:{}", flag);
+            GetDxjl getDxjl = GetDxjl.getInstance(queueSender,spmmInfoService);
+            getDxjl.setFlag(flag);
             flag = getStock.start();
+            getDxjl.start();
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("[GetStockStartJob Execute Exception]:", e);

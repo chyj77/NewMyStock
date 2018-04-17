@@ -9,7 +9,7 @@ $.ajax({
     success: function (data) {
         if(data !='') {
             stockData = JSON.parse(data);
-            // console.log(stockData);
+            console.log(stockData);
         }
     }
 });
@@ -113,7 +113,7 @@ function showCcgp(tabid) {
                             }
                         },
                         {
-                            display: '现价',
+                            display: '最新价',
                             name: 'nowPrice', minWidth: 90, editor: {type: 'float'},
                             render: function (item) {
                                 // console.log(item.jiage);
@@ -283,28 +283,30 @@ function editCcgp(params) {
 
     var manager = $("#maingridCcgp").ligerGetGridManager();
     try {
-        var data = manager.getData();
-        $("#now1").html(new Date().format("yyyy年MM月dd日 hh:mm:ss"));
-        if($("#now").length > 0) {
-            $("#now").html(new Date().format("yyyy年MM月dd日 hh:mm:ss"));
-        }
-        var param = JSON.parse(params);
-        var stockcode = param["stockcode"];
-        for (var rowData in data) {
-            var rowStockcode = data[rowData]["stockcode"];
-            if (stockcode == rowStockcode) {
-                var selected = manager.getRow(rowData);
-                // console.log(selected);
-                manager.updateRow(selected,{
-                    stockcode:param["stockcode"],
-                    stockname:param["stockname"],
-                    followDate:param["followDate"],
-                    followPrice:param["followPrice"],
-                    nowPrice : param["nowPrice"],
-                    zdl : param["zdl"],
-                    ramarks : param["ramarks"],
-                    dateDiff : param["dateDiff"]
-                });
+        if(manager!=null) {
+            var data = manager.getData();
+            $("#now1").html(new Date().format("yyyy年MM月dd日 hh:mm:ss"));
+            if ($("#now").length > 0) {
+                $("#now").html(new Date().format("yyyy年MM月dd日 hh:mm:ss"));
+            }
+            var param = params;
+            var stockcode = param["stockcode"];
+            for (var rowData in data) {
+                var rowStockcode = data[rowData]["stockcode"];
+                if (stockcode == rowStockcode) {
+                    var selected = manager.getRow(rowData);
+                    // console.log(selected);
+                    manager.updateRow(selected, {
+                        stockcode: param["stockcode"],
+                        stockname: param["stockname"],
+                        followDate: param["followDate"],
+                        followPrice: param["followPrice"],
+                        nowPrice: param["nowPrice"],
+                        zdl: param["zdl"],
+                        ramarks: param["ramarks"],
+                        dateDiff: param["dateDiff"]
+                    });
+                }
             }
         }
     }catch (e){

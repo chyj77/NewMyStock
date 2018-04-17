@@ -7,6 +7,7 @@ import com.cyj.mystock.info.bean.ZtsjBean;
 import com.cyj.mystock.info.mapper.SpmmMapper;
 import com.cyj.mystock.info.mapper.ZtsjMapper;
 import com.cyj.mystock.info.utils.MyStringUtils;
+import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -24,8 +25,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 @Service
+@Log4j2
 public class SpmmInfoService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpmmInfoService.class);
 
     @Autowired
     private SpmmMapper spmmMapper;
@@ -41,12 +42,12 @@ public class SpmmInfoService {
     public void setLuoji() {
         Date date1 = new Date();
         redisUtil.remove(ljkey);
-        LOGGER.info("删除买卖逻辑耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        log.info("删除买卖逻辑耗时={}毫秒",(new Date().getTime()-date1.getTime()));
         date1 = new Date();
         List<Map> list = spmmMapper.getLuoji();
         String key2= "luoji";
         redisUtil.pipelineSet(ljkey,key2,list);
-        LOGGER.info("保存买卖逻辑概念耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        log.info("保存买卖逻辑概念耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 
     }
     public String getLuoji() {
@@ -59,27 +60,40 @@ public class SpmmInfoService {
             }
         }catch (Exception e){
             e.printStackTrace();
-            LOGGER.error("",e);
+            log.error("",e);
         }
         return jsonArray.toJSONString();
     }
     public void setStock() {
         Date date1 = new Date();
         redisUtil.remove(stockKey);
-        LOGGER.info("删除股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        log.info("删除股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
         date1 = new Date();
         List<MaretStockBean> list = spmmMapper.getStock();
 //        String key2= "stockcode";
-        redisUtil.pipelineSet(stockKey,list);
-        LOGGER.info("保存股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        redisUtil.pipelineSet2(stockKey,list);
+        log.info("保存股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
 
     }
     public String getStock() {
-        Set<String> set = redisUtil.range(stockKey);
+        Date date1 = new Date();
+        List<MaretStockBean> list = spmmMapper.getStock();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("Rows", set);
-        jsonObject.put("Total",set.size());
+        JSONArray jsonArray = new JSONArray();
+        for(MaretStockBean bean:list){
+            JSONObject jsonBean = MyStringUtils.beanToJSON(bean);
+            jsonArray.add(jsonBean);
+        }
+        jsonObject.put("Rows", jsonArray);
+        jsonObject.put("Total",list.size());
+        log.info("MYSQL获取股票池耗时={}毫秒",(new Date().getTime()-date1.getTime()));
         return jsonObject.toJSONString();
+    }
+
+    public String getStock(String stockcode) {
+        String key = stockKey +":"+stockcode;
+        String resultStr = redisUtil.get(key);
+        return resultStr;
     }
 
     public String getAll() {
@@ -111,17 +125,17 @@ public class SpmmInfoService {
         } else {
             spmmMapper.updateByPrimaryKeySelective(bean);
         }
-        LOGGER.info("保存实盘买卖数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        log.info("保存实盘买卖数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
     public void delete(Long recId) throws Exception {
         Date date1 = new Date();
         spmmMapper.deleteByPrimaryKey(recId);
-        LOGGER.info("删除实盘买卖数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        log.info("删除实盘买卖数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
     public String querySpmmFx() throws Exception{
         Date date1 = new Date();
         List<Map> list = spmmMapper.querySpmmFx();
-        LOGGER.info("查找实盘分析数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        log.info("查找实盘分析数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
         JSONArray jsonArray = new JSONArray();
         if(list!=null && list.size()>0){
             for(Map map:list){
@@ -132,7 +146,7 @@ public class SpmmInfoService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("Rows", jsonArray);
         jsonObject.put("Total",list.size());
-        LOGGER.info("转换实盘分析数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
+        log.info("转换实盘分析数据耗时={}毫秒",(new Date().getTime()-date1.getTime()));
         return jsonObject.toJSONString();
     }
 

@@ -1,7 +1,10 @@
 package com.cyj.mystock.info.job;
 
+import com.cyj.mystock.info.bean.FollowStockBean;
+import com.cyj.mystock.info.config.Const;
 import com.cyj.mystock.info.queue.QueueSender;
 import com.cyj.mystock.info.service.FollowStockService;
+import com.cyj.mystock.info.utils.MyStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -115,14 +118,12 @@ public class GetStock {
                                 rowsJson.put("zdl","");
                                 LOGGER.info("[CronJob Execute RealTime Data]:{}", rowsJson.toJSONString());
                                 if(flag){
-                                    HttpHeaders headers = new HttpHeaders();
-                                    MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
-                                    headers.setContentType(type);
-                                    headers.add("Accept", MediaType.APPLICATION_JSON.toString());
-                                    HttpEntity<String> formEntity = new HttpEntity<String>(rowsJson.toJSONString(), headers);
-                                    restTemplate.postForObject("http://SERVICE-INFO/followStock/save", formEntity, String.class);
+                                    FollowStockBean bean = MyStringUtils.toBean(rowsJson.toJSONString(),FollowStockBean.class);
+                                    followStockService.save(bean);
                                 }
-                                queueSender.send(rowsJson.toJSONString());
+                                rowsJson.put(Const.KEY,Const.FOLLOWSTOCK);
+                                String queueName = "stock";
+                                queueSender.send(queueName,rowsJson.toJSONString());
                             }
                         }
                     }

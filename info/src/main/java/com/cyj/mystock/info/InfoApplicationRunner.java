@@ -1,6 +1,7 @@
 package com.cyj.mystock.info;
 
 
+import com.cyj.mystock.info.config.DxjlPool;
 import com.cyj.mystock.info.service.FollowStockService;
 import com.cyj.mystock.info.service.SpmmInfoService;
 import com.cyj.mystock.info.service.WebsocketService;
@@ -35,6 +36,7 @@ public class InfoApplicationRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments var1) throws Exception{
         LOGGER.info("MyApplicationRunner2!");
+        DxjlPool.clear();
         websocketService.initGetStock();
         ztsjInfoService.setZtgn();
         ztsjInfoService.setAll();

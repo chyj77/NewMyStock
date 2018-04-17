@@ -4,6 +4,13 @@ import com.cyj.mystock.info.bean.FollowStockBean;
 import com.cyj.mystock.info.bean.ZtsjBean;
 import com.cyj.mystock.info.mapper.FollowStockMapper;
 import com.cyj.mystock.info.mapper.ZtsjMapper;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -16,6 +23,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
@@ -81,5 +89,35 @@ public class FollowStockService {
         setRedisData();
         LOGGER.info("重置关注股票耗时={}毫秒",(new Date().getTime()-date1.getTime()));
     }
+    public String getStock(String stockcode){
+        String URL = "http://hq.sinajs.cn/list=";
+        StringBuffer sb = new StringBuffer();
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        if (stockcode.startsWith("00") || stockcode.startsWith("30")) {
+            sb.append("sz");
+        } else {
+            sb.append("sh");
+        }
+        sb.append(stockcode);
+        String getUrl = URL + sb.toString();
+        HttpGet httpGet = new HttpGet(getUrl);
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(30000).setConnectTimeout(15000)
+                .setConnectionRequestTimeout(30000).build();
+        httpGet.setConfig(requestConfig);
+        CloseableHttpResponse response = null;
+        String providerMsg="";
+        try {
+            response = httpclient.execute(httpGet);
+            org.apache.http.Header[] headers = response.getHeaders("Content-Type");
+            String content = EntityUtils.toString(response.getEntity());
 
+            if (StringUtils.isNotBlank(content)) {
+                String[] stockhqstrs = content.split(",");
+                providerMsg = stockhqstrs[3].trim();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return providerMsg;
+    }
 }

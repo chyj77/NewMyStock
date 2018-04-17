@@ -2,6 +2,7 @@ package com.cyj.mystock.info.job;
 
 import com.cyj.mystock.info.queue.QueueSender;
 import com.cyj.mystock.info.service.FollowStockService;
+import com.cyj.mystock.info.service.SpmmInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class GetStockStop11Job {
     private QueueSender queueSender;
     @Autowired
     private FollowStockService followStockService;
+    @Autowired
+    private SpmmInfoService spmmInfoService;
+
     private boolean flag = false;
 
     @Scheduled(cron = "0 30 03 * * MON-FRI")
@@ -31,8 +35,11 @@ public class GetStockStop11Job {
         try {
             GetStock getStock = GetStock.getInstance(restTemplate, queueSender,followStockService);
             getStock.setFlag(flag);
+            GetDxjl getDxjl = GetDxjl.getInstance(queueSender,spmmInfoService);
+            getDxjl.setFlag(flag);
             LOGGER.info("[GetStockStopJob Execute flag]:{}", flag);
             flag = getStock.start();
+            getDxjl.start();
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("[GetStockStopJob Execute Exception]:", e);

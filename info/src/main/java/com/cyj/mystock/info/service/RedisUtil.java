@@ -1,7 +1,9 @@
 package com.cyj.mystock.info.service;
 
+import com.cyj.mystock.info.bean.MaretStockBean;
 import com.cyj.mystock.info.bean.ZtsjBean;
 import com.cyj.mystock.info.utils.MyStringUtils;
+import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +26,9 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings("unchecked")
 @Component
+@Log4j2
 public class RedisUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RedisUtil.class);
 
     @SuppressWarnings("rawtypes")
     @Autowired
@@ -219,6 +221,28 @@ public class RedisUtil {
                         JSONObject jsonObject = MyStringUtils.beanToJSON(bean);
                         byte[] v = redisTemplate.getValueSerializer().serialize(jsonObject.toJSONString());
                         connection.zAdd(rawKey,d,v);
+                        d++;
+                    }
+                }
+                return connection.closePipeline();
+            }
+        };
+        return redisTemplate.execute(pipelineCallback);
+    }
+    public Object pipelineSet2(String key,List<MaretStockBean> list){
+        RedisCallback<List<Object>> pipelineCallback = new RedisCallback<List<Object>>() {
+            @Override
+            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.openPipeline();
+//                byte[] rawKey = redisTemplate.getKeySerializer().serialize(key);
+                if (list != null && list.size() > 0) {
+                    double d = 0;
+                    for (MaretStockBean bean : list) {
+                        String redisKey = key +":"+bean.getStockcode();
+                        JSONObject jsonObject = MyStringUtils.beanToJSON(bean);
+                        byte[] rawKey = redisTemplate.getKeySerializer().serialize(redisKey);
+                        byte[] v = redisTemplate.getValueSerializer().serialize(jsonObject.toJSONString());
+                        connection.set(rawKey,v);
                         d++;
                     }
                 }

@@ -86,8 +86,8 @@ function indexdata() {
     });
 
 }
-var websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
-// var websocket = new WebSocket("ws://localhost:8080/websocket");
+// var websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
+var websocket = new WebSocket("ws://localhost:8080/websocket");
 //连接发生错误的回调方法
 websocket.onerror = function(){
     console.log("error");
@@ -97,19 +97,34 @@ websocket.onerror = function(){
 websocket.onopen = function(event){
     console.log("open");
 }
-
+var FOLLOWSTOCK="followstock";
+var DXJL = "dxjl";
 //接收到消息的回调方法
-websocket.onmessage = function(event){
+websocket.onmessage = function(event) {
     // console.log(event.data);
-    editCcgp(event.data);
+    if(event.data.indexOf("成功连接在线人数为")==-1) {
+        try {
+            var eventData = JSON.parse(event.data);
+            var KEY = eventData.MSGTYPE;
+            // console.log(KEY);
+            if (KEY === FOLLOWSTOCK) {
+                editCcgp(eventData);
+            } else if (KEY === DXJL) {
+                // console.log(eventData.data);
+                appendDxjl(eventData.data);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
 }
 
 //连接关闭的回调方法
 websocket.onclose = function(){
     console.log("close");
     webSocket = null;
-    // websocket = new WebSocket("ws://localhost:8080/websocket");
-    websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
+    websocket = new WebSocket("ws://localhost:8080/websocket");
+    // websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
 }
 
 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。

@@ -18,4 +18,9 @@ public class QueueSender {
         LOGGER.info("Sender : {}" , context);
         this.rabbitTemplate.convertAndSend("stock", context);
     }
+
+    public void send(String queueName,String context) {
+        LOGGER.info("Sender name = {} ;context = {}" ,queueName, context);
+        this.rabbitTemplate.convertAndSend(queueName, context);
+    }
 }
