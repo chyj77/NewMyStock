@@ -86,8 +86,8 @@ function indexdata() {
     });
 
 }
-// var websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
-var websocket = new WebSocket("ws://localhost:8080/websocket");
+var websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
+// var websocket = new WebSocket("ws://localhost:8080/websocket");
 //连接发生错误的回调方法
 websocket.onerror = function(){
     console.log("error");
@@ -123,8 +123,8 @@ websocket.onmessage = function(event) {
 websocket.onclose = function(){
     console.log("close");
     webSocket = null;
-    websocket = new WebSocket("ws://localhost:8080/websocket");
-    // websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
+    // websocket = new WebSocket("ws://localhost:8080/websocket");
+    websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
 }
 
 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
