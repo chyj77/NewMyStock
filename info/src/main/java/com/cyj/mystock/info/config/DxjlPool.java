@@ -39,13 +39,15 @@ public class DxjlPool {
                 oldList.add(oldContent);
             }
         }
-        for(int i=(newList.size()-1);i>-1;i--){
-            for(int j=0;j<oldList.size();j++){
+        for(int i=(newList.size()-1);i>-1;){
+            for(int j=(oldList.size()-1);j>-1;){
                 String oldStr = oldList.get(j);
                 String newStr = newList.get(i);
                 if(oldStr.equals(newStr)){
                     newList.remove(newStr);
-                    break;
+                    oldList.remove(oldStr);
+                    i--;
+                    j--;
                 }
             }
         }
