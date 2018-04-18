@@ -39,7 +39,7 @@ public class DxjlPool {
                 oldList.add(oldContent);
             }
         }
-        for(int i=0;i<newList.size();i++){
+        for(int i=(newList.size()-1);i>-1;i--){
             for(int j=0;j<oldList.size();j++){
                 String oldStr = oldList.get(j);
                 String newStr = newList.get(i);
