@@ -45,6 +45,7 @@ public class DxjlPool {
                 String newStr = newList.get(i);
                 if(oldStr.equals(newStr)){
                     newList.remove(newStr);
+                    break;
                 }
             }
         }
