@@ -1,9 +1,6 @@
 package com.cyj.mystock.info.service;
 
-import com.cyj.mystock.info.bean.FollowStockBean;
-import com.cyj.mystock.info.bean.MaretStockBean;
-import com.cyj.mystock.info.bean.SpmmBean;
-import com.cyj.mystock.info.bean.ZtsjBean;
+import com.cyj.mystock.info.bean.*;
 import com.cyj.mystock.info.mapper.SpmmMapper;
 import com.cyj.mystock.info.mapper.ZtsjMapper;
 import com.cyj.mystock.info.utils.MyStringUtils;
@@ -150,4 +147,7 @@ public class SpmmInfoService {
         return jsonObject.toJSONString();
     }
 
+    public void insertZdtBean(ZdtBean bean){
+        spmmMapper.insertZdtBean(bean);
+    }
 }

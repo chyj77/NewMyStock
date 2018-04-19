@@ -31,6 +31,7 @@
     <script src="../js/ztsjfx.js" type="text/javascript"></script>
     <script src="../js/stock.js" type="text/javascript"></script>
     <script src="../js/getDxjl.js" type="text/javascript"></script>
+    <script src="../js/getZdb.js" type="text/javascript"></script>
 </head>
 <script type="text/javascript">
     /*<![CDATA[*/
@@ -216,9 +217,9 @@
                 f_addTab(tabitems[i].tabid, tabitems[i].text, tabitems[i].url);
             }
         }
-        showCcgp("home");
-        console.log("home");
-        tab.selectTabItem("home");
+        getDxjl("home");
+        // console.log("home");
+        // tab.selectTabItem("home");
     }
     function saveTabStatus()
     {
@@ -333,7 +334,7 @@
         -->
     </div>
     <div position="center" id="framecenter">
-        <div tabid="home" title="关注股票" style="height:300px" >
+        <div tabid="home" title="短线精灵" style="height:300px" >
             <!--
             <iframe frameborder="0" name="home" id="home" src=""></iframe>
             -->

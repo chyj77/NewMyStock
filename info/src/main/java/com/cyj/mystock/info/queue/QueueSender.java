@@ -20,7 +20,7 @@ public class QueueSender {
     }
 
     public void send(String queueName,String context) {
-        LOGGER.info("Sender name = {} ;context = {}" ,queueName, context);
+//        LOGGER.info("Sender name = {} ;context = {}" ,queueName, context);
         this.rabbitTemplate.convertAndSend(queueName, context);
     }
 }

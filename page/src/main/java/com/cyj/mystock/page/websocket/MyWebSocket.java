@@ -33,6 +33,7 @@ public class MyWebSocket {
         addOnlineCount();           //在线数加1
         log.info("有新连接加入！当前在线人数为" + getOnlineCount());
         try {
+//            session.setMaxIdleTimeout(-1);
             sendMessage("成功连接在线人数为"+getOnlineCount());
         } catch (IOException e) {
             log.info("IO异常");

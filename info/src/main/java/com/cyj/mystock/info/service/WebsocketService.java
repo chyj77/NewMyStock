@@ -1,7 +1,7 @@
 package com.cyj.mystock.info.service;
 
-import com.cyj.mystock.info.job.GetDxjl;
 import com.cyj.mystock.info.job.GetStock;
+import com.cyj.mystock.info.job.GetZDT;
 import com.cyj.mystock.info.queue.QueueSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +22,9 @@ public class WebsocketService {
     @Autowired
     private QueueSender queueSender;
     @Autowired
-    private FollowStockService followStockService;
+    private GetStock getStock ;
     @Autowired
-    private SpmmInfoService spmmInfoService;
+    private GetZDT getZDT;
 
 
     private boolean flag = true;
@@ -38,14 +38,12 @@ public class WebsocketService {
             String[] dateStrs = dateStr.split(":");
             int hour = Integer.parseInt(dateStrs[0]);
             int minute = Integer.parseInt(dateStrs[1]);
-            if(hour>=1 && hour<=7) {
-                GetStock getStock = GetStock.getInstance(restTemplate, queueSender,followStockService);
+            if(hour>=9 && hour<=15) {
                 getStock.setFlag(flag);
-                GetDxjl getDxjl = GetDxjl.getInstance(queueSender,spmmInfoService);
-                getDxjl.setFlag(flag);
+                getZDT.setFlag(flag);
                 LOGGER.info("[WebsocketService Execute flag]:{}", flag);
                 flag = getStock.start();
-                getDxjl.start();
+                getZDT.start();
             }
         } catch (Exception e) {
             e.printStackTrace();

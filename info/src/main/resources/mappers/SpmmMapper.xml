@@ -97,6 +97,42 @@
         </set>
         where recid = #{recid,jdbcType=INTEGER}
     </update>
+    <insert id="insertZdtBean" parameterType="com.cyj.mystock.info.bean.ZdtBean" >
+        insert ignore into dayzdt (
+            trade_date,
+            ztzs,
+            dtzs,
+            z8to10,
+            z6to8,
+            z4to6,
+            z2to4,
+            z0to2,
+            d0to2,
+            d2to4,
+            d4to6,
+            d6to8,
+            d8to10,
+            znum,
+            dnum
+        )
+        values (
+        #{tradeDate},
+        #{ztzs},
+        #{dtzs},
+        #{z8to10},
+        #{z6to8},
+        #{z4to6},
+        #{z2to4},
+        #{z0to2},
+        #{d0to2},
+        #{d2to4},
+        #{d4to6},
+        #{d6to8},
+        #{d8to10},
+        #{znum},
+        #{dnum}
+        )
+    </insert>
     <!--
     <insert id="insertSelective" parameterType="com.lgp.SpringBoot.bean.AppMessage" >
         insert into appuser_message

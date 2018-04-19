@@ -61,7 +61,7 @@ function indexdata() {
                                 return;
                             }
                             var tabid = "";
-                            if (node.data.menuId == 4) {
+                            if (node.data.menuId == 16) {
                                 var tabid = "home";
                             } else {
                                 tabid = node.data.menuId;
@@ -86,51 +86,110 @@ function indexdata() {
     });
 
 }
-var websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
-// var websocket = new WebSocket("ws://localhost:8080/websocket");
-//连接发生错误的回调方法
-websocket.onerror = function(){
-    console.log("error");
-};
-
-//连接成功建立的回调方法
-websocket.onopen = function(event){
-    console.log("open");
-}
+var heartflag = false;
+var websocket = null;
+var tryTime = 0;
 var FOLLOWSTOCK="followstock";
 var DXJL = "dxjl";
-//接收到消息的回调方法
-websocket.onmessage = function(event) {
-    // console.log(event.data);
-    if(event.data.indexOf("成功连接在线人数为")==-1) {
-        try {
-            var eventData = JSON.parse(event.data);
-            var KEY = eventData.MSGTYPE;
-            // console.log(KEY);
-            if (KEY === FOLLOWSTOCK) {
-                editCcgp(eventData);
-            } else if (KEY === DXJL) {
-                // console.log(eventData.data);
-                appendDxjl(eventData.data);
+var ZDT = "zdt";
+var ZFB = "zfb";
+var DFB = "dfb";
+$(function () {
+
+       initSocket();
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        websocket.close();
+    };
+});
+/**
+ * 初始化websocket，建立连接
+ */
+function initSocket() {
+
+    if (!window.WebSocket) {
+        alert("您的浏览器不支持ws！");
+        return false;
+    }
+
+    //  websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
+     websocket = new WebSocket("ws://localhost:8080/websocket");
+    //接收到消息的回调方法
+    websocket.onmessage = function(event) {
+        // console.log(event.data);
+        if(event.data.indexOf("成功连接在线人数为")==-1) {
+            if (event.data == "&") {
+
+            } else {
+                try {
+                    var eventData = JSON.parse(event.data);
+                    var KEY = eventData.MSGTYPE;
+                    // console.log(KEY);
+                    if (KEY === FOLLOWSTOCK) {
+                        editCcgp(eventData);
+                    } else if (KEY === DXJL) {
+                        // console.log(eventData.data);
+                        appendDxjl(eventData.data);
+                    } else if (KEY === ZDT) {
+                        // console.log(eventData.data);
+                        appendZdtData(eventData.data);
+                        appendZdbData(eventData.data);
+                    }else if (KEY === ZFB) {
+                        // console.log(eventData.data);
+                        reloadMaingridZfDiv(eventData.data)
+                    }
+                    else if (KEY === DFB) {
+                        // console.log(eventData.data);
+                        reloadMaingridDfDiv(eventData.data)
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
             }
-        } catch (e) {
-            console.log(e);
         }
     }
+
+
+    // 建立连接
+    websocket.onopen = function (event) {
+        heartflag = true;
+        heart();
+        console.log(new Date()+"  建立连接成功<br/>");
+        tryTime = 0;
+    };
+
+    // 断线重连
+    websocket.onclose = function () {
+        heartflag = false;
+        // 重试10次，每次之间间隔10秒
+        if (tryTime < 10) {
+            setTimeout(function () {
+                webSocket = null;
+                tryTime++;
+                initSocket();
+                console.log( new Date()+"  第"+tryTime+"次重连<br/>");
+            }, 3*1000);
+        } else {
+            console.log("重连失败.");
+        }
+    };
+
+    // 异常
+    websocket.onerror = function (event) {
+        heartflag = false;
+        console.log("error");
+    };
 }
 
-//连接关闭的回调方法
-websocket.onclose = function(){
-    console.log("close");
-    webSocket = null;
-    // websocket = new WebSocket("ws://localhost:8080/websocket");
-    websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
+function heart() {
+    if (heartflag){
+        websocket.send("&");
+        console.log(Date()+"  心跳 <br/>");
+    }
+    setTimeout("heart()", 10*60*1000);
+
 }
 
-//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-window.onbeforeunload = function(){
-    websocket.close();
-}
 
 Date.prototype.format = function(format)
 {

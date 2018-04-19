@@ -14,4 +14,16 @@ public class RabbitConfig {
     public Queue Dxjl() {
         return new Queue("dxjl");
     }
+    @Bean
+    public Queue Zdt() {
+        return new Queue("zdt");
+    }
+    @Bean
+    public Queue Zfb() {
+        return new Queue("zfb");
+    }
+    @Bean
+    public Queue Dfb() {
+        return new Queue("dfb");
+    }
 }

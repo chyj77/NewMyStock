@@ -22,24 +22,22 @@ public class GetStockStopJob {
     @Autowired
     private QueueSender queueSender;
     @Autowired
-    private FollowStockService followStockService;
+    private GetStock getStock ;
     @Autowired
-    private SpmmInfoService spmmInfoService;
+    private GetZDT getZDT;
 
     private boolean flag = false;
 
-    @Scheduled(cron = "0 00 07 * * MON-FRI")
+    @Scheduled(cron = "0 00 15 * * MON-FRI")
     public void cronJob() {
         LOGGER.info("[GetStockStopJob Execute]:{}", new Date());
         flag = !flag;
         try {
-            GetStock getStock = GetStock.getInstance(restTemplate, queueSender,followStockService);
             getStock.setFlag(flag);
-            GetDxjl getDxjl = GetDxjl.getInstance(queueSender,spmmInfoService);
-            getDxjl.setFlag(flag);
+            getZDT.setFlag(flag);
             LOGGER.info("[GetStockStopJob Execute flag]:{}", flag);
             flag = getStock.start();
-            getDxjl.start();
+            getZDT.start();
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("[GetStockStopJob Execute Exception]:", e);
