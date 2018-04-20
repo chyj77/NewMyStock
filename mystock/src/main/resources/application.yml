@@ -2,8 +2,8 @@ server:
   port: 8888 # 注册中心占用8080端口
 eureka:
   instance:
-    hostname: 192.168.1.136
-    ip-address: 192.168.1.136
+    hostname: 172.17.0.4
+    ip-address: 172.17.0.4
   client:
     registerWithEureka: false
     fetchRegistry: false
@@ -12,8 +12,8 @@ eureka:
   server:
     enable-self-preservation: false
     eviction-interval-timer-in-ms: 4000
-spring:
-  cloud:
-    inetutils:
-      preferredNetworks:
-        - 172.17
+# spring:
+#  cloud:
+ #   inetutils:
+ #     preferredNetworks:
+  #      - 172.17
