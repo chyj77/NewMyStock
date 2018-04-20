@@ -61,7 +61,7 @@ function getZdb(tabid) {
                     return '<span style="color:darkred">' +item.turnoverratio+ '%</span>';
                 }
             }
-        ], data: zfbDatas,  pageSize: 100, rownumbers: true,width:770
+        ], data: zfbDatas,  pageSize: 200, rownumbers: true,width:770
     });
     maingridDfDiv.ligerGrid({
         columns: [
@@ -77,7 +77,7 @@ function getZdb(tabid) {
                     return '<span style="color:darkgreen">' +item.turnoverratio+ '%</span>';
                 }
             }
-        ], data: dfbDatas, pageSize: 100, rownumbers: true,width:770
+        ], data: dfbDatas, pageSize: 200, rownumbers: true,width:770
     });
 }
 
