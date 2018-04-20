@@ -75,7 +75,7 @@ public class MyWebSocket {
      @OnError
      public void onError(Session session, Throwable error) {
          log.info("发生错误");
-         this.onClose();
+//         this.onClose();
          error.printStackTrace();
      }
 

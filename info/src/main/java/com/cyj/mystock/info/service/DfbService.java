@@ -23,7 +23,7 @@ public class DfbService {
     private QueueSender queueSender;
 
     private final String URL="http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?" +
-            "page=1&num=100&sort=changepercent&asc=1&node=hs_a&symbol=&_s_r_a=init";
+            "page=1&num=200&sort=changepercent&asc=1&node=hs_a&symbol=&_s_r_a=init";
 
     public void run(){
         log.info("获取跌幅榜的时间：{}",new Date());
