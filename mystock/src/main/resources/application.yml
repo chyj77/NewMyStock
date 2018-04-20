@@ -2,8 +2,8 @@ server:
   port: 8888 # 注册中心占用8080端口
 eureka:
   instance:
-    hostname: 114.115.208.105
-    ip-address: 114.115.208.105
+    hostname: 192.168.1.136
+    ip-address: 192.168.1.136
   client:
     registerWithEureka: false
     fetchRegistry: false

@@ -51,8 +51,24 @@ function getZdb(tabid) {
             {display: '股票代码', name: 'code', align: 'left', width: 60, minWidth: 50},
             {display: '股票名称', name: 'name', minWidth: 60},
             {display: '昨收', name: 'settlement', minWidth: 50},
-            {display: '开盘', name: 'open', minWidth: 50},
-            {display: '最新', name: 'trade', minWidth: 50},
+            {display: '开盘', name: 'open', minWidth: 50,render: function (item) {
+                    var open = parseFloat(item.open);
+                    var settlement = parseFloat(item.settlement);
+                    if(open>settlement)
+                        return '<span style="color:red">' +item.open+ '</span>';
+                    else
+                        return '<span style="color:green">' +item.open+ '</span>';
+                }
+            },
+            {display: '最新', name: 'trade', minWidth: 50,render: function (item) {
+                    var trade = parseFloat(item.trade);
+                    var settlement = parseFloat(item.settlement);
+                    if(trade>settlement)
+                        return '<span style="color:red">' +item.trade+ '</span>';
+                    else
+                        return '<span style="color:green">' +item.trade+ '</span>';
+                }
+            },
             {display: '涨幅', name: 'changepercent', minWidth: 50,render: function (item) {
                 return '<span style="color:darkred">' +item.changepercent+ '%</span>';
             }
@@ -68,11 +84,28 @@ function getZdb(tabid) {
             {display: '股票代码', name: 'code', align: 'left', width: 60, minWidth: 50},
             {display: '股票名称', name: 'name', minWidth: 60},
             {display: '昨收', name: 'settlement', minWidth: 50},
-            {display: '开盘', name: 'open', minWidth: 50},
-            {display: '最新', name: 'trade', minWidth: 50},
+            {display: '开盘', name: 'open', minWidth: 50,render: function (item) {
+                    var open = parseFloat(item.open);
+                    var settlement = parseFloat(item.settlement);
+                    if(open>settlement)
+                        return '<span style="color:red">' +item.open+ '</span>';
+                    else
+                        return '<span style="color:green">' +item.open+ '</span>';
+                }
+            },
+            {display: '最新', name: 'trade', minWidth: 50,render: function (item) {
+                    var trade = parseFloat(item.trade);
+                    var settlement = parseFloat(item.settlement);
+                    if(trade>settlement)
+                        return '<span style="color:red">' +item.trade+ '</span>';
+                    else
+                        return '<span style="color:green">' +item.trade+ '</span>';
+                }
+            },
             {display: '跌幅', name: 'changepercent', minWidth: 50,render: function (item) {
                     return '<span style="color:darkgreen">' +item.changepercent+ '%</span>';
-                }},
+                }
+            },
             {display: '换手率', name: 'turnoverratio', minWidth: 50,render: function (item) {
                     return '<span style="color:darkgreen">' +item.turnoverratio+ '%</span>';
                 }

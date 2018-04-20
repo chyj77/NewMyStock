@@ -112,8 +112,8 @@ function initSocket() {
         return false;
     }
 
-    //  websocket = new WebSocket("ws://114.115.208.105:8080/websocket");
-     websocket = new WebSocket("ws://localhost:8080/websocket");
+     websocket = new WebSocket("ws://192.168.1.136:8080/websocket");
+     // websocket = new WebSocket("ws://localhost:8080/websocket");
     //接收到消息的回调方法
     websocket.onmessage = function(event) {
         // console.log(event.data);
@@ -210,6 +210,7 @@ Date.prototype.format = function(format)
                 ("00"+ o[k]).substr((""+ o[k]).length));
     return format;
 }
+/*
 var indexdata1 =
     [
         { text: '基础',isexpand:false, children: [
@@ -525,3 +526,4 @@ var indexdata2 =
             ]
         }
     ];
+    */
