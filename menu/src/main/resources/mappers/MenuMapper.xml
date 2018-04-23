@@ -17,10 +17,13 @@
     <sql id="Base_Column_List" >
         menu_Id, menu_Code, menu_Name,menu_Url,p_Menu_Id,menu_Type,isexpand
     </sql>
-    <select id="getAll" resultMap="BaseResultMap">
+    <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.Map">
         select
         <include refid="Base_Column_List" />
-        from menu where isshow=0
+        from menu where 1=1
+        <if test="who == 'other'" >
+          and isshow=0
+        </if>
         ORDER BY menu_level
     </select>
     <!--

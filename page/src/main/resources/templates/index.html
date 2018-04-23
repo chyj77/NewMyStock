@@ -33,12 +33,17 @@
     <script src="../js/getDxjl.js" type="text/javascript"></script>
     <script src="../js/getZdb.js" type="text/javascript"></script>
 </head>
+<script th:inline="javascript">
+    var who = [[${who}]];
+    console.log("who",who);
+</script>
 <script type="text/javascript">
     /*<![CDATA[*/
     var tab = null;
     var accordion = null;
     var tree = null;
     var tabItems = [];
+
 
     $(function ()
     {

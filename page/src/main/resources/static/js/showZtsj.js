@@ -326,6 +326,22 @@ function save() {
     // alert(JSON.stringify(row));
     try {
         row["rq"] = row["rq"].format("yyyy-MM-dd");
+        if(row["dbcrgkl"].indexOf("%")>-1){
+            row["dbcrgkl"] = row["dbcrgkl"].replace("%","");
+            row["dbcrgkl"] = parseFloat(row["dbcrgkl"]) / 100;
+        }
+        if(row["spcgl"].indexOf("%")>-1){
+            row["spcgl"] = row["spcgl"].replace("%","");
+            row["spcgl"] = parseFloat(row["spcgl"]) / 100;
+        }
+        if(row["dqztgkl"].indexOf("%")>-1){
+            row["dqztgkl"] = row["dqztgkl"].replace("%","");
+            row["dqztgkl"] = parseFloat(row["dqztgkl"]) / 100;
+        }
+        if(row["bzl"].indexOf("%")>-1){
+            row["bzl"] = row["bzl"].replace("%","");
+            row["bzl"] = parseFloat(row["bzl"]) / 100;
+        }
     } catch (e) {
         console.log(e);
         row["rq"] = row["rq"];

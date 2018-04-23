@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MenuService {
@@ -21,10 +23,20 @@ public class MenuService {
     @Autowired
     private RedisUtil redisUtil;
 
-    final String key = "menu";
+    final String KEY = "menu:";
 
     public void getAll() {
-        List<Menu> list = menuMapper.getAll();
+        Map map = new HashMap();
+        map.put("who","me");
+        setMenu(map);
+        map.put("who","other");
+        setMenu(map);
+    }
+
+    private void setMenu(Map map){
+        String who = (String)map.get("who");
+        String key = KEY + who;
+        List<Menu> list = menuMapper.getAll(map);
 
         if (redisUtil.exists(key)) {
             redisUtil.remove(key);
@@ -87,7 +99,8 @@ public class MenuService {
         }
     }
 
-    public String getMenu() {
+    public String getMenu(String who) {
+        String key = KEY + who;
         return redisUtil.get(key);
     }
 }

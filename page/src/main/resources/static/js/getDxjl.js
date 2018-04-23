@@ -9,15 +9,15 @@ var zdtDiv ;
     var maingridDiv = $('<div>', {'id': 'maingridDxjlStock','class': 'l-tab-content-item','style':'overflow-y:scroll;padding-top:10px;'});
     var emptyBtn = "<span style='padding-left:30px;text-decoration:underline;' onclick='emptyZdt();'>清空</span>";
     dxjlTable=$('<table>', {'id': 'tableDxjlStock','border':'1px','cellspacing':'0','style':'padding-left:30px;padding-top:5px;width:100%'});
-    var zdtspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:darkred'>涨停家数：<span style='text-decoration:underline;color:darkred'>0</span></span>"
+    var zdtspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:red'>涨停家数：<span style='text-decoration:underline;color:red'>0</span></span>"
         +"<span style='padding-left:30px;color:darkgreen'>跌停家数：<span style='text-decoration:underline;color:darkgreen'>0</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>上涨股票：<span style='text-decoration:underline;color:darkred'>0</span></span>"
+        +"<span style='padding-left:30px;color:red'>上涨股票：<span style='text-decoration:underline;color:red'>0</span></span>"
         +"<span style='padding-left:30px;color:darkgreen'>下跌股票：<span style='text-decoration:underline;color:darkgreen'>0</span></span></li>";
-    var zspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:darkred'>涨8%-10%：<span style='text-decoration:underline;color:darkred'>0</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>涨6%-8%：<span style='text-decoration:underline;color:darkred'>0</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>涨4%-6%：<span style='text-decoration:underline;color:darkred'>0</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>涨2%-4%：<span style='text-decoration:underline;color:darkred'>0</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>涨0%-2%：<span style='text-decoration:underline;color:darkred'>0</span></span></li>";
+    var zspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:red'>涨8%-10%：<span style='text-decoration:underline;color:red'>0</span></span>"
+        +"<span style='padding-left:30px;color:red'>涨6%-8%：<span style='text-decoration:underline;color:red'>0</span></span>"
+        +"<span style='padding-left:30px;color:red'>涨4%-6%：<span style='text-decoration:underline;color:red'>0</span></span>"
+        +"<span style='padding-left:30px;color:red'>涨2%-4%：<span style='text-decoration:underline;color:red'>0</span></span>"
+        +"<span style='padding-left:30px;color:red'>涨0%-2%：<span style='text-decoration:underline;color:red'>0</span></span></li>";
     var dspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:darkgreen'>跌8%-10%：<span style='text-decoration:underline;color:darkgreen'>0</span></span>"
         +"<span style='padding-left:30px;color:darkgreen'>跌6%-8%：<span style='text-decoration:underline;color:darkgreen'>0</span></span>"
         +"<span style='padding-left:30px;color:darkgreen'>跌4%-6%：<span style='text-decoration:underline;color:darkgreen'>0</span></span>"
@@ -58,15 +58,15 @@ function appendZdtData(zdtData) {
     var d8to10 = zdtJson["d8to10"];
     var dnum = zdtJson["dnum"];
     var znum = zdtJson["znum"];
-    var zdtspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:darkred'>涨停家数：<span style='text-decoration:underline;color:darkred''>"+ztzs+"</span></span>"
+    var zdtspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:red'>涨停家数：<span style='text-decoration:underline;color:red''>"+ztzs+"</span></span>"
         +"<span style='padding-left:30px;color:darkgreen'>跌停家数：<span style='text-decoration:underline;color:darkgreen''>"+dtzs+"</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>上涨股票：<span style='text-decoration:underline;color:darkred''>"+znum+"</span></span>"
+        +"<span style='padding-left:30px;color:red'>上涨股票：<span style='text-decoration:underline;color:red''>"+znum+"</span></span>"
         +"<span style='padding-left:30px;color:darkgreen'>下跌股票：<span style='text-decoration:underline;color:darkgreen''>"+dnum+"</span></span></li>";
-    var zspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:darkred'>涨8%-10%：<span style='text-decoration:underline;color:darkred''>"+z8to10+"</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>涨6%-8%：<span style='text-decoration:underline;color:darkred''>"+z6to8+"</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>涨4%-6%：<span style='text-decoration:underline;color:darkred''>"+z4to6+"</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>涨2%-4%：<span style='text-decoration:underline;color:darkred''>"+z2to4+"</span></span>"
-        +"<span style='padding-left:30px;color:darkred'>涨0%-2%：<span style='text-decoration:underline;color:darkred''>"+z0to2+"</span></span></li>";
+    var zspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:red'>涨8%-10%：<span style='text-decoration:underline;color:red''>"+z8to10+"</span></span>"
+        +"<span style='padding-left:30px;color:red'>涨6%-8%：<span style='text-decoration:underline;color:red''>"+z6to8+"</span></span>"
+        +"<span style='padding-left:30px;color:red'>涨4%-6%：<span style='text-decoration:underline;color:red''>"+z4to6+"</span></span>"
+        +"<span style='padding-left:30px;color:red'>涨2%-4%：<span style='text-decoration:underline;color:red''>"+z2to4+"</span></span>"
+        +"<span style='padding-left:30px;color:red'>涨0%-2%：<span style='text-decoration:underline;color:red''>"+z0to2+"</span></span></li>";
     var dspan = "<li style='padding-top:10px;'><span style='padding-left:30px;color:darkgreen'>跌8%-10%：<span style='text-decoration:underline;color:darkgreen''>"+d8to10+"</span></span>"
         +"<span style='padding-left:30px;color:darkgreen'>跌6%-8%：<span style='text-decoration:underline;color:darkgreen''>"+d6to8+"</span></span>"
         +"<span style='padding-left:30px;color:darkgreen'>跌4%-6%：<span style='text-decoration:underline;color:darkgreen''>"+d4to6+"</span></span>"

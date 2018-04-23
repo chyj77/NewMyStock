@@ -18,6 +18,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -241,8 +242,13 @@ public class PageController {
     }
 */
     @RequestMapping("/")
-    public String index(HashMap<String, Object> map) {
-        map.put("hello", "欢迎进入HTML页面");
+    public String index(Model model) {
+        model.addAttribute("who", "other");
+        return "/index";
+    }
+    @RequestMapping("/me")
+    public String indexMe(Model model) {
+        model.addAttribute("who", "me");
         return "/index";
     }
 

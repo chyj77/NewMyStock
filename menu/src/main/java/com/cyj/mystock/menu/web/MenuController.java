@@ -10,6 +10,7 @@ import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -26,11 +27,12 @@ public class MenuController {
     private MenuService menuService;
 
     @RequestMapping("/menu/index")
-    public String menu() {
+    public String menu(HttpServletRequest request) {
+        String who = request.getParameter("who");
         ServiceInstance instance = serviceInstance();
         LOGGER.info("provider service, host = " + instance.getHost()
                 + ", service_id = " + instance.getServiceId());
-        return  menuService.getMenu();
+        return  menuService.getMenu(who);
     }
 
     /**

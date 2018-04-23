@@ -2,7 +2,7 @@ function indexdata() {
     $.ajax({
         type : 'GET',
         contentType : 'application/json',
-        url : '/menu/index',
+        url : '/menu/index?who='+who,
         success : function(data) {
             // console.log(data);
             if(data!='') {
@@ -112,7 +112,7 @@ function initSocket() {
         return false;
     }
 
-     websocket = new WebSocket("ws://192.168.1.136:8080/websocket");
+     websocket = new WebSocket("ws://192.168.1.196:8080/websocket");
      // websocket = new WebSocket("ws://localhost:8080/websocket");
     //接收到消息的回调方法
     websocket.onmessage = function(event) {
