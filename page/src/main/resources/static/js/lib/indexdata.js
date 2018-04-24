@@ -112,7 +112,7 @@ function initSocket() {
         return false;
     }
 
-     websocket = new WebSocket("ws://192.168.1.196:8080/websocket");
+     websocket = new WebSocket("ws://123.206.44.201:8080/websocket");
      // websocket = new WebSocket("ws://localhost:8080/websocket");
     //接收到消息的回调方法
     websocket.onmessage = function(event) {
