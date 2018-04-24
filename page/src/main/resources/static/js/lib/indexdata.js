@@ -111,9 +111,9 @@ function initSocket() {
         alert("您的浏览器不支持ws！");
         return false;
     }
-
-     websocket = new WebSocket("ws://123.206.44.201:8080/websocket");
-     // websocket = new WebSocket("ws://localhost:8080/websocket");
+    var host = window.location.host;
+     // websocket = new WebSocket("ws://123.206.44.201:8080/websocket");
+     websocket = new WebSocket("ws://"+host+"/websocket");
     //接收到消息的回调方法
     websocket.onmessage = function(event) {
         // console.log(event.data);
